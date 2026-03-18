@@ -9,18 +9,18 @@
 
 ### Notation & Parsing (NOTA)
 
-- [ ] **NOTA-01**: System parses OMN-style notation strings into internal event objects (`(e f3 pp stacc)` → Event)
-- [ ] **NOTA-02**: System serializes internal event objects back to OMN notation strings (round-trip lossless)
-- [ ] **NOTA-03**: Parser handles all duration values: whole (w), half (h), quarter (q), eighth (e), sixteenth (s), thirty-second (t), sixty-fourth (x), with dots and ties
-- [ ] **NOTA-04**: Parser handles rests (encoded as negative durations or `r` prefix per OMN spec)
-- [ ] **NOTA-05**: Parser handles tuplets (triplets, quintuplets, etc.)
-- [ ] **NOTA-06**: Parser handles all dynamic markings: ppp, pp, p, mp, mf, f, ff, fff
-- [ ] **NOTA-07**: Parser handles articulation markings: staccato, tenuto, accent, legato, marcato, fermata, trill, and others
+- [x] **NOTA-01**: System parses OMN-style notation strings into internal event objects (`(e f3 pp stacc)` → Event)
+- [x] **NOTA-02**: System serializes internal event objects back to OMN notation strings (round-trip lossless)
+- [x] **NOTA-03**: Parser handles all duration values: whole (w), half (h), quarter (q), eighth (e), sixteenth (s), thirty-second (t), sixty-fourth (x), with dots and ties
+- [x] **NOTA-04**: Parser handles rests (encoded as negative durations or `r` prefix per OMN spec)
+- [x] **NOTA-05**: Parser handles tuplets (triplets, quintuplets, etc.)
+- [x] **NOTA-06**: Parser handles all dynamic markings: ppp, pp, p, mp, mf, f, ff, fff
+- [x] **NOTA-07**: Parser handles articulation markings: staccato, tenuto, accent, legato, marcato, fermata, trill, and others
 - [ ] **NOTA-08**: System imports MusicXML files into internal representation
 - [ ] **NOTA-09**: System exports internal representation to MusicXML
 - [ ] **NOTA-10**: System imports MIDI files into internal representation
 - [ ] **NOTA-11**: System exports internal representation to MIDI
-- [ ] **NOTA-12**: Parser provides clear error messages with position info for invalid notation
+- [x] **NOTA-12**: Parser provides clear error messages with position info for invalid notation
 
 ### Core Data Model (CORE)
 
@@ -272,14 +272,14 @@
 | CORE-08 | Phase 1: Foundation | Complete |
 | CORE-09 | Phase 1: Foundation | Complete |
 | CORE-10 | Phase 1: Foundation | Complete |
-| NOTA-01 | Phase 1: Foundation | Pending |
-| NOTA-02 | Phase 1: Foundation | Pending |
-| NOTA-03 | Phase 1: Foundation | Pending |
-| NOTA-04 | Phase 1: Foundation | Pending |
-| NOTA-05 | Phase 1: Foundation | Pending |
-| NOTA-06 | Phase 1: Foundation | Pending |
-| NOTA-07 | Phase 1: Foundation | Pending |
-| NOTA-12 | Phase 1: Foundation | Pending |
+| NOTA-01 | Phase 1: Foundation | Complete |
+| NOTA-02 | Phase 1: Foundation | Complete |
+| NOTA-03 | Phase 1: Foundation | Complete |
+| NOTA-04 | Phase 1: Foundation | Complete |
+| NOTA-05 | Phase 1: Foundation | Complete |
+| NOTA-06 | Phase 1: Foundation | Complete |
+| NOTA-07 | Phase 1: Foundation | Complete |
+| NOTA-12 | Phase 1: Foundation | Complete |
 | PTCH-01 | Phase 2: Transforms | Pending |
 | PTCH-02 | Phase 2: Transforms | Pending |
 | PTCH-03 | Phase 2: Transforms | Pending |

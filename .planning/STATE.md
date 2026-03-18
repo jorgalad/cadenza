@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-03-18T23:36:58.194Z"
-last_activity: 2026-03-19 -- Completed 01-01 Core Data Model (89 tests, 85% coverage)
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-03-18T23:43:49Z"
+last_activity: 2026-03-19 -- Completed 01-02 OMN Parser (121 tests, lossless round-trip)
 progress:
   total_phases: 13
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
-  percent: 33
+  completed_plans: 2
+  percent: 67
 ---
 
 # Project State
@@ -26,28 +26,28 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 ## Current Position
 
 Phase: 1 of 13 (Foundation)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: Executing
-Last activity: 2026-03-19 -- Completed 01-01 Core Data Model (89 tests, 85% coverage)
+Last activity: 2026-03-19 -- Completed 01-02 OMN Parser (121 tests, lossless round-trip)
 
-Progress: [███░░░░░░░] 33%
+Progress: [██████░░░░] 67%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
+- Total plans completed: 2
 - Average duration: 6 min
-- Total execution time: 0.1 hours
+- Total execution time: 0.2 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation | 1/3 | 6 min | 6 min |
+| 01-foundation | 2/3 | 12 min | 6 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (6 min)
-- Trend: Starting
+- Last 5 plans: 01-01 (6 min), 01-02 (6 min)
+- Trend: Consistent
 
 *Updated after each plan completion*
 
@@ -65,6 +65,9 @@ Recent decisions affecting current work:
 - 01-01: Pre-convert objects via _to_serializable() before json.dumps to handle tuple serialization
 - 01-01: Score uses tuple[tuple[str, Phrase], ...] internally for true immutability and hashability
 - 01-01: JSON codec uses _type discriminator field for polymorphic deserialization
+- 01-02: Word-based tokenizer (split on whitespace) for simpler disambiguation of e/f/s ambiguity
+- 01-02: Serializer does not track None dynamic or empty articulations as sticky state changes (OMN cannot unset these)
+- 01-02: Chord tokens deferred -- tokenized as single PITCH, parser uses first pitch with warning
 
 ### Pending Todos
 
@@ -78,6 +81,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-18T23:36:58.192Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-03-18T23:43:49Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
