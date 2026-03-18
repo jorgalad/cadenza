@@ -24,16 +24,16 @@
 
 ### Core Data Model (CORE)
 
-- [ ] **CORE-01**: Pitch type is a compound immutable value (letter A-G, accidental, octave integer) — never a raw MIDI integer
-- [ ] **CORE-02**: Pitch equality is spelling-sensitive: Eb3 ≠ D#3; explicit `enharmonic_equal()` for MIDI-number comparison
-- [ ] **CORE-03**: Duration type uses `fractions.Fraction` internally — never float arithmetic
-- [ ] **CORE-04**: Interval type encodes both quality (perfect/major/minor/augmented/diminished) and number (unison through compound intervals)
-- [ ] **CORE-05**: Note type combines Pitch + Duration + Dynamic + Articulation as immutable frozen dataclass
-- [ ] **CORE-06**: Rest type is a distinct type from Note (not a Note with a special pitch)
-- [ ] **CORE-07**: Phrase type is an ordered immutable sequence of Notes and Rests
-- [ ] **CORE-08**: Score type supports multiple simultaneous Phrases (voices/staves)
-- [ ] **CORE-09**: All core types are serializable to/from JSON without information loss
-- [ ] **CORE-10**: All core types support equality comparison and hashing (usable in sets/dicts)
+- [x] **CORE-01**: Pitch type is a compound immutable value (letter A-G, accidental, octave integer) — never a raw MIDI integer
+- [x] **CORE-02**: Pitch equality is spelling-sensitive: Eb3 ≠ D#3; explicit `enharmonic_equal()` for MIDI-number comparison
+- [x] **CORE-03**: Duration type uses `fractions.Fraction` internally — never float arithmetic
+- [x] **CORE-04**: Interval type encodes both quality (perfect/major/minor/augmented/diminished) and number (unison through compound intervals)
+- [x] **CORE-05**: Note type combines Pitch + Duration + Dynamic + Articulation as immutable frozen dataclass
+- [x] **CORE-06**: Rest type is a distinct type from Note (not a Note with a special pitch)
+- [x] **CORE-07**: Phrase type is an ordered immutable sequence of Notes and Rests
+- [x] **CORE-08**: Score type supports multiple simultaneous Phrases (voices/staves)
+- [x] **CORE-09**: All core types are serializable to/from JSON without information loss
+- [x] **CORE-10**: All core types support equality comparison and hashing (usable in sets/dicts)
 
 ### Pitch Operations (PTCH)
 
@@ -262,16 +262,16 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CORE-01 | Phase 1: Foundation | Pending |
-| CORE-02 | Phase 1: Foundation | Pending |
-| CORE-03 | Phase 1: Foundation | Pending |
-| CORE-04 | Phase 1: Foundation | Pending |
-| CORE-05 | Phase 1: Foundation | Pending |
-| CORE-06 | Phase 1: Foundation | Pending |
-| CORE-07 | Phase 1: Foundation | Pending |
-| CORE-08 | Phase 1: Foundation | Pending |
-| CORE-09 | Phase 1: Foundation | Pending |
-| CORE-10 | Phase 1: Foundation | Pending |
+| CORE-01 | Phase 1: Foundation | Complete |
+| CORE-02 | Phase 1: Foundation | Complete |
+| CORE-03 | Phase 1: Foundation | Complete |
+| CORE-04 | Phase 1: Foundation | Complete |
+| CORE-05 | Phase 1: Foundation | Complete |
+| CORE-06 | Phase 1: Foundation | Complete |
+| CORE-07 | Phase 1: Foundation | Complete |
+| CORE-08 | Phase 1: Foundation | Complete |
+| CORE-09 | Phase 1: Foundation | Complete |
+| CORE-10 | Phase 1: Foundation | Complete |
 | NOTA-01 | Phase 1: Foundation | Pending |
 | NOTA-02 | Phase 1: Foundation | Pending |
 | NOTA-03 | Phase 1: Foundation | Pending |
