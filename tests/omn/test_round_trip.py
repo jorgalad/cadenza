@@ -19,6 +19,39 @@ from tests.strategies import (
     phrase_with_rests_strategy,
 )
 
+
+def _resolve_sticky(phrase: tuple) -> tuple:
+    """Resolve sticky parameters to produce the canonical form of a phrase.
+
+    OMN uses sticky parameters: when a note omits dynamic or articulations,
+    the previous values carry forward. After serializing to OMN and reparsing,
+    originally-None dynamics and empty articulations become the inherited values.
+    This helper simulates that normalization for comparison.
+    """
+    resolved = []
+    prev_dynamic: str | None = None
+    prev_articulations: tuple[str, ...] = ()
+    for event in phrase:
+        if isinstance(event, Note):
+            # Sticky dynamic: None means "inherit previous"
+            dyn = event.dynamic if event.dynamic is not None else prev_dynamic
+            # Sticky articulations: () means "inherit previous"
+            artics = event.articulations if event.articulations else prev_articulations
+            resolved.append(Note(
+                pitch=event.pitch,
+                duration=event.duration,
+                dynamic=dyn,
+                articulations=artics,
+            ))
+            if event.dynamic is not None:
+                prev_dynamic = event.dynamic
+            if event.articulations:
+                prev_articulations = event.articulations
+        else:
+            # Rest doesn't reset sticky state
+            resolved.append(event)
+    return tuple(resolved)
+
 # Detect whether the OMN parser is available (plan 01-02)
 try:
     from cadenza.omn import parse_omn, to_omn  # type: ignore[import-untyped]
@@ -66,11 +99,17 @@ def test_omn_round_trip_single_rest(rest: Rest) -> None:
 @given(phrase=phrase_strategy())
 @settings(max_examples=200, suppress_health_check=[HealthCheck.too_slow])
 def test_omn_round_trip_phrase(phrase: tuple) -> None:
-    """A Phrase round-trips through OMN: parse_omn(to_omn(phrase)) preserves structure."""
+    """A Phrase round-trips through OMN: parse_omn(to_omn(phrase)) preserves structure.
+
+    Note: OMN uses sticky parameters, so None dynamics and empty articulations
+    become inherited values after round-trip. We compare against the sticky-resolved
+    version of the original phrase.
+    """
     omn_str = to_omn(phrase)
     parsed, warnings = parse_omn(omn_str)
-    assert len(parsed) == len(phrase)
-    for original, reparsed in zip(phrase, parsed):
+    expected = _resolve_sticky(phrase)
+    assert len(parsed) == len(expected)
+    for original, reparsed in zip(expected, parsed):
         assert type(original) == type(reparsed)
         if isinstance(original, Note):
             assert reparsed.pitch == original.pitch
