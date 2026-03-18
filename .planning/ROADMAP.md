@@ -38,12 +38,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. An OMN string like `(e f3 pp stacc)` round-trips through parse then serialize and produces an identical string
   4. The parser rejects malformed input with a clear error message including the position of the problem
   5. All core types (Pitch, Duration, Note, Rest, Phrase, Score) are hashable, comparable, and JSON-serializable without information loss
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: Project scaffolding, tooling, core data model
-- [ ] 01-02: OMN parser and serializer
-- [ ] 01-03: Core type integration tests and round-trip validation
+- [ ] 01-01-PLAN.md -- Project scaffolding + core data model (Pitch, Duration, Interval, Note, Rest, Phrase, Score, JSON codec)
+- [ ] 01-02-PLAN.md -- OMN tokenizer, recursive descent parser with sticky state, and compact serializer
+- [ ] 01-03-PLAN.md -- Integration tests, property-based round-trip tests, ROADMAP success criteria verification
 
 ### Phase 2: Transforms
 **Goal**: Users can apply all standard melodic, rhythmic, and pitch transformations to phrases and receive musically correct results
