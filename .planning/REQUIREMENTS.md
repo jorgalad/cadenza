@@ -260,33 +260,171 @@
 
 ## Traceability
 
-*Populated during roadmap creation.*
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| NOTA-01 through NOTA-12 | Phase 1 | Pending |
-| CORE-01 through CORE-10 | Phase 1 | Pending |
-| PTCH-01 through PTCH-09 | Phase 2 | Pending |
-| RHYT-01 through RHYT-09 | Phase 2 | Pending |
-| MELO-01 through MELO-12 | Phase 2 | Pending |
-| SCAL-01 through SCAL-12 | Phase 2 | Pending |
-| CHRD-01 through CHRD-09 | Phase 2 | Pending |
-| API-01 through API-09 | Phase 2 | Pending |
-| HARM-01 through HARM-10 | Phase 3 | Pending |
-| SETTH-01 through SETTH-09 | Phase 3 | Pending |
-| BATCH-01 through BATCH-09 | Phase 3 | Pending |
-| ANAL-01 through ANAL-09 | Phase 3 | Pending |
-| VLEAD-01 through VLEAD-08 | Phase 4 | Pending |
-| CPTR-01 through CPTR-10 | Phase 4 | Pending |
-| SERI-01 through SERI-06 | Phase 5 | Pending |
-| PATT-01 through PATT-07 | Phase 5 | Pending |
-| ALGO-01 through ALGO-07 | Phase 5 | Pending |
+| CORE-01 | Phase 1: Foundation | Pending |
+| CORE-02 | Phase 1: Foundation | Pending |
+| CORE-03 | Phase 1: Foundation | Pending |
+| CORE-04 | Phase 1: Foundation | Pending |
+| CORE-05 | Phase 1: Foundation | Pending |
+| CORE-06 | Phase 1: Foundation | Pending |
+| CORE-07 | Phase 1: Foundation | Pending |
+| CORE-08 | Phase 1: Foundation | Pending |
+| CORE-09 | Phase 1: Foundation | Pending |
+| CORE-10 | Phase 1: Foundation | Pending |
+| NOTA-01 | Phase 1: Foundation | Pending |
+| NOTA-02 | Phase 1: Foundation | Pending |
+| NOTA-03 | Phase 1: Foundation | Pending |
+| NOTA-04 | Phase 1: Foundation | Pending |
+| NOTA-05 | Phase 1: Foundation | Pending |
+| NOTA-06 | Phase 1: Foundation | Pending |
+| NOTA-07 | Phase 1: Foundation | Pending |
+| NOTA-12 | Phase 1: Foundation | Pending |
+| PTCH-01 | Phase 2: Transforms | Pending |
+| PTCH-02 | Phase 2: Transforms | Pending |
+| PTCH-03 | Phase 2: Transforms | Pending |
+| PTCH-04 | Phase 2: Transforms | Pending |
+| PTCH-05 | Phase 2: Transforms | Pending |
+| PTCH-06 | Phase 2: Transforms | Pending |
+| PTCH-07 | Phase 2: Transforms | Pending |
+| PTCH-08 | Phase 2: Transforms | Pending |
+| PTCH-09 | Phase 2: Transforms | Pending |
+| RHYT-01 | Phase 2: Transforms | Pending |
+| RHYT-02 | Phase 2: Transforms | Pending |
+| RHYT-03 | Phase 2: Transforms | Pending |
+| RHYT-04 | Phase 2: Transforms | Pending |
+| RHYT-05 | Phase 2: Transforms | Pending |
+| RHYT-07 | Phase 2: Transforms | Pending |
+| RHYT-08 | Phase 2: Transforms | Pending |
+| RHYT-09 | Phase 2: Transforms | Pending |
+| MELO-01 | Phase 2: Transforms | Pending |
+| MELO-02 | Phase 2: Transforms | Pending |
+| MELO-03 | Phase 2: Transforms | Pending |
+| MELO-04 | Phase 2: Transforms | Pending |
+| MELO-05 | Phase 2: Transforms | Pending |
+| MELO-06 | Phase 2: Transforms | Pending |
+| MELO-07 | Phase 2: Transforms | Pending |
+| MELO-08 | Phase 2: Transforms | Pending |
+| MELO-09 | Phase 2: Transforms | Pending |
+| MELO-10 | Phase 2: Transforms | Pending |
+| MELO-11 | Phase 2: Transforms | Pending |
+| MELO-12 | Phase 2: Transforms | Pending |
+| SCAL-01 | Phase 3: Theory Libraries | Pending |
+| SCAL-02 | Phase 3: Theory Libraries | Pending |
+| SCAL-03 | Phase 3: Theory Libraries | Pending |
+| SCAL-04 | Phase 3: Theory Libraries | Pending |
+| SCAL-05 | Phase 3: Theory Libraries | Pending |
+| SCAL-06 | Phase 3: Theory Libraries | Pending |
+| SCAL-07 | Phase 3: Theory Libraries | Pending |
+| SCAL-08 | Phase 3: Theory Libraries | Pending |
+| SCAL-09 | Phase 3: Theory Libraries | Pending |
+| SCAL-10 | Phase 3: Theory Libraries | Pending |
+| SCAL-11 | Phase 3: Theory Libraries | Pending |
+| SCAL-12 | Phase 3: Theory Libraries | Pending |
+| CHRD-01 | Phase 3: Theory Libraries | Pending |
+| CHRD-02 | Phase 3: Theory Libraries | Pending |
+| CHRD-03 | Phase 3: Theory Libraries | Pending |
+| CHRD-04 | Phase 3: Theory Libraries | Pending |
+| CHRD-05 | Phase 3: Theory Libraries | Pending |
+| CHRD-06 | Phase 3: Theory Libraries | Pending |
+| CHRD-07 | Phase 3: Theory Libraries | Pending |
+| CHRD-08 | Phase 3: Theory Libraries | Pending |
+| CHRD-09 | Phase 3: Theory Libraries | Pending |
+| API-01 | Phase 4: REST API v1 | Pending |
+| API-02 | Phase 4: REST API v1 | Pending |
+| API-03 | Phase 4: REST API v1 | Pending |
+| API-04 | Phase 4: REST API v1 | Pending |
+| API-05 | Phase 4: REST API v1 | Pending |
+| API-07 | Phase 4: REST API v1 | Pending |
+| API-08 | Phase 4: REST API v1 | Pending |
+| HARM-01 | Phase 5: Harmonic Analysis | Pending |
+| HARM-02 | Phase 5: Harmonic Analysis | Pending |
+| HARM-03 | Phase 5: Harmonic Analysis | Pending |
+| HARM-04 | Phase 5: Harmonic Analysis | Pending |
+| HARM-05 | Phase 5: Harmonic Analysis | Pending |
+| HARM-06 | Phase 5: Harmonic Analysis | Pending |
+| HARM-07 | Phase 5: Harmonic Analysis | Pending |
+| HARM-08 | Phase 5: Harmonic Analysis | Pending |
+| HARM-09 | Phase 5: Harmonic Analysis | Pending |
+| HARM-10 | Phase 5: Harmonic Analysis | Pending |
+| BATCH-01 | Phase 6: Batch & Analysis | Pending |
+| BATCH-02 | Phase 6: Batch & Analysis | Pending |
+| BATCH-03 | Phase 6: Batch & Analysis | Pending |
+| BATCH-04 | Phase 6: Batch & Analysis | Pending |
+| BATCH-05 | Phase 6: Batch & Analysis | Pending |
+| BATCH-06 | Phase 6: Batch & Analysis | Pending |
+| BATCH-07 | Phase 6: Batch & Analysis | Pending |
+| BATCH-08 | Phase 6: Batch & Analysis | Pending |
+| BATCH-09 | Phase 6: Batch & Analysis | Pending |
+| ANAL-01 | Phase 6: Batch & Analysis | Pending |
+| ANAL-02 | Phase 6: Batch & Analysis | Pending |
+| ANAL-03 | Phase 6: Batch & Analysis | Pending |
+| ANAL-04 | Phase 6: Batch & Analysis | Pending |
+| ANAL-05 | Phase 6: Batch & Analysis | Pending |
+| ANAL-06 | Phase 6: Batch & Analysis | Pending |
+| ANAL-07 | Phase 6: Batch & Analysis | Pending |
+| ANAL-08 | Phase 6: Batch & Analysis | Pending |
+| ANAL-09 | Phase 6: Batch & Analysis | Pending |
+| VLEAD-01 | Phase 7: Voice Leading | Pending |
+| VLEAD-02 | Phase 7: Voice Leading | Pending |
+| VLEAD-03 | Phase 7: Voice Leading | Pending |
+| VLEAD-04 | Phase 7: Voice Leading | Pending |
+| VLEAD-05 | Phase 7: Voice Leading | Pending |
+| VLEAD-06 | Phase 7: Voice Leading | Pending |
+| VLEAD-07 | Phase 7: Voice Leading | Pending |
+| VLEAD-08 | Phase 7: Voice Leading | Pending |
+| CPTR-01 | Phase 8: Counterpoint | Pending |
+| CPTR-02 | Phase 8: Counterpoint | Pending |
+| CPTR-03 | Phase 8: Counterpoint | Pending |
+| CPTR-04 | Phase 8: Counterpoint | Pending |
+| CPTR-05 | Phase 8: Counterpoint | Pending |
+| CPTR-06 | Phase 8: Counterpoint | Pending |
+| CPTR-07 | Phase 8: Counterpoint | Pending |
+| CPTR-08 | Phase 8: Counterpoint | Pending |
+| CPTR-09 | Phase 8: Counterpoint | Pending |
+| CPTR-10 | Phase 8: Counterpoint | Pending |
+| SETTH-01 | Phase 9: Set Theory & Serial | Pending |
+| SETTH-02 | Phase 9: Set Theory & Serial | Pending |
+| SETTH-03 | Phase 9: Set Theory & Serial | Pending |
+| SETTH-04 | Phase 9: Set Theory & Serial | Pending |
+| SETTH-05 | Phase 9: Set Theory & Serial | Pending |
+| SETTH-06 | Phase 9: Set Theory & Serial | Pending |
+| SETTH-07 | Phase 9: Set Theory & Serial | Pending |
+| SETTH-08 | Phase 9: Set Theory & Serial | Pending |
+| SETTH-09 | Phase 9: Set Theory & Serial | Pending |
+| SERI-01 | Phase 9: Set Theory & Serial | Pending |
+| SERI-02 | Phase 9: Set Theory & Serial | Pending |
+| SERI-03 | Phase 9: Set Theory & Serial | Pending |
+| SERI-04 | Phase 9: Set Theory & Serial | Pending |
+| SERI-05 | Phase 9: Set Theory & Serial | Pending |
+| SERI-06 | Phase 9: Set Theory & Serial | Pending |
+| RHYT-06 | Phase 10: Pattern Generation | Pending |
+| PATT-01 | Phase 10: Pattern Generation | Pending |
+| PATT-02 | Phase 10: Pattern Generation | Pending |
+| PATT-03 | Phase 10: Pattern Generation | Pending |
+| PATT-04 | Phase 10: Pattern Generation | Pending |
+| PATT-05 | Phase 10: Pattern Generation | Pending |
+| PATT-06 | Phase 10: Pattern Generation | Pending |
+| PATT-07 | Phase 10: Pattern Generation | Pending |
+| ALGO-01 | Phase 11: Algorithmic Composition | Pending |
+| ALGO-02 | Phase 11: Algorithmic Composition | Pending |
+| ALGO-03 | Phase 11: Algorithmic Composition | Pending |
+| ALGO-04 | Phase 11: Algorithmic Composition | Pending |
+| ALGO-05 | Phase 11: Algorithmic Composition | Pending |
+| ALGO-06 | Phase 11: Algorithmic Composition | Pending |
+| ALGO-07 | Phase 11: Algorithmic Composition | Pending |
+| NOTA-08 | Phase 12: I/O Expansion | Pending |
+| NOTA-09 | Phase 12: I/O Expansion | Pending |
+| NOTA-10 | Phase 12: I/O Expansion | Pending |
+| NOTA-11 | Phase 12: I/O Expansion | Pending |
+| API-06 | Phase 13: API Completion | Pending |
+| API-09 | Phase 13: API Completion | Pending |
 
 **Coverage:**
-- v1 requirements: 140 total
-- Mapped to phases: 140
-- Unmapped: 0 ✓
+- v1 requirements: 157 total
+- Mapped to phases: 157
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-18*
-*Last updated: 2026-03-18 after initial definition*
+*Last updated: 2026-03-18 after roadmap creation*
