@@ -38,11 +38,11 @@ def _p(step: str, acc: str = "n", octave: int = 4) -> Pitch:
 
 
 def _n(step: str, acc: str = "n", octave: int = 4, dur: str = "q") -> Note:
-    return Note(pitch=_p(step, acc, octave), duration=Duration.from_omn(dur))
+    return Note(pitch=_p(step, acc, octave), duration=Duration.from_cn(dur))
 
 
 def _r(dur: str = "q") -> Rest:
-    return Rest(duration=Duration.from_omn(dur))
+    return Rest(duration=Duration.from_cn(dur))
 
 
 # ---------------------------------------------------------------------------
@@ -59,9 +59,9 @@ class TestPitchRetrograde:
         assert result[1].pitch == _p("e")  # type: ignore[union-attr]
         assert result[2].pitch == _p("c")  # type: ignore[union-attr]
         # Durations preserved in original order
-        assert result[0].duration == Duration.from_omn("q")
-        assert result[1].duration == Duration.from_omn("e")
-        assert result[2].duration == Duration.from_omn("h")
+        assert result[0].duration == Duration.from_cn("q")
+        assert result[1].duration == Duration.from_cn("e")
+        assert result[2].duration == Duration.from_cn("h")
 
     def test_pitch_retrograde_with_rests(self, phrase_with_rests: Phrase) -> None:
         """[C4(q), Rest(e), E4(q), Rest(e)] -> [E4(q), Rest(e), C4(q), Rest(e)]."""
@@ -81,8 +81,8 @@ class TestPitchRetrograde:
     def test_pitch_retrograde_preserves_dynamics(self) -> None:
         """Dynamic and articulations on notes are preserved."""
         phrase = (
-            Note(pitch=_p("c"), duration=Duration.from_omn("q"), dynamic="pp"),
-            Note(pitch=_p("e"), duration=Duration.from_omn("q"), dynamic="ff", articulations=("stacc",)),
+            Note(pitch=_p("c"), duration=Duration.from_cn("q"), dynamic="pp"),
+            Note(pitch=_p("e"), duration=Duration.from_cn("q"), dynamic="ff", articulations=("stacc",)),
         )
         result = pitch_retrograde(phrase)
         # Pitches reversed, but dynamics/articulations stay with original note position
@@ -128,9 +128,9 @@ class TestFullRetrograde:
         result = full_retrograde(simple_phrase)
         assert len(result) == 3
         assert result[0].pitch == _p("g")  # type: ignore[union-attr]
-        assert result[0].duration == Duration.from_omn("h")
+        assert result[0].duration == Duration.from_cn("h")
         assert result[2].pitch == _p("c")  # type: ignore[union-attr]
-        assert result[2].duration == Duration.from_omn("q")
+        assert result[2].duration == Duration.from_cn("q")
 
     def test_full_retrograde_empty(self) -> None:
         assert full_retrograde(()) == ()
@@ -198,7 +198,7 @@ class TestPermute:
 class TestInterpolate:
     def test_interpolate_one_step(self) -> None:
         """[C4(q), E4(q)] with 1 step -> inserts chromatic passing notes."""
-        q = Duration.from_omn("q")
+        q = Duration.from_cn("q")
         phrase = (_n("c", dur="q"), _n("e", dur="q"))
         result = interpolate(phrase, steps=1)
         # Between C4 and E4 (4 semitones), 1 passing note = C#4/Db4

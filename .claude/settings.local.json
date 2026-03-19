@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(gsd:new-project)",
+      "Bash(node:*)",
+      "WebSearch",
+      "Bash(python -m pytest tests/ -v --tb=short)",
+      "Bash(python3 -m pytest tests/ --tb=short -q)",
+      "Bash(pip install:*)",
+      "Bash(pip3 install:*)",
+      "Bash(python3 -m venv .venv)",
+      "Bash(.venv/bin/pip install:*)",
+      "Bash(.venv/bin/pytest tests/ --tb=short -q)",
+      "Bash(ls /Users/jor/dev/cadenza/.planning/phases/01-foundation/*-VERIFICATION.md)",
+      "Bash(source .venv/bin/activate)",
+      "Bash(python -m pytest tests/ -v --tb=short -q)",
+      "Skill(gsd:plan-phase)",
+      "Bash(python -m pytest tests/cn/ -x --timeout=30 -q)",
+      "Bash(.venv/bin/pytest tests/cn/ -x --timeout=30 -q)",
+      "Bash(.venv/bin/pytest tests/cn/ -x -q)",
+      "Bash(.venv/bin/pytest tests/ -x -q --ignore=tests/omn)",
+      "Bash(.venv/bin/pytest tests/ -q)",
+      "Bash(git add:*)"
+    ]
+  }
+}

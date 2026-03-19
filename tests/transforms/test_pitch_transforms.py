@@ -43,7 +43,7 @@ class TestChromaticTranspose:
     def test_c4_up_minor_third(self) -> None:
         """C4 up minor 3rd -> Eb4."""
         phrase: Phrase = (
-            Note(pitch=_p("c", "n", 4), duration=Duration.from_omn("q")),
+            Note(pitch=_p("c", "n", 4), duration=Duration.from_cn("q")),
         )
         iv = Interval(quality="m", number=3, direction=1)
         result = chromatic_transpose(phrase, iv)
@@ -74,7 +74,7 @@ class TestChromaticTranspose:
     def test_b4_up_minor_second_octave_boundary(self) -> None:
         """B4 up minor 2nd -> C5 (crosses octave boundary)."""
         phrase: Phrase = (
-            Note(pitch=_p("b", "n", 4), duration=Duration.from_omn("q")),
+            Note(pitch=_p("b", "n", 4), duration=Duration.from_cn("q")),
         )
         iv = Interval(quality="m", number=2, direction=1)
         result = chromatic_transpose(phrase, iv)
@@ -100,7 +100,7 @@ class TestChromaticTranspose:
         phrase: Phrase = (
             Note(
                 pitch=_p("c", "n", 4),
-                duration=Duration.from_omn("q"),
+                duration=Duration.from_cn("q"),
                 dynamic="ff",
                 articulations=("staccato",),
             ),
@@ -114,7 +114,7 @@ class TestChromaticTranspose:
     def test_descending_transpose(self) -> None:
         """G4 down perfect 5th -> C4."""
         phrase: Phrase = (
-            Note(pitch=_p("g", "n", 4), duration=Duration.from_omn("q")),
+            Note(pitch=_p("g", "n", 4), duration=Duration.from_cn("q")),
         )
         iv = Interval(quality="P", number=5, direction=-1)
         result = chromatic_transpose(phrase, iv)
@@ -132,7 +132,7 @@ class TestDiatonicTranspose:
     def test_diatonic_transpose_no_scale_returns_phrase(self) -> None:
         """Without a scale argument, returns phrase unchanged."""
         phrase: Phrase = (
-            Note(pitch=_p("c", "n", 4), duration=Duration.from_omn("q")),
+            Note(pitch=_p("c", "n", 4), duration=Duration.from_cn("q")),
         )
         result = diatonic_transpose(phrase, 2)
         assert result == phrase
@@ -147,7 +147,7 @@ class TestInvert:
 
     def test_ceg_around_c4(self) -> None:
         """[C4, E4, G4] around C4 -> [C4, Ab3, F3]."""
-        q = Duration.from_omn("q")
+        q = Duration.from_cn("q")
         phrase: Phrase = (
             Note(pitch=_p("c", "n", 4), duration=q),
             Note(pitch=_p("e", "n", 4), duration=q),
@@ -159,7 +159,7 @@ class TestInvert:
 
     def test_default_axis_is_first_note(self) -> None:
         """Default axis = first note's pitch."""
-        q = Duration.from_omn("q")
+        q = Duration.from_cn("q")
         phrase: Phrase = (
             Note(pitch=_p("e", "n", 4), duration=q),
             Note(pitch=_p("g", "n", 4), duration=q),
@@ -171,7 +171,7 @@ class TestInvert:
 
     def test_explicit_axis_override(self) -> None:
         """Explicit axis overrides the default."""
-        q = Duration.from_omn("q")
+        q = Duration.from_cn("q")
         phrase: Phrase = (
             Note(pitch=_p("c", "n", 4), duration=q),
             Note(pitch=_p("e", "n", 4), duration=q),
@@ -185,7 +185,7 @@ class TestInvert:
 
     def test_all_rests_returns_unchanged(self) -> None:
         """All-rests phrase returns unchanged."""
-        e = Duration.from_omn("e")
+        e = Duration.from_cn("e")
         phrase: Phrase = (Rest(duration=e), Rest(duration=e))
         result = invert(phrase)
         assert result == phrase

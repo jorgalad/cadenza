@@ -14,7 +14,7 @@ from cadenza.core.score import Score
 def _make_phrase(*pitches: str) -> Phrase:
     """Helper to create a phrase from pitch step names."""
     return tuple(
-        Note(Pitch(p, "n", 4), Duration.from_omn("q"), "mf", ())
+        Note(Pitch(p, "n", 4), Duration.from_cn("q"), "mf", ())
         for p in pitches
     )
 

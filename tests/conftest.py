@@ -39,14 +39,14 @@ def a4() -> Pitch:
 
 @pytest.fixture
 def quarter() -> Duration:
-    return Duration.from_omn("q")
+    return Duration.from_cn("q")
 
 
 @pytest.fixture
 def dotted_quarter() -> Duration:
-    return Duration.from_omn("q", dots=1)
+    return Duration.from_cn("q", dots=1)
 
 
 @pytest.fixture
 def triplet_eighth() -> Duration:
-    return Duration.from_omn("e", tuplet=3)
+    return Duration.from_cn("e", tuplet=3)

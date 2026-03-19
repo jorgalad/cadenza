@@ -1,4 +1,4 @@
-"""OMN recursive descent parser with sticky parameter resolution."""
+"""CN recursive descent parser with sticky parameter resolution."""
 
 from __future__ import annotations
 
@@ -8,8 +8,8 @@ from cadenza.core.duration import Duration
 from cadenza.core.note import Event, Note, Rest
 from cadenza.core.phrase import Phrase
 from cadenza.core.pitch import Pitch
-from cadenza.omn.errors import ParseError, ParseWarning
-from cadenza.omn.tokenizer import OmnTokenizer, Token, TokenType
+from cadenza.cn.errors import ParseError, ParseWarning
+from cadenza.cn.tokenizer import CnTokenizer, Token, TokenType
 
 
 # Regex for parsing rest token values: -[digit]letter[dots]
@@ -20,8 +20,8 @@ _DUR_VALUE_RE = re.compile(r"^(\d?)([whqestx])(\.*)$")
 _PITCH_COMPONENT_RE = re.compile(r"([a-g])(ss|bb|s|b|n)?(\d+)")
 
 
-class OmnParser:
-    """Recursive descent parser for OMN notation with sticky state.
+class CnParser:
+    """Recursive descent parser for CN notation with sticky state.
 
     Sticky parameters (duration, dynamic, articulations) carry forward
     from one note to the next unless explicitly overridden.
@@ -29,7 +29,7 @@ class OmnParser:
 
     def __init__(self, source: str) -> None:
         self._source = source
-        self._tokenizer = OmnTokenizer(source)
+        self._tokenizer = CnTokenizer(source)
         self._tokens: list[Token]
         self._tokenizer_warnings: list[ParseWarning]
         self._tokens, self._tokenizer_warnings = self._tokenizer.tokenize()
@@ -103,7 +103,7 @@ class OmnParser:
         duration = (
             self._current_duration
             if self._current_duration is not None
-            else Duration.from_omn("q")
+            else Duration.from_cn("q")
         )
         return Note(
             pitch=pitch,
@@ -135,7 +135,7 @@ class OmnParser:
         tuplet_str, base, dots_str = m.groups()
         tuplet = int(tuplet_str) if tuplet_str else None
         dots = len(dots_str)
-        return Duration.from_omn(base, dots=dots, tuplet=tuplet)
+        return Duration.from_cn(base, dots=dots, tuplet=tuplet)
 
     def _parse_rest_value(self, value: str) -> Duration:
         """Parse a rest token value like '-q', '-e.', '-3q'."""
@@ -145,7 +145,7 @@ class OmnParser:
         tuplet_str, base, dots_str = m.groups()
         tuplet = int(tuplet_str) if tuplet_str else None
         dots = len(dots_str)
-        return Duration.from_omn(base, dots=dots, tuplet=tuplet)
+        return Duration.from_cn(base, dots=dots, tuplet=tuplet)
 
     def _parse_pitch_value(self, value: str) -> Pitch:
         """Parse a pitch token value like 'c4', 'eb3', 'css4'.
@@ -211,6 +211,8 @@ class OmnParser:
         return self._source[start:end]
 
 
-def parse_omn(source: str) -> tuple[Phrase, list[ParseWarning]]:
-    """Convenience function: parse an OMN string into a Phrase."""
-    return OmnParser(source).parse()
+def parse_cn(source: str) -> tuple[Phrase, list[ParseWarning]]:
+    """Convenience function: parse a CN string into a Phrase."""
+    return CnParser(source).parse()
+
+

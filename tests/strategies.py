@@ -13,7 +13,7 @@ from cadenza.core.note import Note, Rest, Event
 STEPS = ["c", "d", "e", "f", "g", "a", "b"]
 ACCIDENTALS = ["n", "s", "b", "ss", "bb"]
 DYNAMICS = ["ppp", "pp", "p", "mp", "mf", "f", "ff", "fff", None]
-# Known articulations that round-trip cleanly through OMN
+# Known articulations that round-trip cleanly through CN
 KNOWN_ARTICULATIONS: tuple[str, ...] = (
     "stacc", "ten", "acc", "leg", "marc", "fermata", "trill", "pizz", "arco",
 )
@@ -40,7 +40,7 @@ def duration_strategy(draw: st.DrawFn) -> Duration:
     dots = draw(st.integers(min_value=0, max_value=2))
     use_tuplet = draw(st.booleans())
     tuplet = draw(st.integers(min_value=3, max_value=7)) if use_tuplet else None
-    return Duration.from_omn(base, dots=dots, tuplet=tuplet)
+    return Duration.from_cn(base, dots=dots, tuplet=tuplet)
 
 
 @composite

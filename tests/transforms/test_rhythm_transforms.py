@@ -29,10 +29,10 @@ C4 = Pitch(step="c", accidental="n", octave=4)
 E4 = Pitch(step="e", accidental="n", octave=4)
 G4 = Pitch(step="g", accidental="n", octave=4)
 
-DUR_Q = Duration.from_omn("q")
-DUR_E = Duration.from_omn("e")
-DUR_H = Duration.from_omn("h")
-DUR_W = Duration.from_omn("w")
+DUR_Q = Duration.from_cn("q")
+DUR_E = Duration.from_cn("e")
+DUR_H = Duration.from_cn("h")
+DUR_W = Duration.from_cn("w")
 
 
 def _note(pitch: Pitch, dur: Duration) -> Note:
@@ -169,8 +169,8 @@ class TestMetricModulation:
     def test_dotted_quarter_to_quarter(self) -> None:
         # old_unit = dotted quarter (3/8), new_unit = quarter (1/4)
         # ratio = (1/4) / (3/8) = 2/3
-        old_unit = Duration.from_omn("q", dots=1)
-        new_unit = Duration.from_omn("q")
+        old_unit = Duration.from_cn("q", dots=1)
+        new_unit = Duration.from_cn("q")
         phrase: Phrase = (_note(C4, DUR_Q), _note(E4, DUR_H))
         result = metric_modulation(phrase, old_unit, new_unit)
         # q = 1/4 * 2/3 = 1/6
@@ -179,8 +179,8 @@ class TestMetricModulation:
         assert result[1].duration.fraction == Fraction(1, 3)
 
     def test_modulation_empty(self) -> None:
-        old_unit = Duration.from_omn("q", dots=1)
-        new_unit = Duration.from_omn("q")
+        old_unit = Duration.from_cn("q", dots=1)
+        new_unit = Duration.from_cn("q")
         assert metric_modulation(EMPTY, old_unit, new_unit) == ()
 
 
@@ -230,7 +230,7 @@ class TestQuantize:
         result = quantize(phrase, grid)
         assert result[0].duration.fraction == Fraction(1, 4)
 
-    def test_omn_string_grid(self) -> None:
+    def test_cn_string_grid(self) -> None:
         odd_dur = Duration(fraction=Fraction(7, 32), base="e")
         phrase: Phrase = (_note(C4, odd_dur),)
         result = quantize(phrase, ["q", "e"])

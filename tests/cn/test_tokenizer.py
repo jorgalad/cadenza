@@ -1,11 +1,11 @@
-"""Tests for OMN tokenizer."""
+"""Tests for CN tokenizer."""
 
 from __future__ import annotations
 
 import pytest
 
-from cadenza.omn.tokenizer import OmnTokenizer, Token, TokenType
-from cadenza.omn.errors import ParseError, ParseWarning
+from cadenza.cn.tokenizer import CnTokenizer, Token, TokenType
+from cadenza.cn.errors import ParseError, ParseWarning
 
 
 # ── Helpers ──────────────────────────────────────────────────────────
@@ -13,13 +13,13 @@ from cadenza.omn.errors import ParseError, ParseWarning
 
 def tokenize(source: str) -> list[Token]:
     """Tokenize source, return tokens (excluding EOF)."""
-    tokens, _ = OmnTokenizer(source).tokenize()
+    tokens, _ = CnTokenizer(source).tokenize()
     return [t for t in tokens if t.type != TokenType.EOF]
 
 
 def tokenize_with_warnings(source: str) -> tuple[list[Token], list[ParseWarning]]:
     """Tokenize source, return tokens and warnings."""
-    tokens, warnings = OmnTokenizer(source).tokenize()
+    tokens, warnings = CnTokenizer(source).tokenize()
     return [t for t in tokens if t.type != TokenType.EOF], warnings
 
 
@@ -268,8 +268,8 @@ class TestWhitespace:
 
 
 class TestCompoundExpressions:
-    def test_full_omn_phrase(self):
-        """Tokenize a realistic OMN phrase."""
+    def test_full_cn_phrase(self):
+        """Tokenize a realistic CN phrase."""
         tokens = tokenize("e c4 pp stacc d4 e4")
         types = [t.type for t in tokens]
         assert types == [

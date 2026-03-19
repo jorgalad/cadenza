@@ -13,7 +13,7 @@ from cadenza.core.phrase import Phrase
 @pytest.fixture
 def c_major_scale_phrase() -> Phrase:
     """7-note C major scale phrase: C4,D4,E4,F4,G4,A4,B4, all quarter notes."""
-    q = Duration.from_omn("q")
+    q = Duration.from_cn("q")
     return (
         Note(pitch=Pitch(step="c", accidental="n", octave=4), duration=q),
         Note(pitch=Pitch(step="d", accidental="n", octave=4), duration=q),
@@ -31,16 +31,16 @@ def simple_phrase() -> Phrase:
     return (
         Note(
             pitch=Pitch(step="c", accidental="n", octave=4),
-            duration=Duration.from_omn("q"),
+            duration=Duration.from_cn("q"),
             dynamic="pp",
         ),
         Note(
             pitch=Pitch(step="e", accidental="n", octave=4),
-            duration=Duration.from_omn("e"),
+            duration=Duration.from_cn("e"),
         ),
         Note(
             pitch=Pitch(step="g", accidental="n", octave=4),
-            duration=Duration.from_omn("h"),
+            duration=Duration.from_cn("h"),
         ),
     )
 
@@ -51,12 +51,12 @@ def phrase_with_rests() -> Phrase:
     return (
         Note(
             pitch=Pitch(step="c", accidental="n", octave=4),
-            duration=Duration.from_omn("q"),
+            duration=Duration.from_cn("q"),
         ),
-        Rest(duration=Duration.from_omn("e")),
+        Rest(duration=Duration.from_cn("e")),
         Note(
             pitch=Pitch(step="e", accidental="n", octave=4),
-            duration=Duration.from_omn("q"),
+            duration=Duration.from_cn("q"),
         ),
-        Rest(duration=Duration.from_omn("e")),
+        Rest(duration=Duration.from_cn("e")),
     )

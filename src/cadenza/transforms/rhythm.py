@@ -20,7 +20,7 @@ from cadenza.core.phrase import Phrase
 # ---------------------------------------------------------------------------
 
 def _scale_duration(dur: Duration, ratio: Fraction) -> Duration:
-    """Scale a duration's fraction by *ratio*, keeping OMN metadata as hint."""
+    """Scale a duration's fraction by *ratio*, keeping CN metadata as hint."""
     return Duration(
         fraction=dur.fraction * ratio,
         base=dur.base,
@@ -121,13 +121,13 @@ def extract_rhythm(phrase: Phrase) -> tuple[Duration, ...]:
 def quantize(phrase: Phrase, grid: Sequence[Duration | str]) -> Phrase:
     """Snap each event's duration to the nearest grid value (RHYT-08).
 
-    Grid values may be ``Duration`` objects or OMN base strings (e.g. ``"q"``).
+    Grid values may be ``Duration`` objects or CN base strings (e.g. ``"q"``).
     """
     # Parse grid into Duration objects
     parsed: list[Duration] = []
     for item in grid:
         if isinstance(item, str):
-            parsed.append(Duration.from_omn(item))
+            parsed.append(Duration.from_cn(item))
         else:
             parsed.append(item)
 

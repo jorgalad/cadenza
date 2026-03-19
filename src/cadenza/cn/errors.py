@@ -1,4 +1,4 @@
-"""OMN parsing error types."""
+"""CN parsing error types."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class ParseError(Exception):
-    """Error raised when OMN parsing fails."""
+    """Error raised when CN parsing fails."""
 
     message: str
     position: int = 0
@@ -21,7 +21,7 @@ class ParseError(Exception):
 
 @dataclass(frozen=True)
 class ParseWarning:
-    """Warning issued during OMN parsing (e.g., unknown articulation)."""
+    """Warning issued during CN parsing (e.g., unknown articulation)."""
 
     message: str
     position: int = 0

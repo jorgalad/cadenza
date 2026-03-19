@@ -1,4 +1,4 @@
-"""OMN tokenizer: breaks OMN notation strings into typed tokens."""
+"""CN tokenizer: breaks CN notation strings into typed tokens."""
 
 from __future__ import annotations
 
@@ -6,11 +6,11 @@ import re
 from dataclasses import dataclass
 from enum import Enum, auto
 
-from cadenza.omn.errors import ParseError, ParseWarning
+from cadenza.cn.errors import ParseError, ParseWarning
 
 
 class TokenType(Enum):
-    """Types of tokens in OMN notation."""
+    """Types of tokens in CN notation."""
 
     DURATION = auto()
     REST = auto()
@@ -24,7 +24,7 @@ class TokenType(Enum):
 
 @dataclass(frozen=True)
 class Token:
-    """A single token from OMN source."""
+    """A single token from CN source."""
 
     type: TokenType
     value: str
@@ -59,8 +59,8 @@ _PITCH_COMPONENT_RE = re.compile(r"([a-g])(ss|bb|s|b|n)?(\d+)")
 _DUR_PLAIN_RE = re.compile(r"^([whqestx])(\.*)$")
 
 
-class OmnTokenizer:
-    """Tokenizes OMN notation strings into Token sequences.
+class CnTokenizer:
+    """Tokenizes CN notation strings into Token sequences.
 
     Uses a word-based approach: splits on whitespace and classifies each word,
     with special handling for parentheses (which may be attached to words).
@@ -245,3 +245,5 @@ class OmnTokenizer:
         if self._pos < len(self._source):
             return self._source[self._pos]
         return None
+
+

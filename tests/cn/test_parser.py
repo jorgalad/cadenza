@@ -1,4 +1,4 @@
-"""Tests for OMN recursive descent parser with sticky state."""
+"""Tests for CN recursive descent parser with sticky state."""
 
 from __future__ import annotations
 
@@ -6,8 +6,8 @@ from fractions import Fraction
 
 import pytest
 
-from cadenza.omn.parser import OmnParser, parse_omn
-from cadenza.omn.errors import ParseError, ParseWarning
+from cadenza.cn.parser import CnParser, parse_cn
+from cadenza.cn.errors import ParseError, ParseWarning
 from cadenza.core.pitch import Pitch
 from cadenza.core.duration import Duration
 from cadenza.core.note import Note, Rest
@@ -17,14 +17,14 @@ from cadenza.core.note import Note, Rest
 
 
 def parse(source: str):
-    """Parse OMN string, return phrase tuple."""
-    phrase, _ = parse_omn(source)
+    """Parse CN string, return phrase tuple."""
+    phrase, _ = parse_cn(source)
     return phrase
 
 
 def parse_with_warnings(source: str):
-    """Parse OMN string, return (phrase, warnings)."""
-    return parse_omn(source)
+    """Parse CN string, return (phrase, warnings)."""
+    return parse_cn(source)
 
 
 # ── Basic parsing ────────────────────────────────────────────────────
@@ -37,7 +37,7 @@ class TestBasicParsing:
         note = phrase[0]
         assert isinstance(note, Note)
         assert note.pitch == Pitch("c", "n", 4)
-        assert note.duration == Duration.from_omn("q")
+        assert note.duration == Duration.from_cn("q")
 
     def test_empty_string(self):
         phrase = parse("")
@@ -69,26 +69,26 @@ class TestStickyState:
         assert len(phrase) == 3
         # Note 0
         assert phrase[0].pitch == Pitch("c", "n", 4)
-        assert phrase[0].duration == Duration.from_omn("e")
+        assert phrase[0].duration == Duration.from_cn("e")
         assert phrase[0].dynamic == "pp"
         assert phrase[0].articulations == ("stacc",)
         # Note 1 -- sticky
         assert phrase[1].pitch == Pitch("d", "n", 4)
-        assert phrase[1].duration == Duration.from_omn("e")
+        assert phrase[1].duration == Duration.from_cn("e")
         assert phrase[1].dynamic == "pp"
         assert phrase[1].articulations == ("stacc",)
         # Note 2 -- sticky
         assert phrase[2].pitch == Pitch("e", "n", 4)
-        assert phrase[2].duration == Duration.from_omn("e")
+        assert phrase[2].duration == Duration.from_cn("e")
         assert phrase[2].dynamic == "pp"
         assert phrase[2].articulations == ("stacc",)
 
     def test_duration_changes_dynamic_sticks(self):
         """'q c4 mf e d4' -> first q/mf, second e/mf."""
         phrase = parse("q c4 mf e d4")
-        assert phrase[0].duration == Duration.from_omn("q")
+        assert phrase[0].duration == Duration.from_cn("q")
         assert phrase[0].dynamic == "mf"
-        assert phrase[1].duration == Duration.from_omn("e")
+        assert phrase[1].duration == Duration.from_cn("e")
         assert phrase[1].dynamic == "mf"
 
     def test_articulation_change_replaces(self):
@@ -111,13 +111,13 @@ class TestRests:
         phrase = parse("-q")
         assert len(phrase) == 1
         assert isinstance(phrase[0], Rest)
-        assert phrase[0].duration == Duration.from_omn("q")
+        assert phrase[0].duration == Duration.from_cn("q")
 
     def test_dotted_eighth_rest(self):
         phrase = parse("-e.")
         assert len(phrase) == 1
         assert isinstance(phrase[0], Rest)
-        assert phrase[0].duration == Duration.from_omn("e", dots=1)
+        assert phrase[0].duration == Duration.from_cn("e", dots=1)
 
     def test_rest_in_middle(self):
         phrase = parse("q c4 -q e4")
@@ -155,7 +155,7 @@ class TestParenthesizedGroups:
         """Dynamic/duration from first group carries into second unless overridden."""
         phrase = parse("(e c4 pp d4) (g4)")
         # g4 should inherit e duration and pp dynamic from first group
-        assert phrase[2].duration == Duration.from_omn("e")
+        assert phrase[2].duration == Duration.from_cn("e")
         assert phrase[2].dynamic == "pp"
 
 

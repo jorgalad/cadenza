@@ -6,7 +6,7 @@ import math
 from dataclasses import dataclass
 from fractions import Fraction
 
-# OMN base duration -> fraction of whole note
+# CN base duration -> fraction of whole note
 BASE_DURATIONS: dict[str, Fraction] = {
     "w": Fraction(1, 1),       # whole
     "h": Fraction(1, 2),       # half
@@ -23,11 +23,11 @@ class Duration:
     """Immutable duration as a fraction of a whole note.
 
     The fraction field is the canonical value for arithmetic.
-    base, dots, and tuplet are metadata for OMN round-trip fidelity.
+    base, dots, and tuplet are metadata for CN round-trip fidelity.
     """
 
     fraction: Fraction    # Duration as fraction of whole note
-    base: str = "q"       # OMN base symbol
+    base: str = "q"       # CN base symbol
     dots: int = 0         # 0, 1, 2, or 3
     tuplet: int | None = None  # tuplet ratio: 3 = triplet, 5 = quintuplet
 
@@ -40,8 +40,8 @@ class Duration:
             raise ValueError("Duration fraction must be positive")
 
     @staticmethod
-    def from_omn(base: str, dots: int = 0, tuplet: int | None = None) -> Duration:
-        """Construct Duration from OMN components, computing the fraction."""
+    def from_cn(base: str, dots: int = 0, tuplet: int | None = None) -> Duration:
+        """Construct Duration from CN components, computing the fraction."""
         if base not in BASE_DURATIONS:
             raise ValueError(f"Invalid base duration: {base!r}")
 

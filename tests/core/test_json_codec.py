@@ -27,36 +27,36 @@ class TestPitchRoundTrip:
 
 class TestDurationRoundTrip:
     def test_duration_round_trip(self) -> None:
-        d = Duration.from_omn("q", dots=1)
+        d = Duration.from_cn("q", dots=1)
         assert from_json(to_json(d)) == d
 
     def test_duration_with_tuplet(self) -> None:
-        d = Duration.from_omn("e", tuplet=3)
+        d = Duration.from_cn("e", tuplet=3)
         assert from_json(to_json(d)) == d
 
 
 class TestNoteRoundTrip:
     def test_note_round_trip(self) -> None:
-        n = Note(Pitch("c", "n", 4), Duration.from_omn("q"), "mf", ("stacc",))
+        n = Note(Pitch("c", "n", 4), Duration.from_cn("q"), "mf", ("stacc",))
         assert from_json(to_json(n)) == n
 
     def test_note_no_dynamic(self) -> None:
-        n = Note(Pitch("c", "n", 4), Duration.from_omn("q"), None, ())
+        n = Note(Pitch("c", "n", 4), Duration.from_cn("q"), None, ())
         assert from_json(to_json(n)) == n
 
 
 class TestRestRoundTrip:
     def test_rest_round_trip(self) -> None:
-        r = Rest(Duration.from_omn("h"))
+        r = Rest(Duration.from_cn("h"))
         assert from_json(to_json(r)) == r
 
 
 class TestPhraseRoundTrip:
     def test_phrase_round_trip(self) -> None:
         phrase: Phrase = (
-            Note(Pitch("c", "n", 4), Duration.from_omn("q"), "mf", ()),
-            Rest(Duration.from_omn("e")),
-            Note(Pitch("d", "n", 4), Duration.from_omn("q"), "pp", ("trill",)),
+            Note(Pitch("c", "n", 4), Duration.from_cn("q"), "mf", ()),
+            Rest(Duration.from_cn("e")),
+            Note(Pitch("d", "n", 4), Duration.from_cn("q"), "pp", ("trill",)),
         )
         result = from_json(to_json(phrase))
         assert isinstance(result, tuple)
@@ -66,10 +66,10 @@ class TestPhraseRoundTrip:
 class TestScoreRoundTrip:
     def test_score_round_trip(self) -> None:
         soprano: Phrase = (
-            Note(Pitch("c", "n", 4), Duration.from_omn("q"), "mf", ()),
+            Note(Pitch("c", "n", 4), Duration.from_cn("q"), "mf", ()),
         )
         bass: Phrase = (
-            Note(Pitch("c", "n", 3), Duration.from_omn("h"), "f", ()),
+            Note(Pitch("c", "n", 3), Duration.from_cn("h"), "f", ()),
         )
         score = Score.from_dict({"soprano": soprano, "bass": bass})
         result = from_json(to_json(score))

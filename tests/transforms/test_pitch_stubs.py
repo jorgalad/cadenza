@@ -19,7 +19,7 @@ P = Pitch
 
 def _make_phrase(*pitches: Pitch) -> tuple[Note, ...]:
     """Create a phrase of quarter notes from pitches."""
-    q = Duration.from_omn("q")
+    q = Duration.from_cn("q")
     return tuple(Note(pitch=p, duration=q) for p in pitches)
 
 
