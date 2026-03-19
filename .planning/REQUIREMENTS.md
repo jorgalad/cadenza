@@ -77,15 +77,15 @@
 ### Harmonic Analysis (HARM)
 
 - [x] **HARM-01**: Identify chord from a set of simultaneous pitches (root, quality, inversion)
-- [ ] **HARM-02**: Roman numeral analysis of a chord within a key context
-- [ ] **HARM-03**: Key detection from a phrase or score (using pitch class frequency analysis)
-- [ ] **HARM-04**: Harmonic rhythm analysis (detect chord change points)
-- [ ] **HARM-05**: Functional harmony labeling (tonic, dominant, subdominant, etc.)
-- [ ] **HARM-06**: Detect modulation between keys within a phrase
+- [x] **HARM-02**: Roman numeral analysis of a chord within a key context
+- [x] **HARM-03**: Key detection from a phrase or score (using pitch class frequency analysis)
+- [x] **HARM-04**: Harmonic rhythm analysis (detect chord change points)
+- [x] **HARM-05**: Functional harmony labeling (tonic, dominant, subdominant, etc.)
+- [x] **HARM-06**: Detect modulation between keys within a phrase
 - [x] **HARM-07**: Generate chord symbol string from a chord object (e.g. "Cmaj7", "F#m", "Bdim7")
 - [x] **HARM-08**: Parse chord symbol string into a chord object
 - [x] **HARM-09**: Realize a chord as a list of pitches in a given voicing/inversion
-- [ ] **HARM-10**: Identify borrowed chords (chords from parallel keys)
+- [x] **HARM-10**: Identify borrowed chords (chords from parallel keys)
 
 ### Scale & Mode Library (SCAL)
 
@@ -338,15 +338,15 @@
 | API-07 | Phase 4: REST API v1 | Complete |
 | API-08 | Phase 4: REST API v1 | Complete |
 | HARM-01 | Phase 5: Harmonic Analysis | Complete |
-| HARM-02 | Phase 5: Harmonic Analysis | Pending |
-| HARM-03 | Phase 5: Harmonic Analysis | Pending |
-| HARM-04 | Phase 5: Harmonic Analysis | Pending |
-| HARM-05 | Phase 5: Harmonic Analysis | Pending |
-| HARM-06 | Phase 5: Harmonic Analysis | Pending |
+| HARM-02 | Phase 5: Harmonic Analysis | Complete |
+| HARM-03 | Phase 5: Harmonic Analysis | Complete |
+| HARM-04 | Phase 5: Harmonic Analysis | Complete |
+| HARM-05 | Phase 5: Harmonic Analysis | Complete |
+| HARM-06 | Phase 5: Harmonic Analysis | Complete |
 | HARM-07 | Phase 5: Harmonic Analysis | Complete |
 | HARM-08 | Phase 5: Harmonic Analysis | Complete |
 | HARM-09 | Phase 5: Harmonic Analysis | Complete |
-| HARM-10 | Phase 5: Harmonic Analysis | Pending |
+| HARM-10 | Phase 5: Harmonic Analysis | Complete |
 | BATCH-01 | Phase 6: Batch & Analysis | Pending |
 | BATCH-02 | Phase 6: Batch & Analysis | Pending |
 | BATCH-03 | Phase 6: Batch & Analysis | Pending |

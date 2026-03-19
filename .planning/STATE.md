@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-03-19T17:22:50.449Z"
-last_activity: 2026-03-19 -- Completed 05-01 Chord Analysis Foundation (identify_chord, chord_symbol, parse_chord_symbol, realize_chord)
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-03-19T19:43:02.000Z"
+last_activity: 2026-03-19 -- Completed 05-02 Key Detection & Harmonic Analysis (detect_key, roman_numeral, harmonic_rhythm, borrowed chords)
 progress:
   total_phases: 13
-  completed_phases: 4
-  total_plans: 10
-  completed_plans: 11
+  completed_phases: 5
+  total_plans: 12
+  completed_plans: 12
   percent: 85
 ---
 
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 
 ## Current Position
 
-Phase: 5 of 13 (Harmonic Analysis)
-Plan: 1 of 2 in current phase
-Status: In Progress (05-01 complete)
-Last activity: 2026-03-19 -- Completed 05-01 Chord Analysis Foundation (identify_chord, chord_symbol, parse_chord_symbol, realize_chord)
+Phase: 5 of 13 (Harmonic Analysis) -- COMPLETE
+Plan: 2 of 2 in current phase
+Status: Phase 5 complete
+Last activity: 2026-03-19 -- Completed 05-02 Key Detection & Harmonic Analysis (detect_key, roman_numeral, harmonic_rhythm, borrowed chords)
 
-Progress: [████████░░] 85%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -58,6 +58,7 @@ Progress: [████████░░] 85%
 | Phase 04-01 | 3 | 2 tasks | 12 files |
 | Phase 04 P02 | 4 | 2 tasks | 6 files |
 | Phase 05-01 | 4 | 2 tasks | 4 files |
+| Phase 05-02 | 5 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -100,6 +101,10 @@ Recent decisions affecting current work:
 - [Phase 05-01]: Complexity ranking: triads(0) > sevenths/sus(1) > extended(2+) for disambiguation
 - [Phase 05-01]: Single-digit octave in chord symbol regex to separate octave from numeric quality
 - [Phase 05-01]: Multi-strategy quality resolution for aliases and case variations
+- [Phase 05-02]: Krumhansl-Kessler profiles for major/natural_minor; synthetic weighted profiles for harmonic/melodic minor
+- [Phase 05-02]: max(0.0, r) for confidence clipping; uniform scale distributions yield ~0.75 correlation
+- [Phase 05-02]: Parallel key comparison for borrowed chord detection (bVII, bIII, bVI)
+- [Phase 05-02]: Sliding window with consecutive-change confirmation for modulation detection
 
 ### Pending Todos
 
@@ -113,6 +118,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-19T19:35:08Z
-Stopped at: Completed 05-01-PLAN.md
+Last session: 2026-03-19T19:43:02Z
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None
