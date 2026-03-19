@@ -1,24 +1,29 @@
-"""Cadenza transforms: pitch, rhythm, and melodic transformation functions."""
+"""Musical transforms: pitch, rhythm, and melodic operations."""
 
-from cadenza.transforms.rhythm import (
-    augment,
-    diminish,
-    extract_rhythm,
-    metric_modulation,
-    quantize,
-    rhythmic_retrograde,
-    rhythmic_rotation,
-    total_duration,
+from cadenza.transforms.pitch import (
+    chromatic_transpose,
+    diatonic_transpose,
+    enharmonic_respell,
+    from_frequency,
+    from_midi,
+    interval_between,
+    invert,
+    nearest_in_scale,
+    pitch_class,
+    pitch_in_scale,
+    to_frequency,
 )
 
 __all__ = [
-    # Rhythm transforms (RHYT-01..05, 07..09)
-    "rhythmic_retrograde",
-    "augment",
-    "diminish",
-    "rhythmic_rotation",
-    "metric_modulation",
-    "extract_rhythm",
-    "quantize",
-    "total_duration",
+    "chromatic_transpose",
+    "diatonic_transpose",
+    "enharmonic_respell",
+    "from_frequency",
+    "from_midi",
+    "interval_between",
+    "invert",
+    "nearest_in_scale",
+    "pitch_class",
+    "pitch_in_scale",
+    "to_frequency",
 ]
