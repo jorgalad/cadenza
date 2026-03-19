@@ -13,7 +13,7 @@ Cadenza delivers a comprehensive Python music analysis, transformation, and gene
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Core data model (Pitch, Duration, Interval, Note, Rest, Phrase, Score) + OMN parser/serializer + project scaffolding (completed 2026-03-19)
-- [ ] **Phase 2: Transforms** - Pitch operations, rhythm operations, and melodic transforms on phrases
+- [x] **Phase 2: Transforms** - Pitch operations, rhythm operations, and melodic transforms on phrases (completed 2026-03-19)
 - [ ] **Phase 3: Theory Libraries** - Scale/mode library (80+ scales) and chord library (all standard types)
 - [ ] **Phase 4: REST API v1** - FastAPI server wrapping all Phase 1-3 functionality with versioned endpoints
 - [ ] **Phase 5: Harmonic Analysis** - Chord identification, key detection, Roman numeral analysis, functional harmony
@@ -238,7 +238,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/3 | Complete    | 2026-03-19 |
-| 2. Transforms | 1/3 | In Progress|  |
+| 2. Transforms | 1/3 | Complete    | 2026-03-19 |
 | 3. Theory Libraries | 0/2 | Not started | - |
 | 4. REST API v1 | 0/2 | Not started | - |
 | 5. Harmonic Analysis | 0/2 | Not started | - |
