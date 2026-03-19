@@ -8,6 +8,10 @@ from cadenza.core.pitch import Pitch
 from cadenza.theory.chords import (
     get_chord,
     register_chord,
+    diatonic_chords,
+    secondary_dominant,
+    aug6_chord,
+    neapolitan_chord,
     _CHORD_REGISTRY,
 )
 
@@ -211,3 +215,124 @@ class TestEnharmonicSpelling:
         assert get_chord(P("b", "b", 4), "maj") == (
             P("b", "b", 4), P("d", "n", 5), P("f", "n", 5),
         )
+
+
+# ---------------------------------------------------------------------------
+# CHRD-06: Diatonic chords
+# ---------------------------------------------------------------------------
+
+class TestDiatonicChords:
+    def test_diatonic_triads_c_major(self) -> None:
+        chords = diatonic_chords(P("c", "n", 4), "major", "triad")
+        assert len(chords) == 7
+        # I: C major
+        assert chords[0] == (P("c", "n", 4), P("e", "n", 4), P("g", "n", 4))
+        # ii: D minor
+        assert chords[1] == (P("d", "n", 4), P("f", "n", 4), P("a", "n", 4))
+        # iii: E minor
+        assert chords[2] == (P("e", "n", 4), P("g", "n", 4), P("b", "n", 4))
+        # IV: F major
+        assert chords[3] == (P("f", "n", 4), P("a", "n", 4), P("c", "n", 5))
+        # V: G major
+        assert chords[4] == (P("g", "n", 4), P("b", "n", 4), P("d", "n", 5))
+        # vi: A minor
+        assert chords[5] == (P("a", "n", 4), P("c", "n", 5), P("e", "n", 5))
+        # vii-dim: B diminished
+        assert chords[6] == (P("b", "n", 4), P("d", "n", 5), P("f", "n", 5))
+
+    def test_diatonic_sevenths_c_major(self) -> None:
+        chords = diatonic_chords(P("c", "n", 4), "major", "seventh")
+        assert len(chords) == 7
+        # I: Cmaj7
+        assert chords[0] == (P("c", "n", 4), P("e", "n", 4), P("g", "n", 4), P("b", "n", 4))
+        # ii: Dm7
+        assert chords[1] == (P("d", "n", 4), P("f", "n", 4), P("a", "n", 4), P("c", "n", 5))
+        # iii: Em7
+        assert chords[2] == (P("e", "n", 4), P("g", "n", 4), P("b", "n", 4), P("d", "n", 5))
+        # IV: Fmaj7
+        assert chords[3] == (P("f", "n", 4), P("a", "n", 4), P("c", "n", 5), P("e", "n", 5))
+        # V: G7 (dominant)
+        assert chords[4] == (P("g", "n", 4), P("b", "n", 4), P("d", "n", 5), P("f", "n", 5))
+        # vi: Am7
+        assert chords[5] == (P("a", "n", 4), P("c", "n", 5), P("e", "n", 5), P("g", "n", 5))
+        # vii: Bm7b5
+        assert chords[6] == (P("b", "n", 4), P("d", "n", 5), P("f", "n", 5), P("a", "n", 5))
+
+    def test_diatonic_triads_g_major(self) -> None:
+        chords = diatonic_chords(P("g", "n", 4), "major", "triad")
+        # vii: F#dim
+        assert chords[6] == (P("f", "s", 5), P("a", "n", 5), P("c", "n", 6))
+
+    def test_diatonic_chords_minor(self) -> None:
+        chords = diatonic_chords(P("a", "n", 4), "natural_minor", "triad")
+        # III: C major
+        assert chords[2] == (P("c", "n", 5), P("e", "n", 5), P("g", "n", 5))
+
+
+# ---------------------------------------------------------------------------
+# CHRD-07: Secondary dominants
+# ---------------------------------------------------------------------------
+
+class TestSecondaryDominants:
+    def test_secondary_dominant_V_of_V(self) -> None:
+        # V/V in C major = D7 (D-F#-A-C)
+        chord = secondary_dominant(5, P("c", "n", 4), "major")
+        steps = [p.step for p in chord]
+        accs = [p.accidental for p in chord]
+        assert steps == ["d", "f", "a", "c"]
+        assert accs[1] == "s"  # F#
+
+    def test_secondary_dominant_V_of_ii(self) -> None:
+        # V/ii in C major = A7 (A-C#-E-G)
+        chord = secondary_dominant(2, P("c", "n", 4), "major")
+        steps = [p.step for p in chord]
+        accs = [p.accidental for p in chord]
+        assert steps == ["a", "c", "e", "g"]
+        assert accs[1] == "s"  # C#
+
+    def test_secondary_dominant_V_of_vi(self) -> None:
+        # V/vi in C major = E7 (E-G#-B-D)
+        chord = secondary_dominant(6, P("c", "n", 4), "major")
+        steps = [p.step for p in chord]
+        accs = [p.accidental for p in chord]
+        assert steps == ["e", "g", "b", "d"]
+        assert accs[1] == "s"  # G#
+
+    def test_secondary_dominant_invalid_degree(self) -> None:
+        with pytest.raises(ValueError):
+            secondary_dominant(1, P("c", "n", 4), "major")
+
+
+# ---------------------------------------------------------------------------
+# CHRD-08: Augmented sixth chords and Neapolitan
+# ---------------------------------------------------------------------------
+
+class TestAugmentedSixth:
+    def test_italian_sixth(self) -> None:
+        chord = aug6_chord("italian", P("c", "n", 4), "major")
+        assert len(chord) == 3
+        assert chord == (P("a", "b", 4), P("c", "n", 5), P("f", "s", 5))
+
+    def test_french_sixth(self) -> None:
+        chord = aug6_chord("french", P("c", "n", 4), "major")
+        assert len(chord) == 4
+        assert chord == (P("a", "b", 4), P("c", "n", 5), P("d", "n", 5), P("f", "s", 5))
+
+    def test_german_sixth(self) -> None:
+        chord = aug6_chord("german", P("c", "n", 4), "major")
+        assert len(chord) == 4
+        assert chord == (P("a", "b", 4), P("c", "n", 5), P("e", "b", 5), P("f", "s", 5))
+
+    def test_aug6_unknown_type(self) -> None:
+        with pytest.raises(ValueError):
+            aug6_chord("unknown", P("c", "n", 4), "major")
+
+
+class TestNeapolitan:
+    def test_neapolitan(self) -> None:
+        chord = neapolitan_chord(P("c", "n", 4), "major")
+        assert chord == (P("d", "b", 4), P("f", "n", 4), P("a", "b", 4))
+
+    def test_neapolitan_in_minor(self) -> None:
+        chord = neapolitan_chord(P("a", "n", 4), "natural_minor")
+        assert chord == (P("b", "b", 4), P("d", "n", 5), P("f", "n", 5))
