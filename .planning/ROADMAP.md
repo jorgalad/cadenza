@@ -79,20 +79,20 @@ Plans:
 - [ ] 03-02-PLAN.md -- Chord library, inversions, diatonic chords, secondary dominants, augmented sixths, Neapolitan
 
 ### Phase 4: REST API v1
-**Goal**: All Phase 1-3 functionality is callable over HTTP with OMN strings as the primary wire format
+**Goal**: All Phase 1-3 functionality is callable over HTTP with CN (Cadenza Notation) strings as the primary wire format
 **Depends on**: Phases 1, 2, 3
 **Requirements**: API-01, API-02, API-03, API-04, API-05, API-07, API-08
 **Success Criteria** (what must be TRUE):
-  1. A POST to `/v1/transform/transpose` with an OMN string and interval returns both an OMN string and a JSON event list in the response
+  1. A POST to `/v1/transform/chromatic-transpose` with a CN string and interval returns both a CN string and a JSON event list in the response
   2. All transform, scale, and chord endpoints are accessible under the `/v1/` prefix
   3. The `/v1/health` endpoint returns a 200 response suitable for DAW integration probing
-  4. Invalid OMN input returns a structured error response with a music-theory-aware error code (not a generic 500)
+  4. Invalid CN input returns a structured error response with a music-theory-aware error code (not a generic 500)
   5. Auto-generated OpenAPI/Swagger documentation accurately describes all available endpoints
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: FastAPI application structure, health check, OMN parsing middleware
-- [ ] 04-02: Transform and library endpoints with dual OMN+JSON responses
+- [ ] 04-01-PLAN.md -- FastAPI app factory, Pydantic schemas, error handling, CN string parsing utilities, health endpoint, test infrastructure
+- [ ] 04-02-PLAN.md -- All transform and theory route endpoints with dual CN+JSON responses, OpenAPI verification
 
 ### Phase 5: Harmonic Analysis
 **Goal**: Users can submit a phrase or chord and receive correct harmonic analysis (chord name, Roman numerals, key, function)
@@ -224,7 +224,7 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. A counterpoint generation request returns a job ID immediately; polling the job endpoint eventually returns the completed result
   2. A batch endpoint accepts multiple operations in a single request and returns all results in one response
-  3. All new endpoints (analysis, counterpoint, generation, I/O) added since Phase 4 are documented in OpenAPI and follow the same dual OMN+JSON response pattern
+  3. All new endpoints (analysis, counterpoint, generation, I/O) added since Phase 4 are documented in OpenAPI and follow the same dual CN+JSON response pattern
 **Plans**: TBD
 
 Plans:
