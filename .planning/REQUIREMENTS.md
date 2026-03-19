@@ -37,15 +37,15 @@
 
 ### Pitch Operations (PTCH)
 
-- [ ] **PTCH-01**: Transpose a note or phrase by a given interval (diatonic and chromatic)
-- [ ] **PTCH-02**: Invert a phrase around a given pitch axis (melodic inversion)
-- [ ] **PTCH-03**: Compute the interval between any two pitches (with correct spelling)
-- [ ] **PTCH-04**: Enharmonic respelling of a pitch (Eb3 ↔ D#3)
-- [ ] **PTCH-05**: Pitch class reduction (pitch → pitch class 0–11)
-- [ ] **PTCH-06**: MIDI note number to/from Pitch conversion (with enharmonic disambiguation)
-- [ ] **PTCH-07**: Frequency (Hz) to/from Pitch conversion (A440 reference)
-- [ ] **PTCH-08**: Determine whether a pitch belongs to a given scale or chord
-- [ ] **PTCH-09**: Find the nearest pitch(es) in a given scale to an arbitrary pitch
+- [x] **PTCH-01**: Transpose a note or phrase by a given interval (diatonic and chromatic)
+- [x] **PTCH-02**: Invert a phrase around a given pitch axis (melodic inversion)
+- [x] **PTCH-03**: Compute the interval between any two pitches (with correct spelling)
+- [x] **PTCH-04**: Enharmonic respelling of a pitch (Eb3 ↔ D#3)
+- [x] **PTCH-05**: Pitch class reduction (pitch → pitch class 0–11)
+- [x] **PTCH-06**: MIDI note number to/from Pitch conversion (with enharmonic disambiguation)
+- [x] **PTCH-07**: Frequency (Hz) to/from Pitch conversion (A440 reference)
+- [x] **PTCH-08**: Determine whether a pitch belongs to a given scale or chord
+- [x] **PTCH-09**: Find the nearest pitch(es) in a given scale to an arbitrary pitch
 
 ### Rhythm Operations (RHYT)
 
@@ -280,15 +280,15 @@
 | NOTA-06 | Phase 1: Foundation | Complete |
 | NOTA-07 | Phase 1: Foundation | Complete |
 | NOTA-12 | Phase 1: Foundation | Complete |
-| PTCH-01 | Phase 2: Transforms | Pending |
-| PTCH-02 | Phase 2: Transforms | Pending |
-| PTCH-03 | Phase 2: Transforms | Pending |
-| PTCH-04 | Phase 2: Transforms | Pending |
-| PTCH-05 | Phase 2: Transforms | Pending |
-| PTCH-06 | Phase 2: Transforms | Pending |
-| PTCH-07 | Phase 2: Transforms | Pending |
-| PTCH-08 | Phase 2: Transforms | Pending |
-| PTCH-09 | Phase 2: Transforms | Pending |
+| PTCH-01 | Phase 2: Transforms | Complete |
+| PTCH-02 | Phase 2: Transforms | Complete |
+| PTCH-03 | Phase 2: Transforms | Complete |
+| PTCH-04 | Phase 2: Transforms | Complete |
+| PTCH-05 | Phase 2: Transforms | Complete |
+| PTCH-06 | Phase 2: Transforms | Complete |
+| PTCH-07 | Phase 2: Transforms | Complete |
+| PTCH-08 | Phase 2: Transforms | Complete |
+| PTCH-09 | Phase 2: Transforms | Complete |
 | RHYT-01 | Phase 2: Transforms | Complete |
 | RHYT-02 | Phase 2: Transforms | Complete |
 | RHYT-03 | Phase 2: Transforms | Complete |
