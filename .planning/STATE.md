@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-03-19T17:12:04Z"
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-03-19T17:19:49.426Z"
 last_activity: 2026-03-19 -- Completed 04-01 API Skeleton (FastAPI app factory, schemas, error handlers, parsing, health endpoint)
 progress:
   total_phases: 13
-  completed_phases: 3
-  total_plans: 9
-  completed_plans: 9
+  completed_phases: 4
+  total_plans: 10
+  completed_plans: 10
   percent: 85
 ---
 
@@ -56,6 +56,7 @@ Progress: [████████░░] 85%
 | Phase 03-01 P01 | 6 | 2 tasks | 7 files |
 | Phase 03 P02 | 4 | 2 tasks | 3 files |
 | Phase 04-01 | 3 | 2 tasks | 12 files |
+| Phase 04 P02 | 4 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -92,6 +93,8 @@ Recent decisions affecting current work:
 - [Phase 04-01]: App factory pattern (create_app) for testability and multiple instance support
 - [Phase 04-01]: Compact string parsers in api.parsing bridge human-readable pitch/interval strings to core types
 - [Phase 04-01]: Three-layer exception handler: CadenzaAPIError -> specific code, ParseError -> INVALID_CN, ValueError -> INVALID_INPUT
+- [Phase 04]: Thin route handlers: all business logic stays in cadenza.transforms/theory, routes only parse CN and serialize responses
+- [Phase 04]: Theory endpoints serialize pitch tuples as space-separated CN strings, not full phrase notation
 
 ### Pending Todos
 
@@ -105,6 +108,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-19T17:12:04Z
-Stopped at: Completed 04-01-PLAN.md
-Resume file: .planning/phases/04-rest-api-v1/04-01-SUMMARY.md
+Last session: 2026-03-19T17:19:49.424Z
+Stopped at: Completed 04-02-PLAN.md
+Resume file: None

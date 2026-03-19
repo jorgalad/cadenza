@@ -205,11 +205,11 @@
 
 ### REST API (API)
 
-- [ ] **API-01**: FastAPI server exposing all transform, analysis, and generation operations as HTTP endpoints
-- [ ] **API-02**: All endpoints accept OMN notation strings as input
-- [ ] **API-03**: All endpoints return both OMN string and JSON event list in every response
+- [x] **API-01**: FastAPI server exposing all transform, analysis, and generation operations as HTTP endpoints
+- [x] **API-02**: All endpoints accept OMN notation strings as input
+- [x] **API-03**: All endpoints return both OMN string and JSON event list in every response
 - [x] **API-04**: Versioned API (`/v1/` prefix) from day one
-- [ ] **API-05**: Comprehensive OpenAPI/Swagger documentation auto-generated
+- [x] **API-05**: Comprehensive OpenAPI/Swagger documentation auto-generated
 - [ ] **API-06**: Async job pattern for expensive operations (counterpoint generation)
 - [x] **API-07**: Structured error responses with music-theory-aware error codes
 - [x] **API-08**: Health check endpoint for DAW integration probing
@@ -330,11 +330,11 @@
 | CHRD-07 | Phase 3: Theory Libraries | Complete |
 | CHRD-08 | Phase 3: Theory Libraries | Complete |
 | CHRD-09 | Phase 3: Theory Libraries | Complete |
-| API-01 | Phase 4: REST API v1 | Pending |
-| API-02 | Phase 4: REST API v1 | Pending |
-| API-03 | Phase 4: REST API v1 | Pending |
+| API-01 | Phase 4: REST API v1 | Complete |
+| API-02 | Phase 4: REST API v1 | Complete |
+| API-03 | Phase 4: REST API v1 | Complete |
 | API-04 | Phase 4: REST API v1 | Complete |
-| API-05 | Phase 4: REST API v1 | Pending |
+| API-05 | Phase 4: REST API v1 | Complete |
 | API-07 | Phase 4: REST API v1 | Complete |
 | API-08 | Phase 4: REST API v1 | Complete |
 | HARM-01 | Phase 5: Harmonic Analysis | Pending |
