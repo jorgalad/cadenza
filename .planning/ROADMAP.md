@@ -55,12 +55,12 @@ Plans:
   3. Rhythmic augmentation by 2x doubles every duration exactly (no floating-point drift)
   4. All melodic transforms (retrograde, inversion, rotation, permutation, interpolation, omission, mirror, fragmentation, concatenation, interleave) produce valid Phrases with correct Note/Rest types
   5. A user can chain transforms: transpose, then invert, then retrograde a phrase and get a correct compound result
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 02-01: Pitch operations (transpose, invert, interval computation, conversions)
-- [ ] 02-02: Rhythm operations (retrograde, augmentation, diminution, rotation, quantize)
-- [ ] 02-03: Melodic transforms (all 12 MELO operations)
+- [ ] 02-01-PLAN.md -- Pitch operations: chromatic transpose, invert, interval, enharmonic respell, MIDI/frequency conversion, scale stubs (PTCH-01..09)
+- [ ] 02-02-PLAN.md -- Rhythm operations: retrograde, augmentation, diminution, rotation, metric modulation, extract, quantize, total duration (RHYT-01..05,07..09)
+- [ ] 02-03-PLAN.md -- Melodic transforms: pitch retrograde, retrograde-inversion, full retrograde, rotation, permutation, interpolation, omission, repetition, mirror, fragmentation, concatenation, interleave, pitch map (MELO-01..12)
 
 ### Phase 3: Theory Libraries
 **Goal**: Users can look up any standard scale or chord by name and root, and the library returns correctly spelled pitches
