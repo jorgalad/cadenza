@@ -61,18 +61,18 @@
 
 ### Melodic Transforms (MELO)
 
-- [ ] **MELO-01**: Melodic retrograde (reverse pitch sequence, keep original rhythm)
-- [ ] **MELO-02**: Retrograde-inversion (reverse and invert)
-- [ ] **MELO-03**: Rotation (cyclic permutation of notes in a phrase)
-- [ ] **MELO-04**: Permutation (reorder notes by index list)
-- [ ] **MELO-05**: Interpolation (insert passing notes between existing notes)
-- [ ] **MELO-06**: Omission (remove every Nth note or notes matching a predicate)
-- [ ] **MELO-07**: Repetition (repeat a phrase N times, with optional variation)
-- [ ] **MELO-08**: Mirror (palindrome: phrase + retrograde of phrase)
-- [ ] **MELO-09**: Fragmentation (split a phrase into sub-phrases of given lengths)
-- [ ] **MELO-10**: Concatenation (join two or more phrases)
-- [ ] **MELO-11**: Interleave (alternate notes from two phrases)
-- [ ] **MELO-12**: Apply a pitch mapping function to every note in a phrase
+- [x] **MELO-01**: Melodic retrograde (reverse pitch sequence, keep original rhythm)
+- [x] **MELO-02**: Retrograde-inversion (reverse and invert)
+- [x] **MELO-03**: Rotation (cyclic permutation of notes in a phrase)
+- [x] **MELO-04**: Permutation (reorder notes by index list)
+- [x] **MELO-05**: Interpolation (insert passing notes between existing notes)
+- [x] **MELO-06**: Omission (remove every Nth note or notes matching a predicate)
+- [x] **MELO-07**: Repetition (repeat a phrase N times, with optional variation)
+- [x] **MELO-08**: Mirror (palindrome: phrase + retrograde of phrase)
+- [x] **MELO-09**: Fragmentation (split a phrase into sub-phrases of given lengths)
+- [x] **MELO-10**: Concatenation (join two or more phrases)
+- [x] **MELO-11**: Interleave (alternate notes from two phrases)
+- [x] **MELO-12**: Apply a pitch mapping function to every note in a phrase
 
 ### Harmonic Analysis (HARM)
 
@@ -297,18 +297,18 @@
 | RHYT-07 | Phase 2: Transforms | Complete |
 | RHYT-08 | Phase 2: Transforms | Complete |
 | RHYT-09 | Phase 2: Transforms | Complete |
-| MELO-01 | Phase 2: Transforms | Pending |
-| MELO-02 | Phase 2: Transforms | Pending |
-| MELO-03 | Phase 2: Transforms | Pending |
-| MELO-04 | Phase 2: Transforms | Pending |
-| MELO-05 | Phase 2: Transforms | Pending |
-| MELO-06 | Phase 2: Transforms | Pending |
-| MELO-07 | Phase 2: Transforms | Pending |
-| MELO-08 | Phase 2: Transforms | Pending |
-| MELO-09 | Phase 2: Transforms | Pending |
-| MELO-10 | Phase 2: Transforms | Pending |
-| MELO-11 | Phase 2: Transforms | Pending |
-| MELO-12 | Phase 2: Transforms | Pending |
+| MELO-01 | Phase 2: Transforms | Complete |
+| MELO-02 | Phase 2: Transforms | Complete |
+| MELO-03 | Phase 2: Transforms | Complete |
+| MELO-04 | Phase 2: Transforms | Complete |
+| MELO-05 | Phase 2: Transforms | Complete |
+| MELO-06 | Phase 2: Transforms | Complete |
+| MELO-07 | Phase 2: Transforms | Complete |
+| MELO-08 | Phase 2: Transforms | Complete |
+| MELO-09 | Phase 2: Transforms | Complete |
+| MELO-10 | Phase 2: Transforms | Complete |
+| MELO-11 | Phase 2: Transforms | Complete |
+| MELO-12 | Phase 2: Transforms | Complete |
 | SCAL-01 | Phase 3: Theory Libraries | Pending |
 | SCAL-02 | Phase 3: Theory Libraries | Pending |
 | SCAL-03 | Phase 3: Theory Libraries | Pending |
