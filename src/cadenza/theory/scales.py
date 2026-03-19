@@ -201,3 +201,81 @@ def register_scale(name: str, intervals: list[int]) -> None:
     if name in _SCALE_REGISTRY or name in _SCALE_ALIASES:
         raise ValueError(f"Scale name {name!r} already registered")
     _SCALE_REGISTRY[name] = tuple(intervals)
+
+
+# ---------------------------------------------------------------------------
+# Query functions
+# ---------------------------------------------------------------------------
+
+# Sharp-preference table for pitch-class -> Pitch mapping
+_PC_TO_PITCH_SHARP: list[tuple[str, str]] = [
+    ("c", "n"), ("c", "s"), ("d", "n"), ("d", "s"), ("e", "n"), ("f", "n"),
+    ("f", "s"), ("g", "n"), ("g", "s"), ("a", "n"), ("a", "s"), ("b", "n"),
+]
+
+
+def _pc_to_pitch(pc: int, octave: int = 4) -> Pitch:
+    """Map a pitch class (0-11) to a Pitch using sharp preference."""
+    step, acc = _PC_TO_PITCH_SHARP[pc % 12]
+    return Pitch(step=step, accidental=acc, octave=octave)
+
+
+def scales_for_pitches(pitches: list[Pitch]) -> list[tuple[str, str]]:
+    """Find (root_step, scale_name) pairs whose pitch classes contain all given pitches.
+
+    Returns empty list for empty input.
+    """
+    if not pitches:
+        return []
+    input_pcs = {p.pitch_class for p in pitches}
+    results: list[tuple[str, str]] = []
+    for root_pc in range(12):
+        root = _pc_to_pitch(root_pc)
+        for name, intervals in _SCALE_REGISTRY.items():
+            scale_pcs = {(root_pc + st) % 12 for st in intervals}
+            if input_pcs <= scale_pcs:
+                results.append((root.step, name))
+    return results
+
+
+def scale_degree(pitch: Pitch, scale: Scale) -> int:
+    """Return the 1-based scale degree of a pitch (octave-independent).
+
+    Raises ValueError if the pitch is not in the scale.
+    """
+    pc = pitch.pitch_class
+    for i, sp in enumerate(scale.pitches):
+        if sp.pitch_class == pc:
+            return i + 1
+    raise ValueError(f"Pitch {pitch} is not in scale {scale.name}")
+
+
+def relative_key(root: Pitch, name: str) -> Scale:
+    """Return the relative major/minor scale.
+
+    major -> relative natural_minor (6th degree as root).
+    natural_minor -> relative major (3rd degree as root).
+    """
+    canonical = _SCALE_ALIASES.get(name, name)
+    scale = get_scale(root, canonical)
+    if canonical == "major":
+        return get_scale(scale.pitches[5], "natural_minor")
+    elif canonical == "natural_minor":
+        return get_scale(scale.pitches[2], "major")
+    else:
+        raise ValueError(
+            f"relative_key only supports 'major' and 'natural_minor', got {name!r}"
+        )
+
+
+def parallel_key(root: Pitch, name: str) -> Scale:
+    """Return the parallel major/minor scale (same root, toggled mode)."""
+    canonical = _SCALE_ALIASES.get(name, name)
+    if canonical == "major":
+        return get_scale(root, "natural_minor")
+    elif canonical == "natural_minor":
+        return get_scale(root, "major")
+    else:
+        raise ValueError(
+            f"parallel_key only supports 'major' and 'natural_minor', got {name!r}"
+        )

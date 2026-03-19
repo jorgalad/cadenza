@@ -10,6 +10,8 @@ import math
 from dataclasses import replace
 from typing import Any, Callable
 
+from cadenza.theory.scales import Scale
+
 from cadenza.core.interval import Interval
 from cadenza.core.note import Event, Note, Rest
 from cadenza.core.phrase import Phrase
@@ -93,12 +95,33 @@ def chromatic_transpose(phrase: Phrase, interval: Interval) -> Phrase:
     return _map_pitches(phrase, lambda p: _transpose_pitch(p, interval))
 
 
-def diatonic_transpose(phrase: Phrase, n: int, scale: Any = None) -> Phrase:
-    """Transpose diatonically within a scale.
+def diatonic_transpose(phrase: Phrase, n: int, scale: Scale | None = None) -> Phrase:
+    """Transpose diatonically within a scale by n scale degrees.
 
-    Not yet implemented -- requires Phase 3 scale library.
+    Each pitch is moved by n steps within the given scale.
+    Raises ValueError if a pitch is not in the scale.
     """
-    raise NotImplementedError("Diatonic transpose requires Phase 3 scale library")
+    if not phrase or scale is None:
+        return () if not phrase else phrase
+    scale_pitches = scale.pitches
+    num_degrees = len(scale_pitches)
+
+    def _transpose_one(p: Pitch) -> Pitch:
+        pc = p.pitch_class
+        for i, sp in enumerate(scale_pitches):
+            if sp.pitch_class == pc:
+                target_degree = i + n
+                octave_shift, target_idx = divmod(target_degree, num_degrees)
+                target_sp = scale_pitches[target_idx]
+                oct_diff = p.octave - sp.octave
+                return Pitch(
+                    target_sp.step,
+                    target_sp.accidental,
+                    target_sp.octave + oct_diff + octave_shift,
+                )
+        raise ValueError(f"Pitch {p} is not in scale {scale.name}")
+
+    return _map_pitches(phrase, _transpose_one)
 
 
 # ---------------------------------------------------------------------------
@@ -199,21 +222,25 @@ def from_frequency(
 # PTCH-08: pitch_in_scale (stub)
 # ---------------------------------------------------------------------------
 
-def pitch_in_scale(pitch: Pitch, scale: Any) -> bool:
-    """Check if a pitch belongs to a scale.
-
-    Not yet implemented -- requires Phase 3 scale library.
-    """
-    raise NotImplementedError("Scale membership requires Phase 3 scale library")
+def pitch_in_scale(pitch: Pitch, scale: Scale) -> bool:
+    """Check if a pitch belongs to a scale (octave-independent)."""
+    scale_pcs = {sp.pitch_class for sp in scale.pitches}
+    return pitch.pitch_class in scale_pcs
 
 
 # ---------------------------------------------------------------------------
 # PTCH-09: nearest_in_scale (stub)
 # ---------------------------------------------------------------------------
 
-def nearest_in_scale(pitch: Pitch, scale: Any) -> Pitch:
-    """Find the nearest pitch in a scale.
+def nearest_in_scale(pitch: Pitch, scale: Scale) -> Pitch:
+    """Find the nearest pitch in a scale by MIDI distance.
 
-    Not yet implemented -- requires Phase 3 scale library.
+    Considers scale pitches in nearby octaves to find the closest match.
     """
-    raise NotImplementedError("Nearest in scale requires Phase 3 scale library")
+    candidates: list[Pitch] = []
+    for sp in scale.pitches:
+        for oct_offset in (-1, 0, 1):
+            oct = pitch.octave + oct_offset
+            if -1 <= oct <= 10:
+                candidates.append(Pitch(sp.step, sp.accidental, oct))
+    return min(candidates, key=lambda c: abs(c.midi_number - pitch.midi_number))

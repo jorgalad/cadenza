@@ -127,15 +127,15 @@ class TestChromaticTranspose:
 # ---------------------------------------------------------------------------
 
 class TestDiatonicTranspose:
-    """Tests for diatonic_transpose stub."""
+    """Tests for diatonic_transpose (now implemented with Scale)."""
 
-    def test_diatonic_transpose_raises(self) -> None:
-        """Diatonic transpose raises NotImplementedError."""
+    def test_diatonic_transpose_no_scale_returns_phrase(self) -> None:
+        """Without a scale argument, returns phrase unchanged."""
         phrase: Phrase = (
             Note(pitch=_p("c", "n", 4), duration=Duration.from_omn("q")),
         )
-        with pytest.raises(NotImplementedError, match="Phase 3"):
-            diatonic_transpose(phrase, 2)
+        result = diatonic_transpose(phrase, 2)
+        assert result == phrase
 
 
 # ---------------------------------------------------------------------------
@@ -332,12 +332,13 @@ class TestFrequencyConversion:
 # ---------------------------------------------------------------------------
 
 class TestPitchInScaleStub:
-    """Tests for pitch_in_scale stub."""
+    """Tests for pitch_in_scale (now implemented with Scale)."""
 
-    def test_pitch_in_scale_raises(self) -> None:
-        """pitch_in_scale raises NotImplementedError."""
-        with pytest.raises(NotImplementedError, match="Phase 3"):
-            pitch_in_scale(_p("c", "n", 4), None)
+    def test_pitch_in_scale_implemented(self) -> None:
+        """pitch_in_scale works with a Scale object."""
+        from cadenza.theory.scales import get_scale
+        scale = get_scale(_p("c", "n", 4), "major")
+        assert pitch_in_scale(_p("c", "n", 4), scale) is True
 
 
 # ---------------------------------------------------------------------------
@@ -345,9 +346,11 @@ class TestPitchInScaleStub:
 # ---------------------------------------------------------------------------
 
 class TestNearestInScaleStub:
-    """Tests for nearest_in_scale stub."""
+    """Tests for nearest_in_scale (now implemented with Scale)."""
 
-    def test_nearest_in_scale_raises(self) -> None:
-        """nearest_in_scale raises NotImplementedError."""
-        with pytest.raises(NotImplementedError, match="Phase 3"):
-            nearest_in_scale(_p("c", "n", 4), None)
+    def test_nearest_in_scale_implemented(self) -> None:
+        """nearest_in_scale works with a Scale object."""
+        from cadenza.theory.scales import get_scale
+        scale = get_scale(_p("c", "n", 4), "major")
+        result = nearest_in_scale(_p("c", "n", 4), scale)
+        assert result == _p("c", "n", 4)
