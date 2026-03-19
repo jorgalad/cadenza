@@ -7,9 +7,12 @@ import pytest
 from cadenza.core.pitch import Pitch
 from cadenza.analysis.chords import (
     ChordMatch,
+    chord_symbol,
     identify_chord,
+    parse_chord_symbol,
     realize_chord,
 )
+from cadenza.theory.chords import _CHORD_REGISTRY, get_chord
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -99,3 +102,68 @@ class TestRealizeChord:
     def test_realize_chord_inversion(self) -> None:
         result = realize_chord(P("c", "n", 4), "maj", inversion=1)
         assert result == (P("e", "n", 4), P("g", "n", 4), P("c", "n", 5))
+
+
+# ---------------------------------------------------------------------------
+# HARM-07: Chord symbol generation
+# ---------------------------------------------------------------------------
+
+class TestChordSymbol:
+    def test_chord_symbol_major(self) -> None:
+        assert chord_symbol(P("c", "n", 4), "maj7") == "c4maj7"
+
+    def test_chord_symbol_sharp_root(self) -> None:
+        assert chord_symbol(P("f", "s", 4), "m") == "fs4m"
+
+    def test_chord_symbol_flat_root(self) -> None:
+        assert chord_symbol(P("b", "b", 4), "dim7") == "bb4dim7"
+
+    def test_chord_symbol_natural(self) -> None:
+        assert chord_symbol(P("g", "n", 4), "maj") == "g4maj"
+
+
+# ---------------------------------------------------------------------------
+# HARM-08: Chord symbol parsing
+# ---------------------------------------------------------------------------
+
+class TestParseChordSymbol:
+    def test_parse_chord_symbol_major(self) -> None:
+        result = parse_chord_symbol("c4maj7")
+        expected = get_chord(P("c", "n", 4), "maj7")
+        assert result == expected
+
+    def test_parse_chord_symbol_default_quality(self) -> None:
+        result = parse_chord_symbol("c4")
+        expected = get_chord(P("c", "n", 4), "maj")
+        assert result == expected
+
+    def test_parse_chord_symbol_sharp_root(self) -> None:
+        result = parse_chord_symbol("fs4m")
+        expected = get_chord(P("f", "s", 4), "m")
+        assert result == expected
+
+    def test_parse_chord_symbol_flat_root(self) -> None:
+        result = parse_chord_symbol("bb4dim7")
+        expected = get_chord(P("b", "b", 4), "dim7")
+        assert result == expected
+
+    def test_parse_chord_symbol_aliases(self) -> None:
+        c4 = P("c", "n", 4)
+        # Maj7 alias
+        assert parse_chord_symbol("c4Maj7") == get_chord(c4, "maj7")
+        # min alias
+        assert parse_chord_symbol("c4min") == get_chord(c4, "m")
+        # - alias for minor
+        assert parse_chord_symbol("c4-") == get_chord(c4, "m")
+
+    def test_parse_chord_symbol_invalid(self) -> None:
+        with pytest.raises(ValueError):
+            parse_chord_symbol("xyz")
+
+    def test_chord_symbol_round_trip(self) -> None:
+        root = P("c", "n", 4)
+        for key in _CHORD_REGISTRY:
+            sym_str = chord_symbol(root, key)
+            parsed = parse_chord_symbol(sym_str)
+            expected = get_chord(root, key)
+            assert parsed == expected, f"Round-trip failed for {key!r}: {sym_str!r}"
