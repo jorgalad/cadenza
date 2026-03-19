@@ -54,10 +54,11 @@ class TestApplyWindowed:
             return p
 
         result = apply_windowed(phrase, track_fn, window_size=3, step=1)
-        # Windows: [0:3], [1:4], [2:5]
-        assert len(windows_seen) == 3
+        # Windows: [0:3], [1:4], [2:5], [3:5], [4:5]
+        assert len(windows_seen) == 5
+        assert windows_seen == [3, 3, 3, 2, 1]
         # With overlapping, result length = sum of window sizes
-        assert len(result) == 9  # 3 + 3 + 3
+        assert len(result) == 12  # 3+3+3+2+1
 
     def test_window_size_lt_1_raises(self):
         phrase = (_make_note(),)

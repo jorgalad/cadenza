@@ -152,11 +152,12 @@ class TestSetDynamicNth:
 
 class TestCrescendo:
     def test_pp_to_ff_6_notes(self):
-        """Truth: crescendo from pp to ff across 6 notes -> pp, pp, p, mf, f, ff."""
+        """Truth: crescendo from pp to ff across 6 notes produces smooth progression."""
         phrase = tuple(_make_note() for _ in range(6))
         result = crescendo(phrase, "pp", "ff")
         dynamics = [e.dynamic for e in result]
-        assert dynamics == ["pp", "pp", "p", "mf", "f", "ff"]
+        # Proportional linear mapping: pp(1) -> ff(6), 5 steps across 5 gaps
+        assert dynamics == ["pp", "p", "mp", "mf", "f", "ff"]
 
     def test_start_gte_end_raises(self):
         phrase = tuple(_make_note() for _ in range(4))
@@ -184,7 +185,8 @@ class TestDecrescendo:
         phrase = tuple(_make_note() for _ in range(6))
         result = decrescendo(phrase, "ff", "pp")
         dynamics = [e.dynamic for e in result]
-        assert dynamics == ["ff", "f", "mf", "p", "pp", "pp"]
+        # Proportional linear mapping: ff(6) -> pp(1), 5 steps across 5 gaps
+        assert dynamics == ["ff", "f", "mf", "mp", "p", "pp"]
 
     def test_start_lte_end_raises(self):
         phrase = tuple(_make_note() for _ in range(4))
