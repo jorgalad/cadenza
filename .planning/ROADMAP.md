@@ -72,11 +72,11 @@ Plans:
   3. Given a root and chord type (e.g., "Cmaj7"), the library returns the correct pitches in any requested inversion
   4. Diatonic chords of any scale are generated correctly (e.g., C major yields C, Dm, Em, F, G, Am, Bdim for triads)
   5. A user can define a custom scale from an interval pattern and use it in all scale-aware operations
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: Scale/mode registry and all built-in scales
-- [ ] 03-02: Chord library, inversions, diatonic chords, secondary dominants
+- [ ] 03-01-PLAN.md -- Scale/mode registry, Scale type, all built-in scales, query functions, Phase 2 stub completion
+- [ ] 03-02-PLAN.md -- Chord library, inversions, diatonic chords, secondary dominants, augmented sixths, Neapolitan
 
 ### Phase 4: REST API v1
 **Goal**: All Phase 1-3 functionality is callable over HTTP with OMN strings as the primary wire format
