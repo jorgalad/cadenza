@@ -10,6 +10,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
+from cadenza.api.parsing import parse_pitch_string
 from cadenza.core.pitch import Pitch
 from cadenza.theory.chords import _CHORD_REGISTRY, get_chord
 
@@ -175,3 +176,104 @@ def realize_chord(
     if root.octave != octave:
         root = Pitch(step=root.step, accidental=root.accidental, octave=octave)
     return get_chord(root, symbol, inversion)
+
+
+# ---------------------------------------------------------------------------
+# Chord symbol regex and quality aliases
+# ---------------------------------------------------------------------------
+
+_CHORD_SYMBOL_RE = re.compile(r"^([a-g](?:ss|bb|s|b|n)?\d)(.*)$", re.IGNORECASE)
+
+_QUALITY_ALIASES: dict[str, str] = {
+    "": "maj",       # bare root defaults to major triad
+    "M": "maj",
+    "Maj": "maj",
+    "maj": "maj",
+    "mi": "m",
+    "min": "m",
+    "-": "m",
+    "\u00b0": "dim",  # degree symbol
+    "o": "dim",
+    "+": "aug",
+}
+
+
+# ---------------------------------------------------------------------------
+# Chord symbol generation
+# ---------------------------------------------------------------------------
+
+
+def chord_symbol(root: Pitch, symbol: str) -> str:
+    """Generate a CN chord symbol string from root pitch and quality.
+
+    Args:
+        root: Root pitch of the chord.
+        symbol: Chord quality symbol (registry key).
+
+    Returns:
+        CN chord symbol string like 'c4maj7', 'fs4m', 'bb4dim7'.
+    """
+    acc = "" if root.accidental == "n" else root.accidental
+    return f"{root.step}{acc}{root.octave}{symbol}"
+
+
+def _resolve_quality(quality_str: str) -> str | None:
+    """Resolve a quality string to a canonical registry key.
+
+    Tries: exact alias, exact registry, lowercase registry,
+    then prefix-based alias matching (e.g., "Maj7" -> "maj" prefix not found,
+    but "maj7" lowercase match in registry).
+    """
+    # 1. Exact alias match
+    if quality_str in _QUALITY_ALIASES:
+        return _QUALITY_ALIASES[quality_str]
+    # 2. Exact registry match
+    if quality_str in _CHORD_REGISTRY:
+        return quality_str
+    # 3. Lowercase in registry (e.g., "Maj7" -> "maj7")
+    lower = quality_str.lower()
+    if lower in _CHORD_REGISTRY:
+        return lower
+    # 4. Lowercase alias match
+    if lower in _QUALITY_ALIASES:
+        return _QUALITY_ALIASES[lower]
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Chord symbol parsing
+# ---------------------------------------------------------------------------
+
+
+def parse_chord_symbol(symbol: str) -> tuple[Pitch, ...]:
+    """Parse a CN chord symbol string into realized chord pitches.
+
+    Accepts formats like 'c4maj7', 'fs4m', 'bb4dim7', 'c4' (defaults to major).
+    Supports quality aliases: Maj, min, mi, -, +, o.
+
+    Args:
+        symbol: CN chord symbol string.
+
+    Returns:
+        Tuple of Pitch objects forming the chord.
+
+    Raises:
+        ValueError: If the symbol cannot be parsed.
+    """
+    m = _CHORD_SYMBOL_RE.match(symbol)
+    if not m:
+        raise ValueError(f"Invalid chord symbol: {symbol!r}")
+
+    root_str = m.group(1).lower()
+    quality_str = m.group(2)
+
+    root = parse_pitch_string(root_str)
+
+    # Resolve quality through multiple strategies
+    normalized = _resolve_quality(quality_str)
+    if normalized is None:
+        raise ValueError(
+            f"Unknown chord quality: {quality_str!r} in {symbol!r}"
+        )
+
+    return get_chord(root, normalized)
