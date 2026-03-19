@@ -104,11 +104,11 @@ Plans:
   3. A chord progression I-IV-V-I in any key produces correct Roman numeral labels with functional harmony tags (tonic, subdominant, dominant)
   4. The system detects modulations -- a phrase that starts in C major and moves to G major is identified as such
   5. Chord symbols round-trip: "Cmaj7" parses to a chord object that serializes back to "Cmaj7"
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 05-01: Chord identification and chord symbol parsing/serialization
-- [ ] 05-02: Key detection, Roman numeral analysis, functional harmony, modulation detection
+- [ ] 05-01-PLAN.md -- Chord identification engine, chord symbol parsing/generation, chord realization (HARM-01, HARM-07, HARM-08, HARM-09)
+- [ ] 05-02-PLAN.md -- Key detection (K-S), Roman numeral analysis, functional harmony, modulation detection, borrowed chords (HARM-02, HARM-03, HARM-04, HARM-05, HARM-06, HARM-10)
 
 ### Phase 6: Batch Operations & Analysis
 **Goal**: Users can apply bulk modifications to phrases and analyze melodic/rhythmic properties of any phrase
