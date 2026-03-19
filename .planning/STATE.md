@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 4 context gathered
-last_updated: "2026-03-19T12:43:34.911Z"
-last_activity: 2026-03-19 -- Completed 03-01 Scale Library (36 built-in scales, query functions, Phase 2 stubs completed)
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-03-19T17:12:04Z"
+last_activity: 2026-03-19 -- Completed 04-01 API Skeleton (FastAPI app factory, schemas, error handlers, parsing, health endpoint)
 progress:
   total_phases: 13
   completed_phases: 3
-  total_plans: 8
-  completed_plans: 8
-  percent: 83
+  total_plans: 9
+  completed_plans: 9
+  percent: 85
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** A notation software user can select any musical phrase, send it to Cadenza, and receive back a musically correct transformation or harmonization -- without needing to understand the theory behind it.
-**Current focus:** Phase 2: Transforms
+**Current focus:** Phase 4: REST API v1
 
 ## Current Position
 
-Phase: 3 of 13 (Theory Libraries)
+Phase: 4 of 13 (REST API v1)
 Plan: 1 of 2 in current phase
-Status: In Progress (03-01 complete)
-Last activity: 2026-03-19 -- Completed 03-01 Scale Library (36 built-in scales, query functions, Phase 2 stubs completed)
+Status: In Progress (04-01 complete)
+Last activity: 2026-03-19 -- Completed 04-01 API Skeleton (FastAPI app factory, schemas, error handlers, parsing, health endpoint)
 
-Progress: [████████░░] 83%
+Progress: [████████░░] 85%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 5 min
-- Total execution time: 0.35 hours
+- Total plans completed: 9
+- Average duration: 4 min
+- Total execution time: 0.55 hours
 
 **By Phase:**
 
@@ -55,6 +55,7 @@ Progress: [████████░░] 83%
 | Phase 02-transforms P03 | 3 | 2 tasks | 3 files |
 | Phase 03-01 P01 | 6 | 2 tasks | 7 files |
 | Phase 03 P02 | 4 | 2 tasks | 3 files |
+| Phase 04-01 | 3 | 2 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -87,6 +88,10 @@ Recent decisions affecting current work:
 - [Phase 03]: Chord registry stores dual encoding (semitones + degree steps) for correct enharmonic spelling
 - [Phase 03]: Duplicated _build_pitch in chords.py rather than importing private function from scales.py
 - [Phase 03]: aug6_chord and neapolitan_chord use key-relative construction, not chord registry lookup
+- [Phase 04-01]: FastAPI as optional [api] extra -- core library stays zero-dep
+- [Phase 04-01]: App factory pattern (create_app) for testability and multiple instance support
+- [Phase 04-01]: Compact string parsers in api.parsing bridge human-readable pitch/interval strings to core types
+- [Phase 04-01]: Three-layer exception handler: CadenzaAPIError -> specific code, ParseError -> INVALID_CN, ValueError -> INVALID_INPUT
 
 ### Pending Todos
 
@@ -100,6 +105,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-19T12:43:34.906Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-rest-api-v1/04-CONTEXT.md
+Last session: 2026-03-19T17:12:04Z
+Stopped at: Completed 04-01-PLAN.md
+Resume file: .planning/phases/04-rest-api-v1/04-01-SUMMARY.md
