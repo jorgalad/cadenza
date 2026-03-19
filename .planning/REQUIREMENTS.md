@@ -89,18 +89,18 @@
 
 ### Scale & Mode Library (SCAL)
 
-- [ ] **SCAL-01**: Define and retrieve all common Western scales: major, natural/harmonic/melodic minor
-- [ ] **SCAL-02**: All church modes: Ionian, Dorian, Phrygian, Lydian, Mixolydian, Aeolian, Locrian
-- [ ] **SCAL-03**: Pentatonic scales (major, minor, blues pentatonic)
-- [ ] **SCAL-04**: Blues scale (hexatonic)
-- [ ] **SCAL-05**: Symmetric scales: whole tone, diminished (octatonic), augmented
-- [ ] **SCAL-06**: Bebop scales (dominant, major, minor)
-- [ ] **SCAL-07**: Non-Western scales: Arabic maqam modes, Hungarian minor, Neapolitan, etc.
-- [ ] **SCAL-08**: User-defined scale from interval pattern
-- [ ] **SCAL-09**: Given a root pitch and scale name, return all pitches in the scale (all octaves or single octave)
-- [ ] **SCAL-10**: Determine what scale(s) a given set of pitches belongs to
-- [ ] **SCAL-11**: Return the degree of a pitch within a scale (scale degree 1–7 + chromatic)
-- [ ] **SCAL-12**: Return the relative and parallel major/minor of any scale
+- [x] **SCAL-01**: Define and retrieve all common Western scales: major, natural/harmonic/melodic minor
+- [x] **SCAL-02**: All church modes: Ionian, Dorian, Phrygian, Lydian, Mixolydian, Aeolian, Locrian
+- [x] **SCAL-03**: Pentatonic scales (major, minor, blues pentatonic)
+- [x] **SCAL-04**: Blues scale (hexatonic)
+- [x] **SCAL-05**: Symmetric scales: whole tone, diminished (octatonic), augmented
+- [x] **SCAL-06**: Bebop scales (dominant, major, minor)
+- [x] **SCAL-07**: Non-Western scales: Arabic maqam modes, Hungarian minor, Neapolitan, etc.
+- [x] **SCAL-08**: User-defined scale from interval pattern
+- [x] **SCAL-09**: Given a root pitch and scale name, return all pitches in the scale (all octaves or single octave)
+- [x] **SCAL-10**: Determine what scale(s) a given set of pitches belongs to
+- [x] **SCAL-11**: Return the degree of a pitch within a scale (scale degree 1–7 + chromatic)
+- [x] **SCAL-12**: Return the relative and parallel major/minor of any scale
 
 ### Chord Library (CHRD)
 
@@ -309,18 +309,18 @@
 | MELO-10 | Phase 2: Transforms | Complete |
 | MELO-11 | Phase 2: Transforms | Complete |
 | MELO-12 | Phase 2: Transforms | Complete |
-| SCAL-01 | Phase 3: Theory Libraries | Pending |
-| SCAL-02 | Phase 3: Theory Libraries | Pending |
-| SCAL-03 | Phase 3: Theory Libraries | Pending |
-| SCAL-04 | Phase 3: Theory Libraries | Pending |
-| SCAL-05 | Phase 3: Theory Libraries | Pending |
-| SCAL-06 | Phase 3: Theory Libraries | Pending |
-| SCAL-07 | Phase 3: Theory Libraries | Pending |
-| SCAL-08 | Phase 3: Theory Libraries | Pending |
-| SCAL-09 | Phase 3: Theory Libraries | Pending |
-| SCAL-10 | Phase 3: Theory Libraries | Pending |
-| SCAL-11 | Phase 3: Theory Libraries | Pending |
-| SCAL-12 | Phase 3: Theory Libraries | Pending |
+| SCAL-01 | Phase 3: Theory Libraries | Complete |
+| SCAL-02 | Phase 3: Theory Libraries | Complete |
+| SCAL-03 | Phase 3: Theory Libraries | Complete |
+| SCAL-04 | Phase 3: Theory Libraries | Complete |
+| SCAL-05 | Phase 3: Theory Libraries | Complete |
+| SCAL-06 | Phase 3: Theory Libraries | Complete |
+| SCAL-07 | Phase 3: Theory Libraries | Complete |
+| SCAL-08 | Phase 3: Theory Libraries | Complete |
+| SCAL-09 | Phase 3: Theory Libraries | Complete |
+| SCAL-10 | Phase 3: Theory Libraries | Complete |
+| SCAL-11 | Phase 3: Theory Libraries | Complete |
+| SCAL-12 | Phase 3: Theory Libraries | Complete |
 | CHRD-01 | Phase 3: Theory Libraries | Pending |
 | CHRD-02 | Phase 3: Theory Libraries | Pending |
 | CHRD-03 | Phase 3: Theory Libraries | Pending |
