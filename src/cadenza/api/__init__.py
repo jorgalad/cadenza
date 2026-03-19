@@ -6,6 +6,8 @@ from fastapi import FastAPI
 
 from cadenza.api.errors import register_exception_handlers
 from cadenza.api.routes.health import router as health_router
+from cadenza.api.routes.theory import router as theory_router
+from cadenza.api.routes.transforms import router as transforms_router
 
 
 def create_app() -> FastAPI:
@@ -20,6 +22,8 @@ def create_app() -> FastAPI:
     )
     register_exception_handlers(app)
     app.include_router(health_router)
+    app.include_router(transforms_router)
+    app.include_router(theory_router)
     return app
 
 
