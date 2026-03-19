@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-03-19T09:21:37.310Z"
-last_activity: 2026-03-19 -- Completed 02-01 Pitch Transforms (35 tests, 11 functions, all green)
+stopped_at: Completed 03-02-PLAN.md
+last_updated: "2026-03-19T09:27:47.603Z"
+last_activity: 2026-03-19 -- Completed 03-01 Scale Library (36 built-in scales, query functions, Phase 2 stubs completed)
 progress:
   total_phases: 13
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
   percent: 83
 ---
 
@@ -54,6 +54,7 @@ Progress: [████████░░] 83%
 | Phase 02-transforms P01 | 3 | 2 tasks | 5 files |
 | Phase 02-transforms P03 | 3 | 2 tasks | 3 files |
 | Phase 03-01 P01 | 6 | 2 tasks | 7 files |
+| Phase 03 P02 | 4 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -83,6 +84,9 @@ Recent decisions affecting current work:
 - [Phase 03-01]: round() for octave computation in _build_pitch to handle boundary cases like Bb
 - [Phase 03-01]: _infer_degree_steps for custom scales uses chromatic-to-diatonic semitone mapping
 - [Phase 03-01]: Phase 2 stub tests updated from NotImplementedError to functional assertions
+- [Phase 03]: Chord registry stores dual encoding (semitones + degree steps) for correct enharmonic spelling
+- [Phase 03]: Duplicated _build_pitch in chords.py rather than importing private function from scales.py
+- [Phase 03]: aug6_chord and neapolitan_chord use key-relative construction, not chord registry lookup
 
 ### Pending Todos
 
@@ -96,6 +100,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-19T09:21:37.308Z
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-03-19T09:27:47.601Z
+Stopped at: Completed 03-02-PLAN.md
 Resume file: None

@@ -104,15 +104,15 @@
 
 ### Chord Library (CHRD)
 
-- [ ] **CHRD-01**: All triads: major, minor, diminished, augmented
-- [ ] **CHRD-02**: All seventh chords: maj7, dom7, min7, half-dim7, dim7, min-maj7, aug7
-- [ ] **CHRD-03**: Extended chords: 9th, 11th, 13th (dominant and other qualities)
-- [ ] **CHRD-04**: Added-note chords: add9, add11, sus2, sus4
-- [ ] **CHRD-05**: All inversions of any chord (1st, 2nd, 3rd inversion)
-- [ ] **CHRD-06**: Diatonic chords of a scale (returns all triads/sevenths built on each scale degree)
-- [ ] **CHRD-07**: Secondary dominants (V/ii, V/iii, etc.)
-- [ ] **CHRD-08**: Neapolitan and augmented sixth chords (Italian, French, German)
-- [ ] **CHRD-09**: User-defined chord from interval stack
+- [x] **CHRD-01**: All triads: major, minor, diminished, augmented
+- [x] **CHRD-02**: All seventh chords: maj7, dom7, min7, half-dim7, dim7, min-maj7, aug7
+- [x] **CHRD-03**: Extended chords: 9th, 11th, 13th (dominant and other qualities)
+- [x] **CHRD-04**: Added-note chords: add9, add11, sus2, sus4
+- [x] **CHRD-05**: All inversions of any chord (1st, 2nd, 3rd inversion)
+- [x] **CHRD-06**: Diatonic chords of a scale (returns all triads/sevenths built on each scale degree)
+- [x] **CHRD-07**: Secondary dominants (V/ii, V/iii, etc.)
+- [x] **CHRD-08**: Neapolitan and augmented sixth chords (Italian, French, German)
+- [x] **CHRD-09**: User-defined chord from interval stack
 
 ### Voice Leading (VLEAD)
 
@@ -321,15 +321,15 @@
 | SCAL-10 | Phase 3: Theory Libraries | Complete |
 | SCAL-11 | Phase 3: Theory Libraries | Complete |
 | SCAL-12 | Phase 3: Theory Libraries | Complete |
-| CHRD-01 | Phase 3: Theory Libraries | Pending |
-| CHRD-02 | Phase 3: Theory Libraries | Pending |
-| CHRD-03 | Phase 3: Theory Libraries | Pending |
-| CHRD-04 | Phase 3: Theory Libraries | Pending |
-| CHRD-05 | Phase 3: Theory Libraries | Pending |
-| CHRD-06 | Phase 3: Theory Libraries | Pending |
-| CHRD-07 | Phase 3: Theory Libraries | Pending |
-| CHRD-08 | Phase 3: Theory Libraries | Pending |
-| CHRD-09 | Phase 3: Theory Libraries | Pending |
+| CHRD-01 | Phase 3: Theory Libraries | Complete |
+| CHRD-02 | Phase 3: Theory Libraries | Complete |
+| CHRD-03 | Phase 3: Theory Libraries | Complete |
+| CHRD-04 | Phase 3: Theory Libraries | Complete |
+| CHRD-05 | Phase 3: Theory Libraries | Complete |
+| CHRD-06 | Phase 3: Theory Libraries | Complete |
+| CHRD-07 | Phase 3: Theory Libraries | Complete |
+| CHRD-08 | Phase 3: Theory Libraries | Complete |
+| CHRD-09 | Phase 3: Theory Libraries | Complete |
 | API-01 | Phase 4: REST API v1 | Pending |
 | API-02 | Phase 4: REST API v1 | Pending |
 | API-03 | Phase 4: REST API v1 | Pending |
