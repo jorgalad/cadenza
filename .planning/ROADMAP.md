@@ -120,11 +120,11 @@ Plans:
   3. Ambitus analysis of a phrase returns the correct lowest and highest pitches
   4. Melodic contour analysis produces an accurate up/down/same direction sequence matching the intervals
   5. The system identifies repeated motifs within a phrase and reports their positions
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 06-01: Batch operations (articulation, dynamic, pitch replacement, filtering, windowed transforms)
-- [ ] 06-02: Analysis tools (ambitus, contour, intervals, histogram, density, complexity, motifs, similarity)
+- [ ] 06-01-PLAN.md -- Batch operations: articulation/dynamic nth-note, crescendo/decrescendo, predicate-based articulation, pitch replacement, filtering, quantize, humanize, windowed transforms (BATCH-01..09)
+- [ ] 06-02-PLAN.md -- Analysis tools: ambitus, contour, interval sequence, histogram, density, complexity, motif detection, similarity, sequence detection (ANAL-01..09)
 
 ### Phase 7: Voice Leading
 **Goal**: Users can check any multi-voice passage for voice leading violations and generate smooth voice connections
