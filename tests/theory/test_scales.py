@@ -9,6 +9,10 @@ from cadenza.theory.scales import (
     Scale,
     get_scale,
     register_scale,
+    scales_for_pitches,
+    scale_degree,
+    relative_key,
+    parallel_key,
     _SCALE_REGISTRY,
 )
 
@@ -305,3 +309,77 @@ class TestScaleIntervals:
     def test_dorian_intervals(self) -> None:
         s = get_scale(P("d", "n", 4), "dorian")
         assert s.intervals == (0, 2, 3, 5, 7, 9, 10)
+
+
+# ---------------------------------------------------------------------------
+# SCAL-10: scales_for_pitches
+# ---------------------------------------------------------------------------
+
+class TestScalesForPitches:
+    def test_c_major_pitches_find_c_major(self) -> None:
+        pitches = [
+            P("c", "n", 4), P("d", "n", 4), P("e", "n", 4),
+            P("f", "n", 4), P("g", "n", 4), P("a", "n", 4), P("b", "n", 4),
+        ]
+        result = scales_for_pitches(pitches)
+        assert ("c", "major") in result
+
+    def test_subset_pitches_find_multiple(self) -> None:
+        pitches = [P("d", "n", 4), P("e", "n", 4), P("f", "n", 4)]
+        result = scales_for_pitches(pitches)
+        assert ("d", "dorian") in result
+        assert ("c", "major") in result
+
+    def test_empty_returns_empty(self) -> None:
+        assert scales_for_pitches([]) == []
+
+
+# ---------------------------------------------------------------------------
+# SCAL-11: scale_degree
+# ---------------------------------------------------------------------------
+
+class TestScaleDegree:
+    def test_first_degree(self) -> None:
+        s = get_scale(P("c", "n", 4), "major")
+        assert scale_degree(P("c", "n", 4), s) == 1
+
+    def test_third_degree(self) -> None:
+        s = get_scale(P("c", "n", 4), "major")
+        assert scale_degree(P("e", "n", 4), s) == 3
+
+    def test_seventh_degree(self) -> None:
+        s = get_scale(P("c", "n", 4), "major")
+        assert scale_degree(P("b", "n", 4), s) == 7
+
+    def test_not_in_scale_raises(self) -> None:
+        s = get_scale(P("c", "n", 4), "major")
+        with pytest.raises(ValueError):
+            scale_degree(P("f", "s", 4), s)
+
+
+# ---------------------------------------------------------------------------
+# SCAL-12: relative_key, parallel_key
+# ---------------------------------------------------------------------------
+
+class TestRelativeKey:
+    def test_c_major_relative_minor(self) -> None:
+        s = relative_key(P("c", "n", 4), "major")
+        assert s.root.step == "a"
+        assert s.name == "natural_minor"
+
+    def test_a_minor_relative_major(self) -> None:
+        s = relative_key(P("a", "n", 4), "natural_minor")
+        assert s.root.step == "c"
+        assert s.name == "major"
+
+
+class TestParallelKey:
+    def test_c_major_parallel_minor(self) -> None:
+        s = parallel_key(P("c", "n", 4), "major")
+        assert s.root.step == "c"
+        assert s.name == "natural_minor"
+
+    def test_c_minor_parallel_major(self) -> None:
+        s = parallel_key(P("c", "n", 4), "natural_minor")
+        assert s.root.step == "c"
+        assert s.name == "major"
