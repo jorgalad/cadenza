@@ -171,15 +171,15 @@
 
 ### Batch Operations (BATCH)
 
-- [ ] **BATCH-01**: Set articulation on every Nth note in a phrase
-- [ ] **BATCH-02**: Set dynamic on every Nth note in a phrase
-- [ ] **BATCH-03**: Apply a crescendo or decrescendo across a phrase (gradual dynamic change)
-- [ ] **BATCH-04**: Add/remove articulation from all notes matching a predicate (e.g. all notes on beat 1)
-- [ ] **BATCH-05**: Quantize all note lengths to a given grid
-- [ ] **BATCH-06**: Humanize: apply small random perturbations to timing and velocity
-- [ ] **BATCH-07**: Replace all instances of a pitch (or pitch class) with another pitch
-- [ ] **BATCH-08**: Filter phrase: keep only notes matching a predicate
-- [ ] **BATCH-09**: Apply any transform function to a sliding window over a phrase
+- [x] **BATCH-01**: Set articulation on every Nth note in a phrase
+- [x] **BATCH-02**: Set dynamic on every Nth note in a phrase
+- [x] **BATCH-03**: Apply a crescendo or decrescendo across a phrase (gradual dynamic change)
+- [x] **BATCH-04**: Add/remove articulation from all notes matching a predicate (e.g. all notes on beat 1)
+- [x] **BATCH-05**: Quantize all note lengths to a given grid
+- [x] **BATCH-06**: Humanize: apply small random perturbations to timing and velocity
+- [x] **BATCH-07**: Replace all instances of a pitch (or pitch class) with another pitch
+- [x] **BATCH-08**: Filter phrase: keep only notes matching a predicate
+- [x] **BATCH-09**: Apply any transform function to a sliding window over a phrase
 
 ### Algorithmic Composition (ALGO)
 
@@ -347,15 +347,15 @@
 | HARM-08 | Phase 5: Harmonic Analysis | Complete |
 | HARM-09 | Phase 5: Harmonic Analysis | Complete |
 | HARM-10 | Phase 5: Harmonic Analysis | Complete |
-| BATCH-01 | Phase 6: Batch & Analysis | Pending |
-| BATCH-02 | Phase 6: Batch & Analysis | Pending |
-| BATCH-03 | Phase 6: Batch & Analysis | Pending |
-| BATCH-04 | Phase 6: Batch & Analysis | Pending |
-| BATCH-05 | Phase 6: Batch & Analysis | Pending |
-| BATCH-06 | Phase 6: Batch & Analysis | Pending |
-| BATCH-07 | Phase 6: Batch & Analysis | Pending |
-| BATCH-08 | Phase 6: Batch & Analysis | Pending |
-| BATCH-09 | Phase 6: Batch & Analysis | Pending |
+| BATCH-01 | Phase 6: Batch & Analysis | Complete |
+| BATCH-02 | Phase 6: Batch & Analysis | Complete |
+| BATCH-03 | Phase 6: Batch & Analysis | Complete |
+| BATCH-04 | Phase 6: Batch & Analysis | Complete |
+| BATCH-05 | Phase 6: Batch & Analysis | Complete |
+| BATCH-06 | Phase 6: Batch & Analysis | Complete |
+| BATCH-07 | Phase 6: Batch & Analysis | Complete |
+| BATCH-08 | Phase 6: Batch & Analysis | Complete |
+| BATCH-09 | Phase 6: Batch & Analysis | Complete |
 | ANAL-01 | Phase 6: Batch & Analysis | Complete |
 | ANAL-02 | Phase 6: Batch & Analysis | Complete |
 | ANAL-03 | Phase 6: Batch & Analysis | Complete |
