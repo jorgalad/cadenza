@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 01-03-PLAN.md
-last_updated: "2026-03-19T07:05:46.386Z"
-last_activity: 2026-03-19 -- Completed 01-03 Integration Tests (115 tests, all 5 ROADMAP criteria verified)
+status: executing
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-03-19T08:04:28.623Z"
+last_activity: 2026-03-19 -- Completed 02-02 Rhythm Transforms (28 tests, 8 functions, all green)
 progress:
   total_phases: 13
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
-  percent: 100
+  total_plans: 6
+  completed_plans: 4
+  percent: 67
 ---
 
 # Project State
@@ -21,33 +21,34 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** A notation software user can select any musical phrase, send it to Cadenza, and receive back a musically correct transformation or harmonization -- without needing to understand the theory behind it.
-**Current focus:** Phase 1: Foundation
+**Current focus:** Phase 2: Transforms
 
 ## Current Position
 
-Phase: 1 of 13 (Foundation)
-Plan: 3 of 3 in current phase
-Status: Phase 1 Complete
-Last activity: 2026-03-19 -- Completed 01-03 Integration Tests (115 tests, all 5 ROADMAP criteria verified)
+Phase: 2 of 13 (Transforms)
+Plan: 2 of 3 in current phase
+Status: In Progress (02-02 complete)
+Last activity: 2026-03-19 -- Completed 02-02 Rhythm Transforms (28 tests, 8 functions, all green)
 
-Progress: [██████████] 100%
+Progress: [███████░░░] 67%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 6 min
-- Total execution time: 0.3 hours
+- Total plans completed: 4
+- Average duration: 5 min
+- Total execution time: 0.35 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 3/3 | 18 min | 6 min |
+| 02-transforms | 1/3 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (6 min), 01-02 (6 min), 01-03 (6 min)
-- Trend: Consistent
+- Last 5 plans: 01-01 (6 min), 01-02 (6 min), 01-03 (6 min), 02-02 (3 min)
+- Trend: Improving
 
 *Updated after each plan completion*
 
@@ -69,6 +70,8 @@ Recent decisions affecting current work:
 - 01-02: Serializer does not track None dynamic or empty articulations as sticky state changes (OMN cannot unset these)
 - 01-02: Chord tokens deferred -- tokenized as single PITCH, parser uses first pitch with warning
 - [Phase 01-03]: OMN round-trip tests compare against sticky-resolved expected values (None dynamics inherit from previous note)
+- 02-02: Keep original OMN metadata (base/dots/tuplet) as hint after duration scaling; fraction is source of truth
+- 02-02: Float ratios converted to Fraction via limit_denominator(1000) to avoid drift
 
 ### Pending Todos
 
@@ -82,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-18T23:45:16Z
-Stopped at: Completed 01-03-PLAN.md
+Last session: 2026-03-19T08:04:28.620Z
+Stopped at: Completed 02-02-PLAN.md
 Resume file: None

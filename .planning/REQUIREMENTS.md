@@ -49,15 +49,15 @@
 
 ### Rhythm Operations (RHYT)
 
-- [ ] **RHYT-01**: Rhythmic retrograde of a phrase (reverse duration sequence)
-- [ ] **RHYT-02**: Rhythmic augmentation (multiply all durations by a ratio)
-- [ ] **RHYT-03**: Rhythmic diminution (divide all durations by a ratio)
-- [ ] **RHYT-04**: Rhythmic rotation (cyclic shift of durations)
-- [ ] **RHYT-05**: Metric modulation (reinterpret a duration unit as a new tempo reference)
+- [x] **RHYT-01**: Rhythmic retrograde of a phrase (reverse duration sequence)
+- [x] **RHYT-02**: Rhythmic augmentation (multiply all durations by a ratio)
+- [x] **RHYT-03**: Rhythmic diminution (divide all durations by a ratio)
+- [x] **RHYT-04**: Rhythmic rotation (cyclic shift of durations)
+- [x] **RHYT-05**: Metric modulation (reinterpret a duration unit as a new tempo reference)
 - [ ] **RHYT-06**: Euclidean rhythm generation (distribute N beats over M slots)
-- [ ] **RHYT-07**: Rhythmic pattern extraction from a phrase
-- [ ] **RHYT-08**: Quantize a phrase to a given rhythmic grid
-- [ ] **RHYT-09**: Compute total duration of a phrase
+- [x] **RHYT-07**: Rhythmic pattern extraction from a phrase
+- [x] **RHYT-08**: Quantize a phrase to a given rhythmic grid
+- [x] **RHYT-09**: Compute total duration of a phrase
 
 ### Melodic Transforms (MELO)
 
@@ -289,14 +289,14 @@
 | PTCH-07 | Phase 2: Transforms | Pending |
 | PTCH-08 | Phase 2: Transforms | Pending |
 | PTCH-09 | Phase 2: Transforms | Pending |
-| RHYT-01 | Phase 2: Transforms | Pending |
-| RHYT-02 | Phase 2: Transforms | Pending |
-| RHYT-03 | Phase 2: Transforms | Pending |
-| RHYT-04 | Phase 2: Transforms | Pending |
-| RHYT-05 | Phase 2: Transforms | Pending |
-| RHYT-07 | Phase 2: Transforms | Pending |
-| RHYT-08 | Phase 2: Transforms | Pending |
-| RHYT-09 | Phase 2: Transforms | Pending |
+| RHYT-01 | Phase 2: Transforms | Complete |
+| RHYT-02 | Phase 2: Transforms | Complete |
+| RHYT-03 | Phase 2: Transforms | Complete |
+| RHYT-04 | Phase 2: Transforms | Complete |
+| RHYT-05 | Phase 2: Transforms | Complete |
+| RHYT-07 | Phase 2: Transforms | Complete |
+| RHYT-08 | Phase 2: Transforms | Complete |
+| RHYT-09 | Phase 2: Transforms | Complete |
 | MELO-01 | Phase 2: Transforms | Pending |
 | MELO-02 | Phase 2: Transforms | Pending |
 | MELO-03 | Phase 2: Transforms | Pending |
