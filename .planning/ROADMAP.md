@@ -242,7 +242,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 3. Theory Libraries | 0/2 | Complete    | 2026-03-19 |
 | 4. REST API v1 | 0/2 | Complete    | 2026-03-19 |
 | 5. Harmonic Analysis | 2/2 | Complete   | 2026-03-19 |
-| 6. Batch & Analysis | 0/2 | Not started | - |
+| 6. Batch & Analysis | 1/2 | In Progress|  |
 | 7. Voice Leading | 0/2 | Not started | - |
 | 8. Counterpoint | 0/2 | Not started | - |
 | 9. Set Theory & Serial | 0/2 | Not started | - |

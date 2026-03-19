@@ -193,15 +193,15 @@
 
 ### Analysis (ANAL)
 
-- [ ] **ANAL-01**: Ambitus: highest and lowest pitch in a phrase
-- [ ] **ANAL-02**: Melodic contour analysis (up/down/same direction sequence)
-- [ ] **ANAL-03**: Interval sequence extraction from a phrase
-- [ ] **ANAL-04**: Pitch class histogram (frequency of each pitch class)
-- [ ] **ANAL-05**: Rhythmic density analysis (notes per beat over time)
-- [ ] **ANAL-06**: Melodic complexity score (based on interval variety, rhythm variety, contour changes)
-- [ ] **ANAL-07**: Identify repeated motifs within a phrase
-- [ ] **ANAL-08**: Compare two phrases for similarity (pitch, rhythm, contour)
-- [ ] **ANAL-09**: Detect sequence/imitation between phrases
+- [x] **ANAL-01**: Ambitus: highest and lowest pitch in a phrase
+- [x] **ANAL-02**: Melodic contour analysis (up/down/same direction sequence)
+- [x] **ANAL-03**: Interval sequence extraction from a phrase
+- [x] **ANAL-04**: Pitch class histogram (frequency of each pitch class)
+- [x] **ANAL-05**: Rhythmic density analysis (notes per beat over time)
+- [x] **ANAL-06**: Melodic complexity score (based on interval variety, rhythm variety, contour changes)
+- [x] **ANAL-07**: Identify repeated motifs within a phrase
+- [x] **ANAL-08**: Compare two phrases for similarity (pitch, rhythm, contour)
+- [x] **ANAL-09**: Detect sequence/imitation between phrases
 
 ### REST API (API)
 
@@ -356,15 +356,15 @@
 | BATCH-07 | Phase 6: Batch & Analysis | Pending |
 | BATCH-08 | Phase 6: Batch & Analysis | Pending |
 | BATCH-09 | Phase 6: Batch & Analysis | Pending |
-| ANAL-01 | Phase 6: Batch & Analysis | Pending |
-| ANAL-02 | Phase 6: Batch & Analysis | Pending |
-| ANAL-03 | Phase 6: Batch & Analysis | Pending |
-| ANAL-04 | Phase 6: Batch & Analysis | Pending |
-| ANAL-05 | Phase 6: Batch & Analysis | Pending |
-| ANAL-06 | Phase 6: Batch & Analysis | Pending |
-| ANAL-07 | Phase 6: Batch & Analysis | Pending |
-| ANAL-08 | Phase 6: Batch & Analysis | Pending |
-| ANAL-09 | Phase 6: Batch & Analysis | Pending |
+| ANAL-01 | Phase 6: Batch & Analysis | Complete |
+| ANAL-02 | Phase 6: Batch & Analysis | Complete |
+| ANAL-03 | Phase 6: Batch & Analysis | Complete |
+| ANAL-04 | Phase 6: Batch & Analysis | Complete |
+| ANAL-05 | Phase 6: Batch & Analysis | Complete |
+| ANAL-06 | Phase 6: Batch & Analysis | Complete |
+| ANAL-07 | Phase 6: Batch & Analysis | Complete |
+| ANAL-08 | Phase 6: Batch & Analysis | Complete |
+| ANAL-09 | Phase 6: Batch & Analysis | Complete |
 | VLEAD-01 | Phase 7: Voice Leading | Pending |
 | VLEAD-02 | Phase 7: Voice Leading | Pending |
 | VLEAD-03 | Phase 7: Voice Leading | Pending |
