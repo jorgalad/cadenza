@@ -128,14 +128,14 @@
 ### Counterpoint (CPTR)
 
 - [x] **CPTR-01**: Given a cantus firmus (melody), generate a correct first-species counterpoint (note-against-note)
-- [ ] **CPTR-02**: Generate second-species counterpoint (two notes against one)
-- [ ] **CPTR-03**: Generate third-species counterpoint (four notes against one)
-- [ ] **CPTR-04**: Generate fourth-species counterpoint (syncopated, suspensions)
-- [ ] **CPTR-05**: Generate fifth-species counterpoint (florid, combining all species)
+- [x] **CPTR-02**: Generate second-species counterpoint (two notes against one)
+- [x] **CPTR-03**: Generate third-species counterpoint (four notes against one)
+- [x] **CPTR-04**: Generate fourth-species counterpoint (syncopated, suspensions)
+- [x] **CPTR-05**: Generate fifth-species counterpoint (florid, combining all species)
 - [x] **CPTR-06**: Validate an existing counterpoint line against species rules and return violation list
 - [x] **CPTR-07**: Support counterpoint above and below the cantus firmus
-- [ ] **CPTR-08**: Generate two-voice free counterpoint (tonal, not strict species)
-- [ ] **CPTR-09**: Generate three- and four-voice counterpoint from a single melodic line
+- [x] **CPTR-08**: Generate two-voice free counterpoint (tonal, not strict species)
+- [x] **CPTR-09**: Generate three- and four-voice counterpoint from a single melodic line
 - [x] **CPTR-10**: Configurable rule severity (error/warning/suggestion) for stylistic flexibility
 
 ### Set Theory (SETTH)
@@ -374,14 +374,14 @@
 | VLEAD-07 | Phase 7: Voice Leading | Complete |
 | VLEAD-08 | Phase 7: Voice Leading | Complete |
 | CPTR-01 | Phase 8: Counterpoint | Complete |
-| CPTR-02 | Phase 8: Counterpoint | Pending |
-| CPTR-03 | Phase 8: Counterpoint | Pending |
-| CPTR-04 | Phase 8: Counterpoint | Pending |
-| CPTR-05 | Phase 8: Counterpoint | Pending |
+| CPTR-02 | Phase 8: Counterpoint | Complete |
+| CPTR-03 | Phase 8: Counterpoint | Complete |
+| CPTR-04 | Phase 8: Counterpoint | Complete |
+| CPTR-05 | Phase 8: Counterpoint | Complete |
 | CPTR-06 | Phase 8: Counterpoint | Complete |
 | CPTR-07 | Phase 8: Counterpoint | Complete |
-| CPTR-08 | Phase 8: Counterpoint | Pending |
-| CPTR-09 | Phase 8: Counterpoint | Pending |
+| CPTR-08 | Phase 8: Counterpoint | Complete |
+| CPTR-09 | Phase 8: Counterpoint | Complete |
 | CPTR-10 | Phase 8: Counterpoint | Complete |
 | SETTH-01 | Phase 9: Set Theory & Serial | Pending |
 | SETTH-02 | Phase 9: Set Theory & Serial | Pending |

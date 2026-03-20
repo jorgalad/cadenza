@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 08-01-PLAN.md
-last_updated: "2026-03-20T12:51:30.905Z"
-last_activity: 2026-03-20 -- Completed 07-02 Voice Leading Generation (smooth voice leading, inner voice generation)
+stopped_at: Completed 08-02-PLAN.md
+last_updated: "2026-03-20T13:02:13Z"
+last_activity: 2026-03-20 -- Completed 08-02 Species II-V, Free Counterpoint, and Multi-Voice Generation
 progress:
   total_phases: 13
-  completed_phases: 7
+  completed_phases: 8
   total_plans: 18
-  completed_plans: 17
+  completed_plans: 18
   percent: 100
 ---
 
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 
 ## Current Position
 
-Phase: 8 of 13 (Counterpoint) -- IN PROGRESS
-Plan: 1 of 2 in current phase (08-01 complete)
-Status: Phase 08 counterpoint in progress
-Last activity: 2026-03-20 -- Completed 08-01 Counterpoint Rules Engine and First Species
+Phase: 8 of 13 (Counterpoint) -- COMPLETE
+Plan: 2 of 2 in current phase (08-02 complete)
+Status: Phase 08 counterpoint complete
+Last activity: 2026-03-20 -- Completed 08-02 Species II-V, Free Counterpoint, and Multi-Voice Generation
 
 Progress: [██████████] 100%
 
@@ -64,6 +64,7 @@ Progress: [██████████] 100%
 | Phase 07 P01 | 3 | 2 tasks | 3 files |
 | Phase 07 P02 | 3 | 2 tasks | 3 files |
 | Phase 08 P01 | 6 | 2 tasks | 9 files |
+| Phase 08 P02 | 10 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -121,6 +122,10 @@ Recent decisions affecting current work:
 - [Phase 07]: Inner voice generation uses greedy clamped midpoint: starts at range center, minimizes movement by staying put
 - [Phase 08]: Candidate priority ordering with random tiebreaking for stepwise motion in counterpoint generation
 - [Phase 08]: Backtracking engine delegates randomness to candidates_fn for priority-preserving variety
+- [Phase 08]: Fourth species suspensions modeled as held notes with same MIDI as previous, resolving stepwise down
+- [Phase 08]: Fifth species beat-level pattern selection with forced variety (at least 2 different patterns)
+- [Phase 08]: Multi-voice inter-voice parallel avoidance via retry mechanism (50 attempts) with best-candidate fallback
+- [Phase 08]: Species 2/3 validation extracts downbeat-aligned CP pitches for parallel and crossing checks
 
 ### Pending Todos
 
@@ -134,6 +139,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-20T12:51:30.903Z
-Stopped at: Completed 08-01-PLAN.md
+Last session: 2026-03-20T13:02:13Z
+Stopped at: Completed 08-02-PLAN.md
 Resume file: None
