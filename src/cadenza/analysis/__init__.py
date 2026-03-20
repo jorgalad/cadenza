@@ -19,6 +19,10 @@ from cadenza.analysis.keys import (
     detect_key,
     detect_modulations,
 )
+from cadenza.analysis.voiceleading import (
+    VoiceLeadingViolation,
+    check_voice_leading,
+)
 from cadenza.analysis.phrases import (
     MotifMatch,
     SequenceMatch,
@@ -41,7 +45,9 @@ __all__ = [
     "MotifMatch",
     "RomanNumeral",
     "SequenceMatch",
+    "VoiceLeadingViolation",
     "ambitus",
+    "check_voice_leading",
     "chord_symbol",
     "complexity_score",
     "detect_key",
