@@ -169,8 +169,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 09-01: Pitch class set operations, prime form, Forte numbers, set relationships
-- [ ] 09-02: 12-tone row definition, matrix generation, row properties, segmentation
+- [ ] 09-01-PLAN.md -- Pitch class set operations, Forte table, prime form, interval vector, set relationships, similarity measures (SETTH-01..09)
+- [ ] 09-02-PLAN.md -- ToneRow dataclass, 48-form matrix, all-interval/combinatoriality detection, row realization, segmentation, derivation (SERI-01..06)
 
 ### Phase 10: Pattern Generation
 **Goal**: Users can generate rhythmic and melodic patterns using established compositional techniques
