@@ -135,11 +135,11 @@ Plans:
   2. Voice crossing (lower voice above upper voice) and voice overlap are detected and reported with specific positions
   3. Given two chords, the system finds the smoothest voice leading path (minimum total semitone movement)
   4. A complete voice leading check on a Bach chorale progression returns a structured list of all violations by type and position
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 07-01: Parallel detection, crossing/overlap, leap analysis
-- [ ] 07-02: Smooth voice leading generation and comprehensive rule checking
+- [ ] 07-01-PLAN.md -- VoiceLeadingViolation dataclass, parallel fifths/octaves, crossing, overlap, leaps, check_voice_leading orchestrator
+- [ ] 07-02-PLAN.md -- smooth_voice_leading permutation search and generate_inner_voices greedy generation
 
 ### Phase 8: Counterpoint
 **Goal**: Users can provide a cantus firmus melody and receive valid species counterpoint lines that follow standard rules
@@ -151,7 +151,7 @@ Plans:
   3. An existing counterpoint line can be validated against species rules, returning a structured violation list with severity levels (error/warning/suggestion)
   4. Counterpoint generation works both above and below the cantus firmus
   5. Three- and four-voice counterpoint can be generated from a single melodic line
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 08-01: Species I-III counterpoint generation and validation
@@ -166,7 +166,7 @@ Plans:
   2. A 12-tone row generates the complete 48-form matrix (12 primes, 12 inversions, 12 retrogrades, 12 retrograde-inversions)
   3. Set relationships (subset, superset, Z-relation, complement) are correctly computed between any two pitch class sets
   4. A 12-tone row can be realized as a sequence of pitched notes in a given register with correct octave placement
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 09-01: Pitch class set operations, prime form, Forte numbers, set relationships
@@ -181,7 +181,7 @@ Plans:
   2. An isorhythmic pattern applies a talea (rhythm) and color (pitch sequence) that cycle independently, producing correct medieval-style isorhythm
   3. Hocket generation distributes a single phrase across multiple voices such that no two voices sound simultaneously
   4. A rhythmic canon offsets a phrase by a specified duration across multiple voices with correct alignment
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 10-01: Euclidean rhythms, isorhythm, ostinato, binary patterns, accent patterns
@@ -196,7 +196,7 @@ Plans:
   2. An L-system with user-defined production rules generates a phrase that expands deterministically across generations
   3. A tendency mask constrains pitch selection over time -- notes at the start cluster near C4, notes at the end cluster near C6
   4. Generating variations on a theme produces multiple distinct but recognizably related phrases through systematic transform application
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 11-01: Markov chains (first and higher order), probabilistic selection, random walk
@@ -211,7 +211,7 @@ Plans:
   2. Cadenza's internal representation exports to MusicXML that opens correctly in Dorico and Sibelius
   3. A MIDI file imports into Cadenza with correct pitch and duration mapping (quantized to the nearest rhythmic grid)
   4. Cadenza exports to MIDI with correct note-on/off events, velocities mapped from dynamics, and tempo metadata
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 12-01: MusicXML import/export (lxml)
@@ -225,7 +225,7 @@ Plans:
   1. A counterpoint generation request returns a job ID immediately; polling the job endpoint eventually returns the completed result
   2. A batch endpoint accepts multiple operations in a single request and returns all results in one response
   3. All new endpoints (analysis, counterpoint, generation, I/O) added since Phase 4 are documented in OpenAPI and follow the same dual CN+JSON response pattern
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 13-01: Async job pattern, batch endpoint, final API integration for all phases
