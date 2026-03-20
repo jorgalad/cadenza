@@ -10,7 +10,12 @@ from cadenza.core.pitch import Pitch
 from cadenza.core.duration import Duration
 from cadenza.core.note import Note, Rest
 from cadenza.core.score import Score
-from cadenza.analysis.voiceleading import VoiceLeadingViolation, check_voice_leading, smooth_voice_leading
+from cadenza.analysis.voiceleading import (
+    VoiceLeadingViolation,
+    check_voice_leading,
+    generate_inner_voices,
+    smooth_voice_leading,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -329,3 +334,106 @@ def test_smooth_voice_leading_identical():
     chord = (Pitch("c", "n", 4), Pitch("e", "n", 4), Pitch("g", "n", 4))
     result = smooth_voice_leading(chord, chord)
     assert result == chord
+
+
+# ---------------------------------------------------------------------------
+# generate_inner_voices
+# ---------------------------------------------------------------------------
+
+
+def _make_phrase(*pitches_and_dur: tuple[str, str, int]) -> tuple[Note, ...]:
+    """Create a phrase of quarter notes from (step, acc, octave) tuples."""
+    return tuple(
+        Note(pitch=Pitch(step=s, accidental=a, octave=o), duration=Q)
+        for s, a, o in pitches_and_dur
+    )
+
+
+def test_generate_inner_voices_basic():
+    """Generates 2 inner voices for 4-beat soprano+bass; correct count and range."""
+    soprano = _make_phrase(("c", "n", 5), ("d", "n", 5), ("e", "n", 5), ("f", "n", 5))
+    bass = _make_phrase(("c", "n", 3), ("b", "n", 2), ("a", "n", 2), ("g", "n", 2))
+    result = generate_inner_voices(soprano, bass, n=2)
+    assert len(result) == 2
+    # Each phrase has 4 events
+    for phrase in result:
+        assert len(phrase) == 4
+        for event in phrase:
+            assert isinstance(event, Note)
+    # Alto range: C3 (48) to G5 (79)
+    for event in result[0]:
+        assert 48 <= event.pitch.midi_number <= 79
+    # Tenor range: C2 (36) to G4 (67)
+    for event in result[1]:
+        assert 36 <= event.pitch.midi_number <= 67
+
+
+def test_generate_inner_voices_minimizes_movement():
+    """Inner voices should have small beat-to-beat movement."""
+    soprano = _make_phrase(("c", "n", 5), ("d", "n", 5), ("e", "n", 5), ("f", "n", 5))
+    bass = _make_phrase(("c", "n", 3), ("b", "n", 2), ("a", "n", 2), ("g", "n", 2))
+    result = generate_inner_voices(soprano, bass, n=2)
+    for phrase in result:
+        total_movement = 0
+        notes = [e for e in phrase if isinstance(e, Note)]
+        for i in range(1, len(notes)):
+            total_movement += abs(notes[i].pitch.midi_number - notes[i - 1].pitch.midi_number)
+        avg = total_movement / max(1, len(notes) - 1)
+        assert avg <= 4, f"Average movement {avg} exceeds 4 semitones"
+
+
+def test_generate_inner_voices_custom_ranges():
+    """Custom ranges are respected."""
+    soprano = _make_phrase(("c", "n", 5), ("d", "n", 5))
+    bass = _make_phrase(("c", "n", 3), ("d", "n", 3))
+    custom_ranges = [
+        (Pitch("e", "n", 3), Pitch("e", "n", 5)),
+        (Pitch("a", "n", 2), Pitch("a", "n", 4)),
+    ]
+    result = generate_inner_voices(soprano, bass, n=2, ranges=custom_ranges)
+    assert len(result) == 2
+    # First voice within E3-E5
+    for event in result[0]:
+        assert isinstance(event, Note)
+        assert Pitch("e", "n", 3).midi_number <= event.pitch.midi_number <= Pitch("e", "n", 5).midi_number
+    # Second voice within A2-A4
+    for event in result[1]:
+        assert isinstance(event, Note)
+        assert Pitch("a", "n", 2).midi_number <= event.pitch.midi_number <= Pitch("a", "n", 4).midi_number
+
+
+def test_generate_inner_voices_single_inner():
+    """n=1 returns list of 1 Phrase."""
+    soprano = _make_phrase(("c", "n", 5), ("d", "n", 5))
+    bass = _make_phrase(("c", "n", 3), ("d", "n", 3))
+    result = generate_inner_voices(soprano, bass, n=1)
+    assert len(result) == 1
+    assert len(result[0]) == 2
+
+
+def test_generate_inner_voices_preserves_duration():
+    """Inner voice notes inherit duration from soprano."""
+    H = Duration(fraction=Fraction(1, 2))  # half note
+    soprano = (
+        Note(pitch=Pitch("c", "n", 5), duration=H),
+        Note(pitch=Pitch("d", "n", 5), duration=Q),
+    )
+    bass = (
+        Note(pitch=Pitch("c", "n", 3), duration=H),
+        Note(pitch=Pitch("d", "n", 3), duration=Q),
+    )
+    result = generate_inner_voices(soprano, bass, n=2)
+    for phrase in result:
+        assert phrase[0].duration == H
+        assert phrase[1].duration == Q
+
+
+def test_generate_inner_voices_returns_highest_first():
+    """Alto (higher range) should come first in the result list."""
+    soprano = _make_phrase(("c", "n", 5), ("d", "n", 5), ("e", "n", 5), ("f", "n", 5))
+    bass = _make_phrase(("c", "n", 3), ("b", "n", 2), ("a", "n", 2), ("g", "n", 2))
+    result = generate_inner_voices(soprano, bass, n=2)
+    # Alto (first) should have higher average pitch than tenor (second)
+    avg_alto = sum(e.pitch.midi_number for e in result[0] if isinstance(e, Note)) / len(result[0])
+    avg_tenor = sum(e.pitch.midi_number for e in result[1] if isinstance(e, Note)) / len(result[1])
+    assert avg_alto > avg_tenor
