@@ -152,12 +152,12 @@
 
 ### Serial / 12-Tone (SERI)
 
-- [ ] **SERI-01**: Define a 12-tone row from a list of pitch classes
-- [ ] **SERI-02**: Generate the complete 48-form matrix (P, I, R, RI in all transpositions)
-- [ ] **SERI-03**: Detect if a row has special properties (all-interval row, combinatoriality)
-- [ ] **SERI-04**: Realize a row form as a sequence of pitched notes
-- [ ] **SERI-05**: Segmentation of a row into trichords, tetrachords, hexachords
-- [ ] **SERI-06**: Row derivation (generating a row from a smaller set by operations)
+- [x] **SERI-01**: Define a 12-tone row from a list of pitch classes
+- [x] **SERI-02**: Generate the complete 48-form matrix (P, I, R, RI in all transpositions)
+- [x] **SERI-03**: Detect if a row has special properties (all-interval row, combinatoriality)
+- [x] **SERI-04**: Realize a row form as a sequence of pitched notes
+- [x] **SERI-05**: Segmentation of a row into trichords, tetrachords, hexachords
+- [x] **SERI-06**: Row derivation (generating a row from a smaller set by operations)
 
 ### Pattern & Rhythm Generation (PATT)
 
@@ -392,12 +392,12 @@
 | SETTH-07 | Phase 9: Set Theory & Serial | Complete |
 | SETTH-08 | Phase 9: Set Theory & Serial | Complete |
 | SETTH-09 | Phase 9: Set Theory & Serial | Complete |
-| SERI-01 | Phase 9: Set Theory & Serial | Pending |
-| SERI-02 | Phase 9: Set Theory & Serial | Pending |
-| SERI-03 | Phase 9: Set Theory & Serial | Pending |
-| SERI-04 | Phase 9: Set Theory & Serial | Pending |
-| SERI-05 | Phase 9: Set Theory & Serial | Pending |
-| SERI-06 | Phase 9: Set Theory & Serial | Pending |
+| SERI-01 | Phase 9: Set Theory & Serial | Complete |
+| SERI-02 | Phase 9: Set Theory & Serial | Complete |
+| SERI-03 | Phase 9: Set Theory & Serial | Complete |
+| SERI-04 | Phase 9: Set Theory & Serial | Complete |
+| SERI-05 | Phase 9: Set Theory & Serial | Complete |
+| SERI-06 | Phase 9: Set Theory & Serial | Complete |
 | RHYT-06 | Phase 10: Pattern Generation | Pending |
 | PATT-01 | Phase 10: Pattern Generation | Pending |
 | PATT-02 | Phase 10: Pattern Generation | Pending |
