@@ -154,8 +154,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 08-01: Species I-III counterpoint generation and validation
-- [ ] 08-02: Species IV-V, free counterpoint, multi-voice generation, configurable rules
+- [ ] 08-01-PLAN.md -- Rules engine, validation (check_counterpoint), backtracking engine, first species generation
+- [ ] 08-02-PLAN.md -- Species II-V, free counterpoint, multi-voice generation
 
 ### Phase 9: Set Theory & Serial
 **Goal**: Users can perform pitch class set analysis and generate/manipulate 12-tone rows and matrices
