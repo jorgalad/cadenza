@@ -181,3 +181,44 @@ class TestCheckCounterpoint:
         rn = [v for v in violations if v.rule == "repeated_note"]
         assert len(rn) >= 1
         assert rn[0].severity == "warning"
+
+
+# ---------------------------------------------------------------------------
+# Species 2 validation tests
+# ---------------------------------------------------------------------------
+
+
+class TestCheckCounterpointSpecies2:
+    """Test check_counterpoint with species=2."""
+
+    def test_offbeat_passing_tone_not_flagged(self) -> None:
+        """A consonant passing tone on an offbeat should not be flagged."""
+        # CF: C4, D4 (2 notes = 4 CP notes in species 2)
+        # CP: G4(consonant), A4(consonant step), A4(consonant), B4(consonant step)
+        cf = make_phrase([("c", "n", 4), ("d", "n", 4)])
+        cp = make_phrase([("g", "n", 4), ("a", "n", 4), ("a", "n", 4), ("b", "n", 4)], base="h")
+        violations = check_counterpoint(cf, cp, species=2)
+        errors = [v for v in violations if v.severity == "error"]
+        # No errors expected -- all notes are consonant
+        dissonances = [v for v in errors if v.rule == "dissonance_on_beat"]
+        assert dissonances == []
+
+
+# ---------------------------------------------------------------------------
+# Species 4 validation tests
+# ---------------------------------------------------------------------------
+
+
+class TestCheckCounterpointSpecies4:
+    """Test check_counterpoint with species=4."""
+
+    def test_unresolved_suspension_detected(self) -> None:
+        """Dissonant held note not resolved stepwise down -> unresolved_suspension."""
+        # CF: C4, D4, E4 (3 notes)
+        # CP: G4, E4, B4 -- E4 is dissonant (2nd) with D4, then jumps UP to B4 instead of resolving down
+        cf = make_phrase([("c", "n", 4), ("d", "n", 4), ("e", "n", 4)])
+        cp = make_phrase([("g", "n", 4), ("e", "n", 4), ("b", "n", 4)])
+        violations = check_counterpoint(cf, cp, species=4)
+        unresolved = [v for v in violations if v.rule == "unresolved_suspension"]
+        assert len(unresolved) >= 1
+        assert unresolved[0].severity == "error"
