@@ -116,13 +116,13 @@
 
 ### Voice Leading (VLEAD)
 
-- [ ] **VLEAD-01**: Detect parallel fifths between any two voices
-- [ ] **VLEAD-02**: Detect parallel octaves between any two voices
-- [ ] **VLEAD-03**: Detect voice crossing (lower voice exceeds upper voice in pitch)
-- [ ] **VLEAD-04**: Detect voice overlap (voice moves to a pitch beyond the previous pitch of adjacent voice)
+- [x] **VLEAD-01**: Detect parallel fifths between any two voices
+- [x] **VLEAD-02**: Detect parallel octaves between any two voices
+- [x] **VLEAD-03**: Detect voice crossing (lower voice exceeds upper voice in pitch)
+- [x] **VLEAD-04**: Detect voice overlap (voice moves to a pitch beyond the previous pitch of adjacent voice)
 - [ ] **VLEAD-05**: Find smoothest voice leading path between two chords (minimize total voice movement)
-- [ ] **VLEAD-06**: Detect large leaps and suggest resolutions (leaps > octave, augmented/diminished leaps)
-- [ ] **VLEAD-07**: Check all standard voice leading rules for a chord progression and return violation list
+- [x] **VLEAD-06**: Detect large leaps and suggest resolutions (leaps > octave, augmented/diminished leaps)
+- [x] **VLEAD-07**: Check all standard voice leading rules for a chord progression and return violation list
 - [ ] **VLEAD-08**: Generate smooth inner voice parts given soprano and bass lines
 
 ### Counterpoint (CPTR)
@@ -365,13 +365,13 @@
 | ANAL-07 | Phase 6: Batch & Analysis | Complete |
 | ANAL-08 | Phase 6: Batch & Analysis | Complete |
 | ANAL-09 | Phase 6: Batch & Analysis | Complete |
-| VLEAD-01 | Phase 7: Voice Leading | Pending |
-| VLEAD-02 | Phase 7: Voice Leading | Pending |
-| VLEAD-03 | Phase 7: Voice Leading | Pending |
-| VLEAD-04 | Phase 7: Voice Leading | Pending |
+| VLEAD-01 | Phase 7: Voice Leading | Complete |
+| VLEAD-02 | Phase 7: Voice Leading | Complete |
+| VLEAD-03 | Phase 7: Voice Leading | Complete |
+| VLEAD-04 | Phase 7: Voice Leading | Complete |
 | VLEAD-05 | Phase 7: Voice Leading | Pending |
-| VLEAD-06 | Phase 7: Voice Leading | Pending |
-| VLEAD-07 | Phase 7: Voice Leading | Pending |
+| VLEAD-06 | Phase 7: Voice Leading | Complete |
+| VLEAD-07 | Phase 7: Voice Leading | Complete |
 | VLEAD-08 | Phase 7: Voice Leading | Pending |
 | CPTR-01 | Phase 8: Counterpoint | Pending |
 | CPTR-02 | Phase 8: Counterpoint | Pending |
