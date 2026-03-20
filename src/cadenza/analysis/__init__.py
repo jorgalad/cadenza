@@ -22,6 +22,8 @@ from cadenza.analysis.keys import (
 from cadenza.analysis.voiceleading import (
     VoiceLeadingViolation,
     check_voice_leading,
+    generate_inner_voices,
+    smooth_voice_leading,
 )
 from cadenza.analysis.phrases import (
     MotifMatch,
@@ -49,6 +51,7 @@ __all__ = [
     "ambitus",
     "check_voice_leading",
     "chord_symbol",
+    "generate_inner_voices",
     "complexity_score",
     "detect_key",
     "detect_modulations",
@@ -64,4 +67,5 @@ __all__ = [
     "realize_chord",
     "rhythmic_density",
     "roman_numeral",
+    "smooth_voice_leading",
 ]

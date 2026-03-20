@@ -11,10 +11,11 @@ from dataclasses import dataclass
 from itertools import permutations
 
 from cadenza.core.interval import Interval
-from cadenza.core.note import Note
+from cadenza.core.note import Note, Rest
 from cadenza.core.phrase import Phrase
 from cadenza.core.pitch import Pitch
 from cadenza.core.score import Score
+from cadenza.transforms.pitch import from_midi
 
 
 # ---------------------------------------------------------------------------
@@ -280,6 +281,87 @@ def smooth_voice_leading(
             best = perm  # type: ignore[assignment]
 
     return tuple(best)
+
+
+# ---------------------------------------------------------------------------
+# generate_inner_voices
+# ---------------------------------------------------------------------------
+
+_DEFAULT_RANGES: list[tuple[Pitch, Pitch]] = [
+    (Pitch("c", "n", 3), Pitch("g", "n", 5)),   # Alto
+    (Pitch("c", "n", 2), Pitch("g", "n", 4)),   # Tenor
+]
+
+
+def generate_inner_voices(
+    soprano: Phrase,
+    bass: Phrase,
+    n: int = 2,
+    ranges: list[tuple[Pitch, Pitch]] | None = None,
+) -> list[Phrase]:
+    """Generate *n* inner voice Phrases between *soprano* and *bass*.
+
+    Uses a greedy beat-by-beat approach: each inner voice starts at the
+    midpoint of its range and moves as little as possible from beat to beat,
+    clamped to its designated range.
+
+    Default ranges for n=2 are alto (C3--G5) and tenor (C2--G4).
+    Returns a list of Phrases ordered from highest range to lowest.
+
+    Raises ``ValueError`` when custom *ranges* length does not match *n*.
+    """
+    if ranges is not None:
+        if len(ranges) != n:
+            raise ValueError(
+                f"Expected {n} ranges, got {len(ranges)}"
+            )
+        voice_ranges = list(ranges)
+    else:
+        if n <= len(_DEFAULT_RANGES):
+            voice_ranges = _DEFAULT_RANGES[:n]
+        else:
+            # Interpolate additional ranges between tenor low and alto high
+            voice_ranges = list(_DEFAULT_RANGES)
+            alto_high = _DEFAULT_RANGES[0][1].midi_number
+            tenor_low = _DEFAULT_RANGES[1][0].midi_number
+            for _ in range(n - len(_DEFAULT_RANGES)):
+                voice_ranges.append(
+                    (from_midi(tenor_low), from_midi(alto_high))
+                )
+
+    soprano_pitches = _extract_pitches(soprano)
+    bass_pitches = _extract_pitches(bass)
+    beat_count = min(len(soprano), len(bass))
+
+    voices: list[list[Note | Rest]] = []
+
+    for v in range(n):
+        low_midi = voice_ranges[v][0].midi_number
+        high_midi = voice_ranges[v][1].midi_number
+        prev_midi = (low_midi + high_midi) // 2
+        notes: list[Note | Rest] = []
+
+        for i in range(beat_count):
+            sp = soprano_pitches[i] if i < len(soprano_pitches) else None
+            bp = bass_pitches[i] if i < len(bass_pitches) else None
+
+            # Clamp to range, minimising movement from prev_midi
+            clamped = max(low_midi, min(high_midi, prev_midi))
+            pitch = from_midi(clamped)
+
+            # Inherit duration from soprano at this beat position
+            dur = soprano[i].duration if i < len(soprano) else bass[i].duration
+
+            notes.append(
+                Note(pitch=pitch, duration=dur, dynamic=None, articulations=())
+            )
+            prev_midi = clamped
+
+        voices.append(notes)
+
+    # Return as Phrases (tuples), ordered highest range first
+    # voice_ranges[0] is already alto (highest), so order is preserved
+    return [tuple(v) for v in voices]
 
 
 # ---------------------------------------------------------------------------
