@@ -120,10 +120,10 @@
 - [x] **VLEAD-02**: Detect parallel octaves between any two voices
 - [x] **VLEAD-03**: Detect voice crossing (lower voice exceeds upper voice in pitch)
 - [x] **VLEAD-04**: Detect voice overlap (voice moves to a pitch beyond the previous pitch of adjacent voice)
-- [ ] **VLEAD-05**: Find smoothest voice leading path between two chords (minimize total voice movement)
+- [x] **VLEAD-05**: Find smoothest voice leading path between two chords (minimize total voice movement)
 - [x] **VLEAD-06**: Detect large leaps and suggest resolutions (leaps > octave, augmented/diminished leaps)
 - [x] **VLEAD-07**: Check all standard voice leading rules for a chord progression and return violation list
-- [ ] **VLEAD-08**: Generate smooth inner voice parts given soprano and bass lines
+- [x] **VLEAD-08**: Generate smooth inner voice parts given soprano and bass lines
 
 ### Counterpoint (CPTR)
 
@@ -369,10 +369,10 @@
 | VLEAD-02 | Phase 7: Voice Leading | Complete |
 | VLEAD-03 | Phase 7: Voice Leading | Complete |
 | VLEAD-04 | Phase 7: Voice Leading | Complete |
-| VLEAD-05 | Phase 7: Voice Leading | Pending |
+| VLEAD-05 | Phase 7: Voice Leading | Complete |
 | VLEAD-06 | Phase 7: Voice Leading | Complete |
 | VLEAD-07 | Phase 7: Voice Leading | Complete |
-| VLEAD-08 | Phase 7: Voice Leading | Pending |
+| VLEAD-08 | Phase 7: Voice Leading | Complete |
 | CPTR-01 | Phase 8: Counterpoint | Pending |
 | CPTR-02 | Phase 8: Counterpoint | Pending |
 | CPTR-03 | Phase 8: Counterpoint | Pending |
