@@ -29,9 +29,13 @@ from cadenza.settheory.pcset import (
 class TestPrimeForm:
     """Tests for the Forte (1973) prime form algorithm."""
 
-    def test_all_interval_tetrachord(self):
-        """4-Z15: {0,1,3,7} has prime form (0,1,4,6) per Forte."""
-        assert prime_form(frozenset({0, 1, 3, 7})) == (0, 1, 4, 6)
+    def test_all_interval_tetrachord_z15(self):
+        """4-Z15: {0,1,4,6} has prime form (0,1,4,6) per Forte."""
+        assert prime_form(frozenset({0, 1, 4, 6})) == (0, 1, 4, 6)
+
+    def test_all_interval_tetrachord_z29(self):
+        """4-Z29: {0,1,3,7} has prime form (0,1,3,7) per Forte."""
+        assert prime_form(frozenset({0, 1, 3, 7})) == (0, 1, 3, 7)
 
     def test_major_triad(self):
         """3-11: {0,3,7} has prime form (0,3,7)."""
