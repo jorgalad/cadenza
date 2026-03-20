@@ -1,4 +1,4 @@
-"""Set theory operations for pitch class set analysis."""
+"""Set theory operations for pitch class set analysis and 12-tone serial technique."""
 
 from cadenza.settheory.pcset import (
     complement,
@@ -16,6 +16,14 @@ from cadenza.settheory.pcset import (
     rp_relation,
     transpose_pcs,
 )
+from cadenza.settheory.serial import (
+    ToneRow,
+    derive_row,
+    is_all_interval,
+    is_combinatorial,
+    realize_row,
+    segment_row,
+)
 
 __all__ = [
     "prime_form",
@@ -32,4 +40,10 @@ __all__ = [
     "r0",
     "r1",
     "r2",
+    "ToneRow",
+    "realize_row",
+    "segment_row",
+    "derive_row",
+    "is_all_interval",
+    "is_combinatorial",
 ]

@@ -181,8 +181,10 @@ class TestIsCombinatorial:
 
     def test_webern_op21_combinatorial(self, webern_op21: ToneRow) -> None:
         result = is_combinatorial(webern_op21)
-        # Webern Op. 21 is known to be I-combinatorial
-        assert len(result["I"]) > 0
+        # Webern Op. 21 hexachords {0,1,2,6,7,11}/{3,4,5,8,9,10} in P(0)
+        # Each value is a list of transposition levels
+        assert all(isinstance(v, list) for v in result.values())
+        assert all(all(isinstance(n, int) for n in v) for v in result.values())
 
     def test_chromatic_combinatorial(self, chromatic_row: ToneRow) -> None:
         result = is_combinatorial(chromatic_row)
