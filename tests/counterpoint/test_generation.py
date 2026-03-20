@@ -14,6 +14,7 @@ from cadenza.counterpoint.generation import (
     generate_fourth_species,
     generate_fifth_species,
     generate_free_counterpoint,
+    generate_multi_voice_counterpoint,
 )
 from cadenza.counterpoint.rules import (
     IMPERFECT_CONSONANCES,
@@ -400,3 +401,123 @@ class TestGenerateFreeCounterpoint:
             assert isinstance(event, Note)
             assert event.pitch.midi_number >= low.midi_number
             assert event.pitch.midi_number <= high.midi_number
+
+
+# ---------------------------------------------------------------------------
+# Multi-voice counterpoint tests
+# ---------------------------------------------------------------------------
+
+
+class TestGenerateMultiVoiceCounterpoint:
+    """Test multi-voice counterpoint generation."""
+
+    def test_n1_returns_score_with_2_voices(self, cf_c_major) -> None:
+        """n=1: Score with 2 voices: cf and cp1."""
+        from cadenza.core.score import Score
+        result = generate_multi_voice_counterpoint(cf_c_major, n=1)
+        assert isinstance(result, Score)
+        assert len(result.voice_names) == 2
+        assert "cf" in result.voice_names
+        assert "cp1" in result.voice_names
+
+    def test_n2_returns_score_with_3_voices(self, cf_c_major) -> None:
+        """n=2: Score with 3 voices: cf + cp1 + cp2."""
+        result = generate_multi_voice_counterpoint(cf_c_major, n=2)
+        assert len(result.voice_names) == 3
+        assert "cf" in result.voice_names
+        assert "cp1" in result.voice_names
+        assert "cp2" in result.voice_names
+
+    def test_voices_sorted_highest_to_lowest(self, cf_c_major) -> None:
+        """Voices should be ordered highest to lowest by average MIDI pitch."""
+        result = generate_multi_voice_counterpoint(cf_c_major, n=2)
+        avg_midis = []
+        for name in result.voice_names:
+            phrase = result[name]
+            midis = [e.pitch.midi_number for e in phrase if isinstance(e, Note)]
+            avg_midis.append(sum(midis) / len(midis) if midis else 0.0)
+        assert avg_midis == sorted(avg_midis, reverse=True), (
+            f"Voices not sorted highest-to-lowest: {list(zip(result.voice_names, avg_midis))}"
+        )
+
+    def test_n2_above1_puts_voices_above_and_below(self, cf_c_major) -> None:
+        """above=1 with n=2: 1 voice above CF, 1 below."""
+        result = generate_multi_voice_counterpoint(cf_c_major, n=2, above=1)
+        # CF should be in the middle
+        cf_phrase = result["cf"]
+        cf_avg = sum(
+            e.pitch.midi_number for e in cf_phrase if isinstance(e, Note)
+        ) / len(cf_phrase)
+        # At least one voice above and one below
+        voice_avgs = {}
+        for name in result.voice_names:
+            if name == "cf":
+                continue
+            phrase = result[name]
+            midis = [e.pitch.midi_number for e in phrase if isinstance(e, Note)]
+            voice_avgs[name] = sum(midis) / len(midis) if midis else 0.0
+        avgs = list(voice_avgs.values())
+        assert any(a > cf_avg for a in avgs), "No voice above CF"
+        assert any(a < cf_avg for a in avgs), "No voice below CF"
+
+    def test_species_param(self, cf_c_major) -> None:
+        """species=1 uses first species for all voices."""
+        result = generate_multi_voice_counterpoint(cf_c_major, n=2, species=1)
+        # Each voice should have same length as CF
+        for name in result.voice_names:
+            if name == "cf":
+                continue
+            phrase = result[name]
+            assert len(phrase) == len(cf_c_major)
+
+    def test_each_voice_passes_check_counterpoint(self, cf_c_major) -> None:
+        """Each generated voice passes validation against CF."""
+        result = generate_multi_voice_counterpoint(cf_c_major, n=2, species=1)
+        cf_phrase = result["cf"]
+        for name in result.voice_names:
+            if name == "cf":
+                continue
+            cp_phrase = result[name]
+            violations = check_counterpoint(cf_phrase, cp_phrase, species=1)
+            errors = [v for v in violations if v.severity == "error"]
+            assert errors == [], f"Voice {name} has errors: {errors}"
+
+    def test_n_gt_4_raises(self, cf_c_major) -> None:
+        """n > 4 should raise ValueError."""
+        with pytest.raises(ValueError, match="Maximum 4"):
+            generate_multi_voice_counterpoint(cf_c_major, n=5)
+
+    def test_empty_cf_raises(self) -> None:
+        """Empty CF should raise ValueError."""
+        with pytest.raises(ValueError, match="must not be empty"):
+            generate_multi_voice_counterpoint((), n=1)
+
+    def test_n2_above_none_defaults_all_above(self, cf_c_major) -> None:
+        """above=None (default) puts all voices above CF."""
+        result = generate_multi_voice_counterpoint(cf_c_major, n=2, above=None)
+        cf_phrase = result["cf"]
+        for name in result.voice_names:
+            if name == "cf":
+                continue
+            cp_phrase = result[name]
+            for cf_ev, cp_ev in zip(cf_phrase, cp_phrase):
+                if isinstance(cf_ev, Note) and isinstance(cp_ev, Note):
+                    assert cp_ev.pitch.midi_number >= cf_ev.pitch.midi_number
+
+    def test_no_parallel_fifths_between_voice_pairs(self, cf_c_major) -> None:
+        """No parallel 5ths/8ths between any pair of generated voices."""
+        result = generate_multi_voice_counterpoint(cf_c_major, n=2, species=1)
+        voice_phrases = [result[name] for name in result.voice_names]
+        for i in range(len(voice_phrases)):
+            for j in range(i + 1, len(voice_phrases)):
+                violations = check_counterpoint(
+                    voice_phrases[i], voice_phrases[j], species=1
+                )
+                parallels = [
+                    v for v in violations
+                    if v.rule in ("parallel_fifth", "parallel_octave")
+                    and v.severity == "error"
+                ]
+                assert parallels == [], (
+                    f"Parallel violations between voices {i} and {j}: {parallels}"
+                )

@@ -849,3 +849,116 @@ def generate_free_counterpoint(
     for i, pitch in enumerate(result):
         events.append(Note(pitch=pitch, duration=cf_durations[i], dynamic=None, articulations=()))
     return tuple(events)
+
+
+# ---------------------------------------------------------------------------
+# Multi-voice counterpoint
+# ---------------------------------------------------------------------------
+
+
+def _avg_midi(phrase: Phrase) -> float:
+    """Return the mean MIDI number of Note events in a phrase."""
+    midis = [e.pitch.midi_number for e in phrase if isinstance(e, Note)]
+    return sum(midis) / len(midis) if midis else 0.0
+
+
+def _species_generator(species: int):  # noqa: ANN201
+    """Return the appropriate generation function for a species number."""
+    generators = {
+        0: generate_free_counterpoint,
+        1: generate_first_species,
+        2: generate_second_species,
+        3: generate_third_species,
+        4: generate_fourth_species,
+        5: generate_fifth_species,
+    }
+    return generators[species]
+
+
+def generate_multi_voice_counterpoint(
+    cf: Phrase,
+    n: int = 2,
+    species: int = 1,
+    above: int | None = None,
+) -> "Score":
+    """Generate multi-voice counterpoint as a Score.
+
+    Args:
+        cf: The cantus firmus phrase.
+        n: Number of counterpoint voices to generate (1-4).
+        species: Species number (0-5) for all generated voices.
+        above: How many voices to place above CF. If None, all above.
+
+    Returns:
+        Score with CF and n counterpoint voices, ordered highest to lowest.
+
+    Raises:
+        ValueError: If cf is empty or n > 4.
+    """
+    from cadenza.core.score import Score
+
+    if not cf:
+        raise ValueError("Cantus firmus must not be empty")
+    if n > 4:
+        raise ValueError(f"Maximum 4 counterpoint voices, got {n}")
+
+    above_count = above if above is not None else n
+    below_count = n - above_count
+
+    gen_fn = _species_generator(species)
+
+    voices: list[tuple[str, Phrase]] = []
+
+    def _has_parallel_issues(new_voice: Phrase, existing: list[tuple[str, Phrase]]) -> bool:
+        """Check if new_voice has parallel 5ths/8ths with any existing voice."""
+        from cadenza.counterpoint.validation import check_counterpoint as _check
+        for _, existing_phrase in existing:
+            # Use species=1 for inter-voice check (1:1 note alignment)
+            violations = _check(existing_phrase, new_voice, species=1)
+            parallels = [
+                v for v in violations
+                if v.rule in ("parallel_fifth", "parallel_octave")
+                and v.severity == "error"
+            ]
+            if parallels:
+                return True
+        return False
+
+    def _gen_voice(is_above: bool, existing: list[tuple[str, Phrase]]) -> Phrase:
+        """Generate a voice, retrying to avoid inter-voice parallels."""
+        best: Phrase | None = None
+        best_issues = 999
+        for _attempt in builtins.range(50):
+            candidate = gen_fn(cf, above=is_above)
+            if not _has_parallel_issues(candidate, existing):
+                return candidate
+            # Track best candidate (fewest parallel issues)
+            from cadenza.counterpoint.validation import check_counterpoint as _check
+            issues = 0
+            for _, ep in existing:
+                vs = _check(ep, candidate, species=1)
+                issues += sum(1 for v in vs if v.rule in ("parallel_fifth", "parallel_octave") and v.severity == "error")
+            if issues < best_issues:
+                best_issues = issues
+                best = candidate
+        return best if best is not None else gen_fn(cf, above=is_above)
+
+    # Generate voices above CF
+    for i in builtins.range(above_count):
+        voice_name = f"cp{len(voices) + 1}"
+        voice = _gen_voice(True, voices)
+        voices.append((voice_name, voice))
+
+    # Generate voices below CF
+    for i in builtins.range(below_count):
+        voice_name = f"cp{len(voices) + 1}"
+        voice = _gen_voice(False, voices)
+        voices.append((voice_name, voice))
+
+    # Add CF
+    voices.append(("cf", cf))
+
+    # Sort all voices by average MIDI pitch (highest first)
+    voices.sort(key=lambda v: _avg_midi(v[1]), reverse=True)
+
+    return Score(_voices=tuple(voices))

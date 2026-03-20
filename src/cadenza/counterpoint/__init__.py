@@ -5,6 +5,7 @@ from cadenza.counterpoint.generation import (
     generate_first_species,
     generate_fourth_species,
     generate_free_counterpoint,
+    generate_multi_voice_counterpoint,
     generate_second_species,
     generate_third_species,
 )
@@ -20,6 +21,7 @@ __all__ = [
     "generate_first_species",
     "generate_fourth_species",
     "generate_free_counterpoint",
+    "generate_multi_voice_counterpoint",
     "generate_second_species",
     "generate_third_species",
 ]
