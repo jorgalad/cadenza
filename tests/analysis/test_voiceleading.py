@@ -286,11 +286,26 @@ def test_smooth_voice_leading_basic():
 
 
 def test_smooth_voice_leading_reorder():
-    """chord1=(C4,E4,G4), chord2=(D4,G4,B4). Best=(D4,B4,G4) with cost 9."""
-    chord1 = (Pitch("c", "n", 4), Pitch("e", "n", 4), Pitch("g", "n", 4))
-    chord2 = (Pitch("d", "n", 4), Pitch("g", "n", 4), Pitch("b", "n", 4))
+    """Verify that reordering actually occurs when beneficial.
+
+    chord1=(C4,G4,E5), chord2=(D4,F4,B4).
+    Identity: |60-62|+|67-65|+|76-71| = 2+2+5 = 9
+    (F4,B4,D4): |60-65|+|67-71|+|76-62| = 5+4+14 = 23
+    (D4,B4,F4): |60-62|+|67-71|+|76-65| = 2+4+11 = 17
+    (F4,D4,B4): |60-65|+|67-62|+|76-71| = 5+5+5 = 15
+    (B4,D4,F4): |60-71|+|67-62|+|76-65| = 11+5+11 = 27
+    (B4,F4,D4): |60-71|+|67-65|+|76-62| = 11+2+14 = 27
+    Best is identity with cost 9.
+
+    Better example forcing reorder:
+    chord1=(C4,E4,C5), chord2=(D4,B4,F4).
+    Identity: |60-62|+|64-71|+|72-65| = 2+7+7 = 16
+    (D4,F4,B4): |60-62|+|64-65|+|72-71| = 2+1+1 = 4  <-- best
+    """
+    chord1 = (Pitch("c", "n", 4), Pitch("e", "n", 4), Pitch("c", "n", 5))
+    chord2 = (Pitch("d", "n", 4), Pitch("b", "n", 4), Pitch("f", "n", 4))
     result = smooth_voice_leading(chord1, chord2)
-    assert result == (Pitch("d", "n", 4), Pitch("b", "n", 4), Pitch("g", "n", 4))
+    assert result == (Pitch("d", "n", 4), Pitch("f", "n", 4), Pitch("b", "n", 4))
 
 
 def test_smooth_voice_leading_size_mismatch():

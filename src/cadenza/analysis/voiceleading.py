@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import itertools
 from dataclasses import dataclass
+from itertools import permutations
 
 from cadenza.core.interval import Interval
 from cadenza.core.note import Note
@@ -243,6 +244,42 @@ def _check_leaps(
             )
 
     return violations
+
+
+# ---------------------------------------------------------------------------
+# smooth_voice_leading
+# ---------------------------------------------------------------------------
+
+
+def smooth_voice_leading(
+    chord1: tuple[Pitch, ...], chord2: tuple[Pitch, ...]
+) -> tuple[Pitch, ...]:
+    """Find the reordering of *chord2* that minimises total semitone movement.
+
+    Each pitch in *chord1* is paired with exactly one pitch in the reordered
+    *chord2*.  The function tries every permutation of *chord2* and returns the
+    one whose summed absolute MIDI-number differences with *chord1* is smallest.
+
+    Raises ``ValueError`` when the two chords have different sizes.
+    """
+    if len(chord1) != len(chord2):
+        raise ValueError(
+            f"Chord size mismatch: {len(chord1)} vs {len(chord2)}"
+        )
+    if len(chord1) == 0:
+        return ()
+
+    midi1 = tuple(p.midi_number for p in chord1)
+    best: tuple[Pitch, ...] = chord2
+    best_cost = sum(abs(a - b) for a, b in zip(midi1, (p.midi_number for p in chord2)))
+
+    for perm in permutations(chord2):
+        cost = sum(abs(a - p.midi_number) for a, p in zip(midi1, perm))
+        if cost < best_cost:
+            best_cost = cost
+            best = perm  # type: ignore[assignment]
+
+    return tuple(best)
 
 
 # ---------------------------------------------------------------------------
