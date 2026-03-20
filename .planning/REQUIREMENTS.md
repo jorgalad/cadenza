@@ -140,15 +140,15 @@
 
 ### Set Theory (SETTH)
 
-- [ ] **SETTH-01**: Compute prime form of a pitch class set
-- [ ] **SETTH-02**: Compute interval vector (interval class vector) of a pitch class set
-- [ ] **SETTH-03**: Determine Forte number for a pitch class set
-- [ ] **SETTH-04**: Look up pitch class set by Forte number
-- [ ] **SETTH-05**: Compute complement of a pitch class set
-- [ ] **SETTH-06**: Compute inversion of a pitch class set
-- [ ] **SETTH-07**: Compute transposition of a pitch class set
-- [ ] **SETTH-08**: Test set relationship: subset, superset, Z-relation
-- [ ] **SETTH-09**: Similarity measures between pitch class sets (Rp, R0, R1, R2)
+- [x] **SETTH-01**: Compute prime form of a pitch class set
+- [x] **SETTH-02**: Compute interval vector (interval class vector) of a pitch class set
+- [x] **SETTH-03**: Determine Forte number for a pitch class set
+- [x] **SETTH-04**: Look up pitch class set by Forte number
+- [x] **SETTH-05**: Compute complement of a pitch class set
+- [x] **SETTH-06**: Compute inversion of a pitch class set
+- [x] **SETTH-07**: Compute transposition of a pitch class set
+- [x] **SETTH-08**: Test set relationship: subset, superset, Z-relation
+- [x] **SETTH-09**: Similarity measures between pitch class sets (Rp, R0, R1, R2)
 
 ### Serial / 12-Tone (SERI)
 
@@ -383,15 +383,15 @@
 | CPTR-08 | Phase 8: Counterpoint | Complete |
 | CPTR-09 | Phase 8: Counterpoint | Complete |
 | CPTR-10 | Phase 8: Counterpoint | Complete |
-| SETTH-01 | Phase 9: Set Theory & Serial | Pending |
-| SETTH-02 | Phase 9: Set Theory & Serial | Pending |
-| SETTH-03 | Phase 9: Set Theory & Serial | Pending |
-| SETTH-04 | Phase 9: Set Theory & Serial | Pending |
-| SETTH-05 | Phase 9: Set Theory & Serial | Pending |
-| SETTH-06 | Phase 9: Set Theory & Serial | Pending |
-| SETTH-07 | Phase 9: Set Theory & Serial | Pending |
-| SETTH-08 | Phase 9: Set Theory & Serial | Pending |
-| SETTH-09 | Phase 9: Set Theory & Serial | Pending |
+| SETTH-01 | Phase 9: Set Theory & Serial | Complete |
+| SETTH-02 | Phase 9: Set Theory & Serial | Complete |
+| SETTH-03 | Phase 9: Set Theory & Serial | Complete |
+| SETTH-04 | Phase 9: Set Theory & Serial | Complete |
+| SETTH-05 | Phase 9: Set Theory & Serial | Complete |
+| SETTH-06 | Phase 9: Set Theory & Serial | Complete |
+| SETTH-07 | Phase 9: Set Theory & Serial | Complete |
+| SETTH-08 | Phase 9: Set Theory & Serial | Complete |
+| SETTH-09 | Phase 9: Set Theory & Serial | Complete |
 | SERI-01 | Phase 9: Set Theory & Serial | Pending |
 | SERI-02 | Phase 9: Set Theory & Serial | Pending |
 | SERI-03 | Phase 9: Set Theory & Serial | Pending |
