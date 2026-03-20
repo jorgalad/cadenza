@@ -1,9 +1,10 @@
-"""First species counterpoint generation."""
+"""Counterpoint generation: species I-V and free counterpoint."""
 
 from __future__ import annotations
 
 import builtins
 import random
+from fractions import Fraction
 
 from cadenza.core.duration import Duration
 from cadenza.core.interval import Interval
@@ -12,14 +13,66 @@ from cadenza.core.phrase import Phrase
 from cadenza.core.pitch import Pitch
 from cadenza.counterpoint._engine import _backtrack
 from cadenza.counterpoint.rules import (
+    DISSONANCES,
     IMPERFECT_CONSONANCES,
     PERFECT_CONSONANCES,
+    classify_interval,
 )
 from cadenza.transforms.pitch import from_midi
 
 
 # All consonant intervals (mod 12)
 _CONSONANCES = PERFECT_CONSONANCES | IMPERFECT_CONSONANCES
+
+# Duration base halving maps
+_HALF_BASE: dict[str, str] = {
+    "w": "h", "h": "q", "q": "e", "e": "s", "s": "t", "t": "x",
+}
+
+_QUARTER_BASE: dict[str, str] = {
+    "w": "q", "h": "e", "q": "s", "e": "t",
+}
+
+
+def _extract_cf(cf: Phrase) -> tuple[list[Pitch], list[Duration]]:
+    """Extract pitches and durations from a cantus firmus phrase."""
+    if not cf:
+        raise ValueError("Cantus firmus must not be empty")
+    pitches: list[Pitch] = []
+    durations: list[Duration] = []
+    for event in cf:
+        if isinstance(event, Note):
+            pitches.append(event.pitch)
+            durations.append(event.duration)
+        else:
+            pitches.append(Pitch("c", "n", 4))  # placeholder
+            durations.append(event.duration)
+    if not pitches:
+        raise ValueError("Cantus firmus contains no notes")
+    return pitches, durations
+
+
+def _compute_range(
+    cf_pitches: list[Pitch],
+    above: bool,
+    range: tuple[Pitch, Pitch] | None,  # noqa: A002
+) -> tuple[int, int]:
+    """Compute MIDI range for candidate generation."""
+    cf_midis = [p.midi_number for p in cf_pitches]
+    cf_min = min(cf_midis)
+    cf_max = max(cf_midis)
+
+    if range is not None:
+        return range[0].midi_number, range[1].midi_number
+    elif above:
+        return cf_min, cf_max + 16
+    else:
+        return cf_min - 16, cf_max
+
+
+# ---------------------------------------------------------------------------
+# First species
+# ---------------------------------------------------------------------------
 
 
 def generate_first_species(
@@ -40,123 +93,73 @@ def generate_first_species(
     Raises:
         ValueError: If cf is empty or no valid counterpoint can be found.
     """
-    if not cf:
-        raise ValueError("Cantus firmus must not be empty")
-
-    # Extract CF pitches and durations (skip rests)
-    cf_pitches: list[Pitch] = []
-    cf_durations: list[Duration] = []
-    for event in cf:
-        if isinstance(event, Note):
-            cf_pitches.append(event.pitch)
-            cf_durations.append(event.duration)
-        else:
-            # For rests, we still need a placeholder
-            cf_pitches.append(Pitch("c", "n", 4))  # placeholder
-            cf_durations.append(event.duration)
-
-    if not cf_pitches:
-        raise ValueError("Cantus firmus contains no notes")
-
-    # Compute pitch range
-    cf_midis = [p.midi_number for p in cf_pitches]
-    cf_min = min(cf_midis)
-    cf_max = max(cf_midis)
-
-    if range is not None:
-        low_midi = range[0].midi_number
-        high_midi = range[1].midi_number
-    elif above:
-        low_midi = cf_min
-        high_midi = cf_max + 16  # 10th above CF max
-    else:
-        low_midi = cf_min - 16  # 10th below CF min
-        high_midi = cf_max
-
+    cf_pitches, cf_durations = _extract_cf(cf)
+    low_midi, high_midi = _compute_range(cf_pitches, above, range)
     n_notes = len(cf_pitches)
-    prefer_sharps = above  # sharps ascending, flats descending
+    prefer_sharps = above
 
     def _candidates(position: int, partial: list[Pitch], cf_pitch: Pitch) -> list[Pitch]:
-        """Generate candidate pitches for a position."""
         cf_midi = cf_pitch.midi_number
-        results: list[tuple[int, int, Pitch]] = []  # (priority, midi, pitch)
+        results: list[tuple[int, int, Pitch]] = []
 
         for midi in builtins.range(low_midi, high_midi + 1):
             interval_mod12 = abs(midi - cf_midi) % 12
 
-            # Must be consonant
             if interval_mod12 not in _CONSONANCES:
                 continue
-
-            # Direction constraint
             if above and midi < cf_midi:
                 continue
             if not above and midi > cf_midi:
                 continue
-
-            # First and last: only perfect consonances
             if (position == 0 or position == n_notes - 1):
                 if interval_mod12 not in PERFECT_CONSONANCES:
                     continue
 
-            # Priority: stepwise from previous note, imperfect over perfect
             priority = 0
-
-            # Prefer imperfect consonances (more variety)
             if interval_mod12 in IMPERFECT_CONSONANCES:
-                priority -= 1  # lower = better
-
-            # Prefer stepwise from previous
+                priority -= 1
             if partial:
                 step_dist = abs(midi - partial[-1].midi_number)
                 if step_dist <= 2:
-                    priority -= 3  # strong preference for steps
+                    priority -= 3
                 elif step_dist <= 4:
                     priority -= 1
 
             pitch = from_midi(midi, prefer_sharps=prefer_sharps)
             results.append((priority, midi, pitch))
 
-        # Sort by priority (lower first) with random tiebreaking for variety
         random.shuffle(results)
         results.sort(key=lambda x: x[0])
         return [r[2] for r in results]
 
     def _validate(position: int, partial: list[Pitch], candidate: Pitch, cf_pitch: Pitch) -> bool:
-        """Validate a candidate pitch at a position."""
         cf_midi = cf_pitch.midi_number
         cand_midi = candidate.midi_number
 
         if position > 0:
             prev_cp = partial[-1]
             prev_cf = cf_pitches[position - 1]
-
             prev_cp_midi = prev_cp.midi_number
             prev_cf_midi = prev_cf.midi_number
 
-            # No parallel fifths
             prev_interval_mod12 = abs(prev_cp_midi - prev_cf_midi) % 12
             curr_interval_mod12 = abs(cand_midi - cf_midi) % 12
 
             if prev_interval_mod12 == curr_interval_mod12 and prev_interval_mod12 in (0, 7):
-                # Check same direction and both moved
                 motion_cf = cf_midi - prev_cf_midi
                 motion_cp = cand_midi - prev_cp_midi
                 if motion_cf != 0 and motion_cp != 0:
                     if (motion_cf > 0) == (motion_cp > 0):
                         return False
 
-            # No voice crossing
             if above and cand_midi < cf_midi:
                 return False
             if not above and cand_midi > cf_midi:
                 return False
 
-            # No repeated notes
             if cand_midi == prev_cp_midi:
                 return False
 
-            # No more than 3 consecutive parallel thirds or sixths
             if len(partial) >= 3:
                 consecutive_imperfect = 0
                 for j in builtins.range(len(partial) - 1, max(len(partial) - 4, -1), -1):
@@ -170,11 +173,9 @@ def generate_first_species(
                 if consecutive_imperfect >= 3 and curr_interval_mod12 in IMPERFECT_CONSONANCES:
                     return False
 
-        # Penultimate check: must be step away from a valid final pitch
         if position == n_notes - 2 and n_notes >= 2:
             last_cf = cf_pitches[n_notes - 1]
             last_cf_midi = last_cf.midi_number
-            # Find valid final pitches (perfect consonances within range)
             has_valid_step_final = False
             for final_midi in builtins.range(low_midi, high_midi + 1):
                 final_mod12 = abs(final_midi - last_cf_midi) % 12
@@ -184,7 +185,6 @@ def generate_first_species(
                     continue
                 if not above and final_midi > last_cf_midi:
                     continue
-                # Step from candidate to this final?
                 step_dist = abs(final_midi - cand_midi)
                 if step_dist <= 2:
                     has_valid_step_final = True
@@ -195,20 +195,657 @@ def generate_first_species(
         return True
 
     result = _backtrack(cf_pitches, _candidates, _validate, 0, [])
-
     if result is None:
         raise ValueError("No valid first species counterpoint found")
 
-    # Convert to Phrase
     events: list[Note] = []
     for i, pitch in enumerate(result):
-        events.append(
-            Note(
-                pitch=pitch,
-                duration=cf_durations[i],
-                dynamic=None,
-                articulations=(),
-            )
-        )
+        events.append(Note(pitch=pitch, duration=cf_durations[i], dynamic=None, articulations=()))
+    return tuple(events)
 
+
+# ---------------------------------------------------------------------------
+# Second species
+# ---------------------------------------------------------------------------
+
+
+def generate_second_species(
+    cf: Phrase,
+    above: bool = True,
+    range: tuple[Pitch, Pitch] | None = None,  # noqa: A002
+) -> Phrase:
+    """Generate second species counterpoint (2 CP notes per CF note).
+
+    Downbeats are consonant; offbeats may be passing tones.
+    """
+    cf_pitches, cf_durations = _extract_cf(cf)
+    low_midi, high_midi = _compute_range(cf_pitches, above, range)
+    n_cf = len(cf_pitches)
+    n_positions = 2 * n_cf
+    prefer_sharps = above
+
+    def _cf_index(pos: int) -> int:
+        return pos // 2
+
+    def _is_downbeat(pos: int) -> bool:
+        return pos % 2 == 0
+
+    def _candidates(position: int, partial: list[Pitch], cf_pitch: Pitch) -> list[Pitch]:
+        cf_idx = _cf_index(position)
+        cf_midi = cf_pitches[cf_idx].midi_number
+        results: list[tuple[int, int, Pitch]] = []
+
+        for midi in builtins.range(low_midi, high_midi + 1):
+            interval_mod12 = abs(midi - cf_midi) % 12
+
+            if above and midi < cf_midi:
+                continue
+            if not above and midi > cf_midi:
+                continue
+
+            if _is_downbeat(position):
+                # Downbeats must be consonant
+                if interval_mod12 not in _CONSONANCES:
+                    continue
+                # First and last downbeats: perfect consonance
+                if (position == 0 or position == n_positions - 2):
+                    if interval_mod12 not in PERFECT_CONSONANCES:
+                        continue
+            else:
+                # Offbeats: consonant OR stepwise from previous (passing tone)
+                if interval_mod12 not in _CONSONANCES:
+                    # Dissonant offbeat: must be stepwise from previous
+                    if partial:
+                        step = abs(midi - partial[-1].midi_number)
+                        if step > 2:
+                            continue
+                    else:
+                        continue
+
+            priority = 0
+            if interval_mod12 in IMPERFECT_CONSONANCES:
+                priority -= 1
+            if partial:
+                step_dist = abs(midi - partial[-1].midi_number)
+                if step_dist <= 2:
+                    priority -= 3
+                elif step_dist <= 4:
+                    priority -= 1
+
+            pitch = from_midi(midi, prefer_sharps=prefer_sharps)
+            results.append((priority, midi, pitch))
+
+        random.shuffle(results)
+        results.sort(key=lambda x: x[0])
+        return [r[2] for r in results]
+
+    def _validate(position: int, partial: list[Pitch], candidate: Pitch, cf_pitch: Pitch) -> bool:
+        cf_idx = _cf_index(position)
+        cf_midi = cf_pitches[cf_idx].midi_number
+        cand_midi = candidate.midi_number
+
+        if above and cand_midi < cf_midi:
+            return False
+        if not above and cand_midi > cf_midi:
+            return False
+
+        if partial:
+            if cand_midi == partial[-1].midi_number:
+                return False
+
+        # No parallel 5ths/8ths between consecutive downbeats
+        if _is_downbeat(position) and position >= 2:
+            prev_db_idx = position - 2  # previous downbeat
+            prev_db_cf_idx = _cf_index(prev_db_idx)
+            prev_cp_midi = partial[prev_db_idx].midi_number
+            prev_cf_midi = cf_pitches[prev_db_cf_idx].midi_number
+
+            prev_interval = abs(prev_cp_midi - prev_cf_midi) % 12
+            curr_interval = abs(cand_midi - cf_midi) % 12
+
+            if prev_interval == curr_interval and prev_interval in (0, 7):
+                motion_cf = cf_midi - prev_cf_midi
+                motion_cp = cand_midi - prev_cp_midi
+                if motion_cf != 0 and motion_cp != 0:
+                    if (motion_cf > 0) == (motion_cp > 0):
+                        return False
+
+        # Offbeat dissonance: must be approached and left by step in same direction
+        if not _is_downbeat(position):
+            interval_mod12 = abs(cand_midi - cf_midi) % 12
+            if interval_mod12 in DISSONANCES and partial:
+                step_from_prev = abs(cand_midi - partial[-1].midi_number)
+                if step_from_prev > 2:
+                    return False
+
+        return True
+
+    # Use expanded backtrack engine
+    expanded_cf = []
+    for p in cf_pitches:
+        expanded_cf.append(p)
+        expanded_cf.append(p)  # each CF note maps to 2 positions
+
+    result = _backtrack(expanded_cf, _candidates, _validate, 0, [])
+    if result is None:
+        raise ValueError("No valid second species counterpoint found")
+
+    # Build phrase with halved durations
+    events: list[Note] = []
+    for i, pitch in enumerate(result):
+        cf_idx = i // 2
+        cf_dur = cf_durations[cf_idx]
+        if cf_dur.base in _HALF_BASE:
+            half_base = _HALF_BASE[cf_dur.base]
+            cp_dur = Duration.from_cn(half_base, dots=0)
+        else:
+            cp_dur = Duration(fraction=cf_dur.fraction / 2, base=cf_dur.base)
+        events.append(Note(pitch=pitch, duration=cp_dur, dynamic=None, articulations=()))
+    return tuple(events)
+
+
+# ---------------------------------------------------------------------------
+# Third species
+# ---------------------------------------------------------------------------
+
+
+def generate_third_species(
+    cf: Phrase,
+    above: bool = True,
+    range: tuple[Pitch, Pitch] | None = None,  # noqa: A002
+) -> Phrase:
+    """Generate third species counterpoint (4 CP notes per CF note).
+
+    First-of-four must be consonant; others may be passing/neighbor/cambiata.
+    """
+    cf_pitches, cf_durations = _extract_cf(cf)
+    low_midi, high_midi = _compute_range(cf_pitches, above, range)
+    n_cf = len(cf_pitches)
+    n_positions = 4 * n_cf
+    prefer_sharps = above
+
+    def _cf_index(pos: int) -> int:
+        return pos // 4
+
+    def _is_strong(pos: int) -> bool:
+        return pos % 4 == 0
+
+    def _candidates(position: int, partial: list[Pitch], cf_pitch: Pitch) -> list[Pitch]:
+        cf_idx = _cf_index(position)
+        cf_midi = cf_pitches[cf_idx].midi_number
+        results: list[tuple[int, int, Pitch]] = []
+
+        for midi in builtins.range(low_midi, high_midi + 1):
+            interval_mod12 = abs(midi - cf_midi) % 12
+
+            if above and midi < cf_midi:
+                continue
+            if not above and midi > cf_midi:
+                continue
+
+            if _is_strong(position):
+                # Strong beats: consonant only
+                if interval_mod12 not in _CONSONANCES:
+                    continue
+                # First and last strong beats: perfect consonance
+                if (position == 0 or position == n_positions - 4):
+                    if interval_mod12 not in PERFECT_CONSONANCES:
+                        continue
+            else:
+                # Weak beats: consonant or stepwise dissonance
+                if interval_mod12 not in _CONSONANCES:
+                    if partial:
+                        step = abs(midi - partial[-1].midi_number)
+                        if step > 2:
+                            continue
+                    else:
+                        continue
+
+            priority = 0
+            if partial:
+                step_dist = abs(midi - partial[-1].midi_number)
+                if step_dist <= 2:
+                    priority -= 3
+                elif step_dist <= 4:
+                    priority -= 1
+
+            pitch = from_midi(midi, prefer_sharps=prefer_sharps)
+            results.append((priority, midi, pitch))
+
+        random.shuffle(results)
+        results.sort(key=lambda x: x[0])
+        return [r[2] for r in results]
+
+    def _validate(position: int, partial: list[Pitch], candidate: Pitch, cf_pitch: Pitch) -> bool:
+        cf_idx = _cf_index(position)
+        cf_midi = cf_pitches[cf_idx].midi_number
+        cand_midi = candidate.midi_number
+
+        if above and cand_midi < cf_midi:
+            return False
+        if not above and cand_midi > cf_midi:
+            return False
+
+        if partial and cand_midi == partial[-1].midi_number:
+            return False
+
+        # No parallel 5ths/8ths on consecutive strong beats
+        if _is_strong(position) and position >= 4:
+            prev_strong_idx = position - 4
+            prev_cf_idx = _cf_index(prev_strong_idx)
+            prev_cp_midi = partial[prev_strong_idx].midi_number
+            prev_cf_midi = cf_pitches[prev_cf_idx].midi_number
+
+            prev_interval = abs(prev_cp_midi - prev_cf_midi) % 12
+            curr_interval = abs(cand_midi - cf_midi) % 12
+
+            if prev_interval == curr_interval and prev_interval in (0, 7):
+                motion_cf = cf_midi - prev_cf_midi
+                motion_cp = cand_midi - prev_cp_midi
+                if motion_cf != 0 and motion_cp != 0:
+                    if (motion_cf > 0) == (motion_cp > 0):
+                        return False
+
+        return True
+
+    # Expand CF: each CF note maps to 4 positions
+    expanded_cf = []
+    for p in cf_pitches:
+        for _ in builtins.range(4):
+            expanded_cf.append(p)
+
+    result = _backtrack(expanded_cf, _candidates, _validate, 0, [])
+    if result is None:
+        raise ValueError("No valid third species counterpoint found")
+
+    events: list[Note] = []
+    for i, pitch in enumerate(result):
+        cf_idx = i // 4
+        cf_dur = cf_durations[cf_idx]
+        if cf_dur.base in _QUARTER_BASE:
+            q_base = _QUARTER_BASE[cf_dur.base]
+            cp_dur = Duration.from_cn(q_base, dots=0)
+        else:
+            cp_dur = Duration(fraction=cf_dur.fraction / 4, base=cf_dur.base)
+        events.append(Note(pitch=pitch, duration=cp_dur, dynamic=None, articulations=()))
+    return tuple(events)
+
+
+# ---------------------------------------------------------------------------
+# Fourth species
+# ---------------------------------------------------------------------------
+
+
+def generate_fourth_species(
+    cf: Phrase,
+    above: bool = True,
+    range: tuple[Pitch, Pitch] | None = None,  # noqa: A002
+) -> Phrase:
+    """Generate fourth species counterpoint (syncopated, with suspensions).
+
+    Same number of notes as CF. Suspensions (dissonances) resolve stepwise downward.
+    """
+    cf_pitches, cf_durations = _extract_cf(cf)
+    low_midi, high_midi = _compute_range(cf_pitches, above, range)
+    n_cf = len(cf_pitches)
+    prefer_sharps = above
+
+    def _candidates(position: int, partial: list[Pitch], cf_pitch: Pitch) -> list[Pitch]:
+        cf_midi = cf_pitch.midi_number
+        results: list[tuple[int, int, Pitch]] = []
+
+        # Check if previous note is a suspension that needs resolving
+        must_resolve_from: int | None = None
+        if position > 0:
+            prev_cp_midi = partial[-1].midi_number
+            prev_interval_with_curr_cf = abs(prev_cp_midi - cf_midi) % 12
+            if prev_interval_with_curr_cf in DISSONANCES:
+                must_resolve_from = prev_cp_midi
+
+        for midi in builtins.range(low_midi, high_midi + 1):
+            interval_mod12 = abs(midi - cf_midi) % 12
+
+            if above and midi < cf_midi:
+                continue
+            if not above and midi > cf_midi:
+                continue
+
+            # If previous note is a suspension, this note MUST resolve stepwise down
+            if must_resolve_from is not None:
+                if above:
+                    step_down = must_resolve_from - midi
+                    if not (1 <= step_down <= 2):
+                        continue
+                else:
+                    step_up = midi - must_resolve_from
+                    if not (1 <= step_up <= 2):
+                        continue
+                # Resolution must be consonant
+                if interval_mod12 not in _CONSONANCES:
+                    continue
+            else:
+                # First and last must be consonant and perfect
+                if position == 0 or position == n_cf - 1:
+                    if interval_mod12 not in PERFECT_CONSONANCES:
+                        continue
+                else:
+                    # Allow consonant notes, or dissonant if they can be a
+                    # valid suspension (same pitch as previous = held note)
+                    if interval_mod12 in DISSONANCES:
+                        # Only allow if this is a held note from previous position
+                        if not partial or midi != partial[-1].midi_number:
+                            continue
+                        # And there must be room to resolve after this
+                        if position >= n_cf - 1:
+                            continue
+
+            priority = 0
+            if interval_mod12 in IMPERFECT_CONSONANCES:
+                priority -= 1
+            if partial:
+                step_dist = abs(midi - partial[-1].midi_number)
+                if step_dist <= 2:
+                    priority -= 3
+                elif step_dist <= 4:
+                    priority -= 1
+                # Encourage suspensions (held notes) occasionally
+                if midi == partial[-1].midi_number and interval_mod12 in DISSONANCES:
+                    priority -= 2  # Encourage suspensions
+
+            pitch = from_midi(midi, prefer_sharps=prefer_sharps)
+            results.append((priority, midi, pitch))
+
+        random.shuffle(results)
+        results.sort(key=lambda x: x[0])
+        return [r[2] for r in results]
+
+    def _validate(position: int, partial: list[Pitch], candidate: Pitch, cf_pitch: Pitch) -> bool:
+        cf_midi = cf_pitch.midi_number
+        cand_midi = candidate.midi_number
+
+        if above and cand_midi < cf_midi:
+            return False
+        if not above and cand_midi > cf_midi:
+            return False
+
+        if position > 0:
+            prev_cp_midi = partial[-1].midi_number
+            prev_cf_midi = cf_pitches[position - 1].midi_number
+
+            # No parallel 5ths/8ths
+            prev_interval = abs(prev_cp_midi - prev_cf_midi) % 12
+            curr_interval = abs(cand_midi - cf_midi) % 12
+
+            if prev_interval == curr_interval and prev_interval in (0, 7):
+                motion_cf = cf_midi - prev_cf_midi
+                motion_cp = cand_midi - prev_cp_midi
+                if motion_cf != 0 and motion_cp != 0:
+                    if (motion_cf > 0) == (motion_cp > 0):
+                        return False
+
+        return True
+
+    result = _backtrack(cf_pitches, _candidates, _validate, 0, [])
+    if result is None:
+        raise ValueError("No valid fourth species counterpoint found")
+
+    events: list[Note] = []
+    for i, pitch in enumerate(result):
+        events.append(Note(pitch=pitch, duration=cf_durations[i], dynamic=None, articulations=()))
+    return tuple(events)
+
+
+# ---------------------------------------------------------------------------
+# Fifth species (florid)
+# ---------------------------------------------------------------------------
+
+
+def generate_fifth_species(
+    cf: Phrase,
+    above: bool = True,
+    range: tuple[Pitch, Pitch] | None = None,  # noqa: A002
+) -> Phrase:
+    """Generate fifth species (florid) counterpoint mixing rhythmic values.
+
+    Combines patterns from species I-IV with at least 2 different durations.
+    """
+    cf_pitches, cf_durations = _extract_cf(cf)
+    low_midi, high_midi = _compute_range(cf_pitches, above, range)
+    n_cf = len(cf_pitches)
+    prefer_sharps = above
+
+    # For each CF beat, choose a rhythmic pattern
+    # Patterns: 1 = whole (1 note), 2 = half (2 notes), 4 = quarter (4 notes)
+    # Ensure at least 2 different patterns
+    patterns: list[int] = []
+    for i in builtins.range(n_cf):
+        if i == 0 or i == n_cf - 1:
+            patterns.append(1)  # Whole notes at start and end
+        elif i == n_cf // 2:
+            patterns.append(4)  # Quarters in the middle for variety
+        else:
+            patterns.append(random.choice([1, 2, 2, 4]))
+
+    # Ensure variety: at least 2 different patterns
+    if len(set(patterns)) < 2 and n_cf > 2:
+        # Force at least one different pattern
+        mid = n_cf // 2
+        if patterns[mid] == 1:
+            patterns[mid] = 2
+        else:
+            patterns[mid] = 1
+
+    # Build all CP notes with their CF alignment
+    all_notes: list[Note] = []
+    for cf_idx in builtins.range(n_cf):
+        pattern = patterns[cf_idx]
+        cf_midi = cf_pitches[cf_idx].midi_number
+        cf_dur = cf_durations[cf_idx]
+
+        # Generate notes for this beat
+        if pattern == 1:
+            # Single note: use first species approach (consonant)
+            beat_result = _generate_beat_notes(
+                cf_pitches, cf_idx, 1, above, low_midi, high_midi, prefer_sharps,
+                all_notes,
+            )
+            for pitch in beat_result:
+                all_notes.append(Note(pitch=pitch, duration=cf_dur, dynamic=None, articulations=()))
+        elif pattern == 2:
+            # Two notes: halved duration
+            if cf_dur.base in _HALF_BASE:
+                half_dur = Duration.from_cn(_HALF_BASE[cf_dur.base])
+            else:
+                half_dur = Duration(fraction=cf_dur.fraction / 2, base=cf_dur.base)
+            beat_result = _generate_beat_notes(
+                cf_pitches, cf_idx, 2, above, low_midi, high_midi, prefer_sharps,
+                all_notes,
+            )
+            for pitch in beat_result:
+                all_notes.append(Note(pitch=pitch, duration=half_dur, dynamic=None, articulations=()))
+        else:  # pattern == 4
+            if cf_dur.base in _QUARTER_BASE:
+                q_dur = Duration.from_cn(_QUARTER_BASE[cf_dur.base])
+            else:
+                q_dur = Duration(fraction=cf_dur.fraction / 4, base=cf_dur.base)
+            beat_result = _generate_beat_notes(
+                cf_pitches, cf_idx, 4, above, low_midi, high_midi, prefer_sharps,
+                all_notes,
+            )
+            for pitch in beat_result:
+                all_notes.append(Note(pitch=pitch, duration=q_dur, dynamic=None, articulations=()))
+
+    return tuple(all_notes)
+
+
+def _generate_beat_notes(
+    cf_pitches: list[Pitch],
+    cf_idx: int,
+    count: int,
+    above: bool,
+    low_midi: int,
+    high_midi: int,
+    prefer_sharps: bool,
+    existing_notes: list[Note],
+) -> list[Pitch]:
+    """Generate `count` pitches for a single CF beat.
+
+    First note must be consonant; subsequent notes may be stepwise dissonances.
+    """
+    cf_midi = cf_pitches[cf_idx].midi_number
+    result: list[Pitch] = []
+
+    # Get previous pitch for stepwise motion
+    prev_midi: int | None = None
+    if existing_notes:
+        prev_midi = existing_notes[-1].pitch.midi_number
+
+    for sub_pos in builtins.range(count):
+        candidates: list[tuple[int, Pitch]] = []
+
+        for midi in builtins.range(low_midi, high_midi + 1):
+            interval_mod12 = abs(midi - cf_midi) % 12
+
+            if above and midi < cf_midi:
+                continue
+            if not above and midi > cf_midi:
+                continue
+
+            if sub_pos == 0:
+                # First of group: must be consonant
+                if interval_mod12 not in _CONSONANCES:
+                    continue
+            else:
+                # Subsequent: consonant or stepwise
+                if interval_mod12 not in _CONSONANCES:
+                    last = result[-1].midi_number if result else (prev_midi or cf_midi)
+                    if abs(midi - last) > 2:
+                        continue
+
+            priority = 0
+            ref = result[-1].midi_number if result else prev_midi
+            if ref is not None:
+                step_dist = abs(midi - ref)
+                if step_dist <= 2:
+                    priority -= 3
+                elif step_dist <= 4:
+                    priority -= 1
+                # Avoid repeated note
+                if midi == ref:
+                    continue
+
+            pitch = from_midi(midi, prefer_sharps=prefer_sharps)
+            candidates.append((priority, pitch))
+
+        if not candidates:
+            # Fallback: any consonant pitch
+            for midi in builtins.range(low_midi, high_midi + 1):
+                interval_mod12 = abs(midi - cf_midi) % 12
+                if interval_mod12 in _CONSONANCES:
+                    if above and midi < cf_midi:
+                        continue
+                    if not above and midi > cf_midi:
+                        continue
+                    candidates.append((0, from_midi(midi, prefer_sharps=prefer_sharps)))
+
+        random.shuffle(candidates)
+        candidates.sort(key=lambda x: x[0])
+        if candidates:
+            result.append(candidates[0][1])
+
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Free counterpoint
+# ---------------------------------------------------------------------------
+
+
+def generate_free_counterpoint(
+    cf: Phrase,
+    above: bool = True,
+    range: tuple[Pitch, Pitch] | None = None,  # noqa: A002
+) -> Phrase:
+    """Generate free counterpoint (tonal voice-leading, relaxed species rules).
+
+    Same number of notes as CF, consonant on beats, no parallel 5ths/8ths.
+    More relaxed than strict species: no climax rule, no repeated-note prohibition.
+    """
+    cf_pitches, cf_durations = _extract_cf(cf)
+    low_midi, high_midi = _compute_range(cf_pitches, above, range)
+    n_notes = len(cf_pitches)
+    prefer_sharps = above
+
+    def _candidates(position: int, partial: list[Pitch], cf_pitch: Pitch) -> list[Pitch]:
+        cf_midi = cf_pitch.midi_number
+        results: list[tuple[int, int, Pitch]] = []
+
+        for midi in builtins.range(low_midi, high_midi + 1):
+            interval_mod12 = abs(midi - cf_midi) % 12
+
+            # Must be consonant
+            if interval_mod12 not in _CONSONANCES:
+                continue
+            if above and midi < cf_midi:
+                continue
+            if not above and midi > cf_midi:
+                continue
+
+            # First and last: perfect consonance
+            if (position == 0 or position == n_notes - 1):
+                if interval_mod12 not in PERFECT_CONSONANCES:
+                    continue
+
+            priority = 0
+            if interval_mod12 in IMPERFECT_CONSONANCES:
+                priority -= 1
+            if partial:
+                step_dist = abs(midi - partial[-1].midi_number)
+                if step_dist <= 2:
+                    priority -= 3
+                elif step_dist <= 4:
+                    priority -= 1
+
+            pitch = from_midi(midi, prefer_sharps=prefer_sharps)
+            results.append((priority, midi, pitch))
+
+        random.shuffle(results)
+        results.sort(key=lambda x: x[0])
+        return [r[2] for r in results]
+
+    def _validate(position: int, partial: list[Pitch], candidate: Pitch, cf_pitch: Pitch) -> bool:
+        cf_midi = cf_pitch.midi_number
+        cand_midi = candidate.midi_number
+
+        if above and cand_midi < cf_midi:
+            return False
+        if not above and cand_midi > cf_midi:
+            return False
+
+        if position > 0:
+            prev_cp = partial[-1]
+            prev_cf = cf_pitches[position - 1]
+            prev_cp_midi = prev_cp.midi_number
+            prev_cf_midi = prev_cf.midi_number
+
+            # No parallel 5ths/8ths
+            prev_interval_mod12 = abs(prev_cp_midi - prev_cf_midi) % 12
+            curr_interval_mod12 = abs(cand_midi - cf_midi) % 12
+
+            if prev_interval_mod12 == curr_interval_mod12 and prev_interval_mod12 in (0, 7):
+                motion_cf = cf_midi - prev_cf_midi
+                motion_cp = cand_midi - prev_cp_midi
+                if motion_cf != 0 and motion_cp != 0:
+                    if (motion_cf > 0) == (motion_cp > 0):
+                        return False
+
+        return True
+
+    result = _backtrack(cf_pitches, _candidates, _validate, 0, [])
+    if result is None:
+        raise ValueError("No valid free counterpoint found")
+
+    events: list[Note] = []
+    for i, pitch in enumerate(result):
+        events.append(Note(pitch=pitch, duration=cf_durations[i], dynamic=None, articulations=()))
     return tuple(events)
