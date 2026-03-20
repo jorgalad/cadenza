@@ -1,14 +1,16 @@
-"""Tests for voice leading violation detection."""
+"""Tests for voice leading violation detection and voice leading generation."""
 
 from __future__ import annotations
 
 from fractions import Fraction
 
+import pytest
+
 from cadenza.core.pitch import Pitch
 from cadenza.core.duration import Duration
 from cadenza.core.note import Note, Rest
 from cadenza.core.score import Score
-from cadenza.analysis.voiceleading import VoiceLeadingViolation, check_voice_leading
+from cadenza.analysis.voiceleading import VoiceLeadingViolation, check_voice_leading, smooth_voice_leading
 
 
 # ---------------------------------------------------------------------------
@@ -264,3 +266,51 @@ def test_check_voice_leading_single_voice():
     assert "voice_crossing" not in rules
     assert "voice_overlap" not in rules
     assert "large_leap" in rules
+
+
+# ---------------------------------------------------------------------------
+# smooth_voice_leading
+# ---------------------------------------------------------------------------
+
+
+def test_smooth_voice_leading_basic():
+    """Identity mapping C4,E4,G4 -> B3,D4,F4 gives cost 5 (optimal)."""
+    chord1 = (Pitch("c", "n", 4), Pitch("e", "n", 4), Pitch("g", "n", 4))
+    chord2 = (Pitch("b", "n", 3), Pitch("d", "n", 4), Pitch("f", "n", 4))
+    result = smooth_voice_leading(chord1, chord2)
+    assert isinstance(result, tuple)
+    assert len(result) == 3
+    # Total movement should be <= 5 (the identity cost)
+    total = sum(abs(p1.midi_number - p2.midi_number) for p1, p2 in zip(chord1, result))
+    assert total <= 5
+
+
+def test_smooth_voice_leading_reorder():
+    """chord1=(C4,E4,G4), chord2=(D4,G4,B4). Best=(D4,B4,G4) with cost 9."""
+    chord1 = (Pitch("c", "n", 4), Pitch("e", "n", 4), Pitch("g", "n", 4))
+    chord2 = (Pitch("d", "n", 4), Pitch("g", "n", 4), Pitch("b", "n", 4))
+    result = smooth_voice_leading(chord1, chord2)
+    assert result == (Pitch("d", "n", 4), Pitch("b", "n", 4), Pitch("g", "n", 4))
+
+
+def test_smooth_voice_leading_size_mismatch():
+    """Mismatched chord sizes raise ValueError."""
+    chord1 = (Pitch("c", "n", 4), Pitch("e", "n", 4), Pitch("g", "n", 4))
+    chord2 = (Pitch("d", "n", 4), Pitch("f", "n", 4), Pitch("a", "n", 4), Pitch("c", "n", 5))
+    with pytest.raises(ValueError, match="Chord size mismatch"):
+        smooth_voice_leading(chord1, chord2)
+
+
+def test_smooth_voice_leading_single_note():
+    """Single-note chords return trivially."""
+    chord1 = (Pitch("c", "n", 4),)
+    chord2 = (Pitch("d", "n", 4),)
+    result = smooth_voice_leading(chord1, chord2)
+    assert result == (Pitch("d", "n", 4),)
+
+
+def test_smooth_voice_leading_identical():
+    """Identical chords return identity with cost 0."""
+    chord = (Pitch("c", "n", 4), Pitch("e", "n", 4), Pitch("g", "n", 4))
+    result = smooth_voice_leading(chord, chord)
+    assert result == chord
