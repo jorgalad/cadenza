@@ -225,10 +225,13 @@ Plans:
   1. A counterpoint generation request returns a job ID immediately; polling the job endpoint eventually returns the completed result
   2. A batch endpoint accepts multiple operations in a single request and returns all results in one response
   3. All new endpoints (analysis, counterpoint, generation, I/O) added since Phase 4 are documented in OpenAPI and follow the same dual CN+JSON response pattern
-**Plans**: 2 plans
+**Plans**: 4 plans
 
 Plans:
-- [ ] 13-01: Async job pattern, batch endpoint, final API integration for all phases
+- [ ] 13-01-PLAN.md -- Shared infrastructure: helpers.py, Pydantic schemas, error codes, app factory wiring
+- [ ] 13-02-PLAN.md -- Analysis, batch ops, set theory, and patterns route modules (~55 endpoints)
+- [ ] 13-03-PLAN.md -- Counterpoint (sync+async), jobs polling, composition, and I/O route modules
+- [ ] 13-04-PLAN.md -- Batch dispatcher (API-09) and comprehensive integration tests
 
 ## Progress
 
@@ -249,4 +252,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 10. Pattern Generation | 2/2 | Complete    | 2026-03-22 |
 | 11. Algorithmic Composition | 2/2 | Complete    | 2026-03-22 |
 | 12. I/O Expansion | 2/2 | Complete    | 2026-03-22 |
-| 13. API Completion | 0/1 | Not started | - |
+| 13. API Completion | 0/4 | Not started | - |
