@@ -7,13 +7,16 @@ from fractions import Fraction
 from fastapi import APIRouter
 
 from cadenza.api.errors import (
-    INVALID_INTERVAL,
-    INVALID_PITCH,
     INVALID_SCALE_NAME,
     NOT_IMPLEMENTED,
     CadenzaAPIError,
 )
-from cadenza.api.parsing import parse_interval_string, parse_pitch_string
+from cadenza.api.helpers import (
+    _parse_phrase,
+    _phrase_response,
+    _safe_parse_interval,
+    _safe_parse_pitch,
+)
 from cadenza.api.schemas import (
     ConcatenateRequest,
     DiatonicTransposeRequest,
@@ -31,7 +34,6 @@ from cadenza.api.schemas import (
     RotateRequest,
     TransposeRequest,
 )
-from cadenza.cn import parse_cn, to_cn
 from cadenza.core.json_codec import _to_serializable
 from cadenza.core.note import Note
 from cadenza.theory import get_scale
@@ -62,38 +64,6 @@ from cadenza.transforms import (
 )
 
 router = APIRouter(prefix="/v1/transform", tags=["transforms"])
-
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-
-def _parse_phrase(cn_string: str) -> tuple:
-    """Parse CN string, return phrase (discard warnings)."""
-    phrase, _warnings = parse_cn(cn_string)
-    return phrase
-
-
-def _phrase_response(phrase: tuple) -> dict:
-    """Build standard {phrase, events} response dict."""
-    return {"phrase": to_cn(phrase), "events": _to_serializable(phrase)}
-
-
-def _safe_parse_pitch(s: str) -> "Pitch":
-    """Parse pitch string with specific error code on failure."""
-    try:
-        return parse_pitch_string(s)
-    except ValueError as e:
-        raise CadenzaAPIError(INVALID_PITCH, str(e), s)
-
-
-def _safe_parse_interval(s: str) -> "Interval":
-    """Parse interval string with specific error code on failure."""
-    try:
-        return parse_interval_string(s)
-    except ValueError as e:
-        raise CadenzaAPIError(INVALID_INTERVAL, str(e), s)
 
 
 # ---------------------------------------------------------------------------

@@ -6,11 +6,15 @@ from fastapi import APIRouter
 
 from cadenza.api.errors import (
     INVALID_CHORD_SYMBOL,
-    INVALID_PITCH,
     INVALID_SCALE_NAME,
     CadenzaAPIError,
 )
-from cadenza.api.parsing import parse_pitch_string
+from cadenza.api.helpers import (
+    _pitch_to_cn,
+    _pitch_tuple_response,
+    _pitches_to_cn,
+    _safe_parse_pitch,
+)
 from cadenza.api.schemas import (
     Aug6Request,
     ChordRequest,
@@ -20,7 +24,6 @@ from cadenza.api.schemas import (
     SecondaryDominantRequest,
 )
 from cadenza.core.json_codec import _to_serializable
-from cadenza.core.pitch import Pitch
 from cadenza.theory import (
     aug6_chord,
     diatonic_chords,
@@ -31,47 +34,6 @@ from cadenza.theory import (
 )
 
 router = APIRouter(prefix="/v1/theory", tags=["theory"])
-
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-# CN accidental mapping: internal representation -> CN notation
-_ACC_TO_CN: dict[str, str] = {
-    "n": "",
-    "s": "s",
-    "b": "b",
-    "ss": "ss",
-    "bb": "bb",
-}
-
-
-def _pitch_to_cn(p: Pitch) -> str:
-    """Convert a Pitch to its CN string representation."""
-    acc = _ACC_TO_CN.get(p.accidental, p.accidental)
-    return f"{p.step}{acc}{p.octave}"
-
-
-def _pitches_to_cn(pitches: tuple[Pitch, ...]) -> str:
-    """Convert a tuple of Pitches to a space-separated CN string."""
-    return " ".join(_pitch_to_cn(p) for p in pitches)
-
-
-def _safe_parse_pitch(s: str) -> Pitch:
-    """Parse pitch string with specific error code on failure."""
-    try:
-        return parse_pitch_string(s)
-    except ValueError as e:
-        raise CadenzaAPIError(INVALID_PITCH, str(e), s)
-
-
-def _pitch_tuple_response(pitches: tuple[Pitch, ...]) -> dict:
-    """Build standard {phrase, events} response for pitch tuples."""
-    return {
-        "phrase": _pitches_to_cn(pitches),
-        "events": [_to_serializable(p) for p in pitches],
-    }
 
 
 # ---------------------------------------------------------------------------
