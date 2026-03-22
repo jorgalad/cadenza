@@ -1,6 +1,6 @@
 """L-system melody generation (ALGO-03).
 
-Stub -- tests should fail.
+Deterministic string-rewriting L-system with alphabet-to-note translation.
 """
 
 from __future__ import annotations
@@ -15,4 +15,28 @@ def lsystem_melody(
     alphabet: dict[str, Event],
     generations: int,
 ) -> Phrase:
-    raise NotImplementedError
+    """Generate a melody by expanding an L-system and translating via alphabet.
+
+    Args:
+        axiom: Starting string.
+        rules: Rewriting rules mapping single characters to replacement strings.
+        alphabet: Mapping from characters to Note/Rest events.
+        generations: Number of rewriting generations (must be >= 0).
+
+    Returns:
+        A Phrase of events corresponding to alphabet-mapped characters.
+
+    Raises:
+        ValueError: If generations < 0.
+    """
+    if generations < 0:
+        raise ValueError(f"Generations must be >= 0, got {generations}")
+
+    # String rewriting
+    current = axiom
+    for _ in range(generations):
+        current = "".join(rules.get(ch, ch) for ch in current)
+
+    # Translate to events (skip characters not in alphabet)
+    events = tuple(alphabet[ch] for ch in current if ch in alphabet)
+    return events
