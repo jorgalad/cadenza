@@ -23,7 +23,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 9: Set Theory & Serial** - Pitch class sets, Forte numbers, 12-tone rows and matrices (completed 2026-03-20)
 - [x] **Phase 10: Pattern Generation** - Isorhythm, ostinato, hocket, Euclidean rhythms, rhythmic canons (completed 2026-03-22)
 - [x] **Phase 11: Algorithmic Composition** - Markov chains, L-systems, tendency masks, variation generation (completed 2026-03-22)
-- [ ] **Phase 12: I/O Expansion** - MusicXML import/export and MIDI import/export
+- [x] **Phase 12: I/O Expansion** - MusicXML import/export and MIDI import/export (completed 2026-03-22)
 - [ ] **Phase 13: API Completion** - Async job pattern for expensive operations + batch endpoint + OpenAPI polish
 
 ## Phase Details
@@ -248,5 +248,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 9. Set Theory & Serial | 2/2 | Complete   | 2026-03-20 |
 | 10. Pattern Generation | 2/2 | Complete    | 2026-03-22 |
 | 11. Algorithmic Composition | 2/2 | Complete    | 2026-03-22 |
-| 12. I/O Expansion | 1/2 | In Progress|  |
+| 12. I/O Expansion | 2/2 | Complete   | 2026-03-22 |
 | 13. API Completion | 0/1 | Not started | - |
