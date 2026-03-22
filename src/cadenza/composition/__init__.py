@@ -7,9 +7,11 @@ from cadenza.composition.stochastic import (
     random_walk,
     tendency_mask_melody,
 )
+from cadenza.composition.variation import generate_variations
 
 __all__ = [
     "MarkovModel",
+    "generate_variations",
     "lsystem_melody",
     "markov_melody",
     "probabilistic_melody",
