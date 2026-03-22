@@ -175,3 +175,89 @@ def import_midi(
         return (), warnings
     else:
         return Score.from_dict(voice_phrases), warnings
+
+
+# ---------------------------------------------------------------------------
+# MIDI Export
+# ---------------------------------------------------------------------------
+
+_TICKS_PER_BEAT = 480
+
+
+def export_midi(
+    source: Phrase | Score,
+    path: str | Path,
+    tempo: int = 120,
+) -> None:
+    """Export a Cadenza Phrase or Score to a MIDI file.
+
+    Args:
+        source: A Phrase (single voice) or Score (multi-voice).
+        path: Output file path.
+        tempo: Tempo in BPM (default 120).
+    """
+    mido = _require_mido()
+
+    # Normalize to dict of voices
+    if isinstance(source, Score):
+        voices = source.voices
+    else:
+        voices = {"track_0": source}
+
+    is_multi = len(voices) > 1
+    mid = mido.MidiFile(type=1 if is_multi else 0, ticks_per_beat=_TICKS_PER_BEAT)
+
+    if is_multi:
+        # Separate tempo track for Type 1
+        tempo_track = mido.MidiTrack()
+        mid.tracks.append(tempo_track)
+        tempo_track.append(mido.MetaMessage("set_tempo", tempo=mido.bpm2tempo(tempo), time=0))
+        tempo_track.append(mido.MetaMessage("time_signature", numerator=4, denominator=4, time=0))
+
+    for voice_name, phrase in voices.items():
+        track = mido.MidiTrack()
+        mid.tracks.append(track)
+
+        if not is_multi:
+            # Type 0: tempo in same track
+            track.append(mido.MetaMessage("set_tempo", tempo=mido.bpm2tempo(tempo), time=0))
+            track.append(mido.MetaMessage("time_signature", numerator=4, denominator=4, time=0))
+
+        track.append(mido.MetaMessage("track_name", name=voice_name, time=0))
+
+        rest_accumulator = 0  # accumulated rest ticks for next note_on delta
+
+        for event in phrase:
+            if isinstance(event, Rest):
+                rest_ticks = _fraction_to_ticks(event.duration.fraction)
+                rest_accumulator += rest_ticks
+            elif isinstance(event, Note):
+                midi_num = event.pitch.midi_number
+                velocity = dynamic_to_velocity(event.dynamic)
+                dur_ticks = _fraction_to_ticks(event.duration.fraction)
+
+                track.append(mido.Message(
+                    "note_on", note=midi_num, velocity=velocity,
+                    time=rest_accumulator,
+                ))
+                rest_accumulator = 0
+                track.append(mido.Message(
+                    "note_off", note=midi_num, velocity=0,
+                    time=dur_ticks,
+                ))
+
+    mid.save(str(path))
+
+
+def _fraction_to_ticks(frac: Fraction) -> int:
+    """Convert a duration fraction (of whole note) to MIDI ticks.
+
+    fraction * 4 * ticks_per_beat = ticks.
+    Raises ValueError if not representable as integer ticks.
+    """
+    result = frac * 4 * _TICKS_PER_BEAT
+    if result.denominator != 1:
+        raise ValueError(
+            f"Duration {frac} not representable with ticks_per_beat={_TICKS_PER_BEAT}"
+        )
+    return int(result)
