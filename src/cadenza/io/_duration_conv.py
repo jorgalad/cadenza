@@ -9,6 +9,24 @@ from fractions import Fraction
 from cadenza.core.duration import BASE_DURATIONS, Duration
 from cadenza.core.note import Event
 
+# Allowed prime factors for MusicXML divisions. Standard musical durations
+# only require factors of 2 (binary subdivisions) and 3 (triplets).
+# Quintuplets need 5. Any other prime factor indicates a non-standard duration.
+_ALLOWED_DIVISION_PRIMES = {2, 3, 5}
+
+
+def _validate_divisions_primes(divisions: int) -> None:
+    """Raise ValueError if divisions has prime factors beyond 2, 3, 5."""
+    n = divisions
+    for p in _ALLOWED_DIVISION_PRIMES:
+        while n % p == 0:
+            n //= p
+    if n > 1:
+        raise ValueError(
+            f"Duration requires divisions with prime factor {n}, "
+            "which is not representable in standard MusicXML notation."
+        )
+
 
 def fraction_to_mxml_duration(frac: Fraction, divisions: int) -> int:
     """Convert Duration.fraction (fraction of whole note) to MusicXML integer duration.
@@ -91,4 +109,7 @@ def compute_divisions(events: Iterable[Event]) -> int:
     result = 1
     for d in denoms:
         result = math.lcm(result, d)
+
+    # Validate prime factors
+    _validate_divisions_primes(result)
     return max(result, 1)
