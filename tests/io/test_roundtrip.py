@@ -8,6 +8,7 @@ from cadenza.core.duration import Duration
 from cadenza.core.note import Note
 from cadenza.core.pitch import Pitch
 from cadenza.core.score import Score
+from cadenza.io.midi import export_midi, import_midi
 from cadenza.io.musicxml import export_musicxml, import_musicxml
 
 
@@ -62,3 +63,35 @@ class TestMusicXMLRoundtrip:
         violin_phrase = result["Violin"]
         assert len(violin_phrase) == 1
         assert violin_phrase[0].pitch == Pitch("c", "n", 4)
+
+
+class TestMidiRoundtrip:
+    """Test export-then-import roundtrip for MIDI."""
+
+    def test_pitches_and_durations_preserved(self, tmp_path):
+        original = (
+            _note("c", "n", 4, 1, 4, dynamic="f"),
+            _note("e", "n", 4, 1, 4, dynamic="f"),
+            _note("g", "n", 4, 1, 2, dynamic="f"),
+        )
+        path = tmp_path / "rt.mid"
+        export_midi(original, path)
+        result, warnings = import_midi(path)
+        assert isinstance(result, tuple)
+        assert len(result) == len(original)
+        for orig, imported in zip(original, result):
+            assert isinstance(imported, Note)
+            assert imported.pitch == orig.pitch
+            assert imported.duration.fraction == orig.duration.fraction
+
+    def test_dynamics_preserved(self, tmp_path):
+        original = (
+            _note("c", "n", 4, 1, 4, dynamic="pp"),
+            _note("d", "n", 4, 1, 4, dynamic="ff"),
+        )
+        path = tmp_path / "rt.mid"
+        export_midi(original, path)
+        result, warnings = import_midi(path)
+        assert isinstance(result, tuple)
+        assert result[0].dynamic == "pp"
+        assert result[1].dynamic == "ff"
