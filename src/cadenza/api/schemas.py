@@ -608,3 +608,27 @@ class PhraseAnalysisRequest(BaseModel):
     """Phrase analysis request (alias for PhraseOnlyRequest)."""
 
     phrase: str = Field(..., description="CN notation string to analyze")
+
+
+class AddArticulationIfRequest(BaseModel):
+    """Add articulation to every Nth event matching a modular pattern."""
+
+    phrase: str = Field(..., description="CN notation string")
+    nth: int = Field(..., description="Apply to every Nth note (1-indexed)")
+    articulation: str = Field(..., description="Articulation marking, e.g. 'staccato'")
+
+
+class RemoveArticulationIfRequest(BaseModel):
+    """Remove articulation from every Nth event matching a modular pattern."""
+
+    phrase: str = Field(..., description="CN notation string")
+    nth: int = Field(..., description="Remove from every Nth note (1-indexed)")
+    articulation: str = Field(..., description="Articulation marking to remove")
+
+
+class FilterPhraseRequest(BaseModel):
+    """Filter phrase events by criteria."""
+
+    phrase: str = Field(..., description="CN notation string")
+    has_articulation: str | None = Field(None, description="Keep only events with this articulation")
+    is_note: bool = Field(True, description="If False, keep only rests")
