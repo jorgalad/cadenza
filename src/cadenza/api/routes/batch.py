@@ -324,7 +324,7 @@ def _handle_check_voice_leading(params: dict) -> dict:
     voice_pairs: list[tuple[str, tuple]] = []
     for i, p in enumerate(phrases):
         voice_pairs.append((f"voice_{i}", p))
-    score = Score(*[item for pair in voice_pairs for item in pair])
+    score = Score(_voices=tuple(voice_pairs))
     violations = check_voice_leading(score)
     return {
         "violations": [
