@@ -165,8 +165,8 @@
 - [x] **PATT-02**: Generate ostinato from a phrase (loop with optional variation)
 - [x] **PATT-03**: Apply a rhythmic pattern to a pitch sequence (separate rhythm from pitch)
 - [x] **PATT-04**: Generate binary rhythm patterns (from integer representation)
-- [ ] **PATT-05**: Rhythmic canon generation (phrase + offset voices)
-- [ ] **PATT-06**: Hocket generation (distribute notes of a phrase across multiple voices)
+- [x] **PATT-05**: Rhythmic canon generation (phrase + offset voices)
+- [x] **PATT-06**: Hocket generation (distribute notes of a phrase across multiple voices)
 - [x] **PATT-07**: Generate accent patterns (every Nth note accented)
 
 ### Batch Operations (BATCH)
@@ -403,8 +403,8 @@
 | PATT-02 | Phase 10: Pattern Generation | Complete |
 | PATT-03 | Phase 10: Pattern Generation | Complete |
 | PATT-04 | Phase 10: Pattern Generation | Complete |
-| PATT-05 | Phase 10: Pattern Generation | Pending |
-| PATT-06 | Phase 10: Pattern Generation | Pending |
+| PATT-05 | Phase 10: Pattern Generation | Complete |
+| PATT-06 | Phase 10: Pattern Generation | Complete |
 | PATT-07 | Phase 10: Pattern Generation | Complete |
 | ALGO-01 | Phase 11: Algorithmic Composition | Pending |
 | ALGO-02 | Phase 11: Algorithmic Composition | Pending |
