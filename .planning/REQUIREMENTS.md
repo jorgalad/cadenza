@@ -189,7 +189,7 @@
 - [x] **ALGO-04**: Probabilistic note selection from a weighted pitch set
 - [x] **ALGO-05**: Tendency mask application (pitch probability varies over time)
 - [x] **ALGO-06**: Random walk melody generation within scale/interval constraints
-- [ ] **ALGO-07**: Generate variations on a theme (systematic application of transforms)
+- [x] **ALGO-07**: Generate variations on a theme (systematic application of transforms)
 
 ### Analysis (ANAL)
 
@@ -412,7 +412,7 @@
 | ALGO-04 | Phase 11: Algorithmic Composition | Complete |
 | ALGO-05 | Phase 11: Algorithmic Composition | Complete |
 | ALGO-06 | Phase 11: Algorithmic Composition | Complete |
-| ALGO-07 | Phase 11: Algorithmic Composition | Pending |
+| ALGO-07 | Phase 11: Algorithmic Composition | Complete |
 | NOTA-08 | Phase 12: I/O Expansion | Pending |
 | NOTA-09 | Phase 12: I/O Expansion | Pending |
 | NOTA-10 | Phase 12: I/O Expansion | Pending |
