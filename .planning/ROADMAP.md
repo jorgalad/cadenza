@@ -214,8 +214,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 12-01: MusicXML import/export (lxml)
-- [ ] 12-02: MIDI import/export (mido)
+- [ ] 12-01-PLAN.md -- Shared I/O infrastructure (ImportWarning, duration conversion, dynamics mapping) + MusicXML import/export (xml.etree.ElementTree)
+- [ ] 12-02-PLAN.md -- MIDI import/export with quantization grid and velocity mapping (mido)
 
 ### Phase 13: API Completion
 **Goal**: The REST API handles expensive operations asynchronously and supports multi-operation batch requests
