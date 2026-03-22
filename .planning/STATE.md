@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 11 context gathered
+status: in_progress
+stopped_at: Completed 11-01 Generative Algorithms
 last_updated: "2026-03-22T15:00:38.119Z"
-last_activity: 2026-03-22 -- Completed 10-02 Multi-voice Pattern Generation
+last_activity: 2026-03-22 -- Completed 11-01 Generative Algorithms
 progress:
   total_phases: 13
   completed_phases: 10
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** A notation software user can select any musical phrase, send it to Cadenza, and receive back a musically correct transformation or harmonization -- without needing to understand the theory behind it.
-**Current focus:** Phase 10: Pattern Generation
+**Current focus:** Phase 11: Algorithmic Composition
 
 ## Current Position
 
-Phase: 10 of 13 (Pattern Generation)
-Plan: 2 of 2 in current phase (10-02 complete)
-Status: Phase 10 complete
-Last activity: 2026-03-22 -- Completed 10-02 Multi-voice Pattern Generation
+Phase: 11 of 13 (Algorithmic Composition)
+Plan: 1 of 2 in current phase (11-01 complete)
+Status: In progress
+Last activity: 2026-03-22 -- Completed 11-01 Generative Algorithms
 
 Progress: [██████████] 100%
 
@@ -69,6 +69,7 @@ Progress: [██████████] 100%
 | Phase 09 P02 | 3 | 1 tasks | 3 files |
 | Phase 10 P01 | 3 | 2 tasks | 7 files |
 | Phase 10 P02 | 2 | 2 tasks | 3 files |
+| Phase 11 P01 | 10 | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -138,6 +139,10 @@ Recent decisions affecting current work:
 - [Phase 10]: accent_pattern uses 1-based counting: accent at count % n == 0
 - [Phase 10]: Single leading rest per canon voice (combined duration) rather than multiple offset-sized rests
 - [Phase 10]: Hocket uses idx % n round-robin; rest durations match replaced event duration
+- [Phase 11]: Cyclic training phrase fixture for Markov chain loop validity (ascending + descending scale)
+- [Phase 11]: One-step look-ahead in markov_melody to avoid dead-end states and maintain transition invariant
+- [Phase 11]: Instance-based RNG (random.Random(seed)) in all composition generators for deterministic reproducibility
+- [Phase 11]: random_walk snap-and-filter: candidates via nearest_in_scale, filtered by max_step semitone distance
 
 ### Pending Todos
 
@@ -151,6 +156,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-22T15:00:38.112Z
-Stopped at: Phase 11 context gathered
-Resume file: .planning/phases/11-algorithmic-composition/11-CONTEXT.md
+Last session: 2026-03-22T16:27:24Z
+Stopped at: Completed 11-01 Generative Algorithms
+Resume file: .planning/phases/11-algorithmic-composition/11-01-SUMMARY.md

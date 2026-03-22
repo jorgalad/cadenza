@@ -183,12 +183,12 @@
 
 ### Algorithmic Composition (ALGO)
 
-- [ ] **ALGO-01**: First-order Markov chain melody generation from a trained phrase
-- [ ] **ALGO-02**: Higher-order Markov chain generation (configurable order)
-- [ ] **ALGO-03**: L-system (Lindenmayer system) melody/rhythm generation with configurable rules
-- [ ] **ALGO-04**: Probabilistic note selection from a weighted pitch set
-- [ ] **ALGO-05**: Tendency mask application (pitch probability varies over time)
-- [ ] **ALGO-06**: Random walk melody generation within scale/interval constraints
+- [x] **ALGO-01**: First-order Markov chain melody generation from a trained phrase
+- [x] **ALGO-02**: Higher-order Markov chain generation (configurable order)
+- [x] **ALGO-03**: L-system (Lindenmayer system) melody/rhythm generation with configurable rules
+- [x] **ALGO-04**: Probabilistic note selection from a weighted pitch set
+- [x] **ALGO-05**: Tendency mask application (pitch probability varies over time)
+- [x] **ALGO-06**: Random walk melody generation within scale/interval constraints
 - [ ] **ALGO-07**: Generate variations on a theme (systematic application of transforms)
 
 ### Analysis (ANAL)
@@ -406,12 +406,12 @@
 | PATT-05 | Phase 10: Pattern Generation | Complete |
 | PATT-06 | Phase 10: Pattern Generation | Complete |
 | PATT-07 | Phase 10: Pattern Generation | Complete |
-| ALGO-01 | Phase 11: Algorithmic Composition | Pending |
-| ALGO-02 | Phase 11: Algorithmic Composition | Pending |
-| ALGO-03 | Phase 11: Algorithmic Composition | Pending |
-| ALGO-04 | Phase 11: Algorithmic Composition | Pending |
-| ALGO-05 | Phase 11: Algorithmic Composition | Pending |
-| ALGO-06 | Phase 11: Algorithmic Composition | Pending |
+| ALGO-01 | Phase 11: Algorithmic Composition | Complete |
+| ALGO-02 | Phase 11: Algorithmic Composition | Complete |
+| ALGO-03 | Phase 11: Algorithmic Composition | Complete |
+| ALGO-04 | Phase 11: Algorithmic Composition | Complete |
+| ALGO-05 | Phase 11: Algorithmic Composition | Complete |
+| ALGO-06 | Phase 11: Algorithmic Composition | Complete |
 | ALGO-07 | Phase 11: Algorithmic Composition | Pending |
 | NOTA-08 | Phase 12: I/O Expansion | Pending |
 | NOTA-09 | Phase 12: I/O Expansion | Pending |
