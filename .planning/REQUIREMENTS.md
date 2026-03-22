@@ -210,10 +210,10 @@
 - [x] **API-03**: All endpoints return both OMN string and JSON event list in every response
 - [x] **API-04**: Versioned API (`/v1/` prefix) from day one
 - [x] **API-05**: Comprehensive OpenAPI/Swagger documentation auto-generated
-- [ ] **API-06**: Async job pattern for expensive operations (counterpoint generation)
+- [x] **API-06**: Async job pattern for expensive operations (counterpoint generation)
 - [x] **API-07**: Structured error responses with music-theory-aware error codes
 - [x] **API-08**: Health check endpoint for DAW integration probing
-- [ ] **API-09**: Batch endpoint: apply multiple operations in a single request
+- [x] **API-09**: Batch endpoint: apply multiple operations in a single request
 
 ---
 
@@ -417,8 +417,8 @@
 | NOTA-09 | Phase 12: I/O Expansion | Complete |
 | NOTA-10 | Phase 12: I/O Expansion | Complete |
 | NOTA-11 | Phase 12: I/O Expansion | Complete |
-| API-06 | Phase 13: API Completion | Pending |
-| API-09 | Phase 13: API Completion | Pending |
+| API-06 | Phase 13: API Completion | Complete |
+| API-09 | Phase 13: API Completion | Complete |
 
 **Coverage:**
 - v1 requirements: 157 total
