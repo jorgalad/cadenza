@@ -199,8 +199,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 11-01: Markov chains (first and higher order), probabilistic selection, random walk
-- [ ] 11-02: L-systems, tendency masks, variation generation
+- [ ] 11-01-PLAN.md -- Markov chains, L-system melody, probabilistic melody, tendency mask, random walk (ALGO-01..06)
+- [ ] 11-02-PLAN.md -- Variation generation with deterministic transform priority (ALGO-07)
 
 ### Phase 12: I/O Expansion
 **Goal**: Users can import from and export to standard music interchange formats (MusicXML, MIDI)
