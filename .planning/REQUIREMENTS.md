@@ -16,8 +16,8 @@
 - [x] **NOTA-05**: Parser handles tuplets (triplets, quintuplets, etc.)
 - [x] **NOTA-06**: Parser handles all dynamic markings: ppp, pp, p, mp, mf, f, ff, fff
 - [x] **NOTA-07**: Parser handles articulation markings: staccato, tenuto, accent, legato, marcato, fermata, trill, and others
-- [ ] **NOTA-08**: System imports MusicXML files into internal representation
-- [ ] **NOTA-09**: System exports internal representation to MusicXML
+- [x] **NOTA-08**: System imports MusicXML files into internal representation
+- [x] **NOTA-09**: System exports internal representation to MusicXML
 - [ ] **NOTA-10**: System imports MIDI files into internal representation
 - [ ] **NOTA-11**: System exports internal representation to MIDI
 - [x] **NOTA-12**: Parser provides clear error messages with position info for invalid notation
@@ -413,8 +413,8 @@
 | ALGO-05 | Phase 11: Algorithmic Composition | Complete |
 | ALGO-06 | Phase 11: Algorithmic Composition | Complete |
 | ALGO-07 | Phase 11: Algorithmic Composition | Complete |
-| NOTA-08 | Phase 12: I/O Expansion | Pending |
-| NOTA-09 | Phase 12: I/O Expansion | Pending |
+| NOTA-08 | Phase 12: I/O Expansion | Complete |
+| NOTA-09 | Phase 12: I/O Expansion | Complete |
 | NOTA-10 | Phase 12: I/O Expansion | Pending |
 | NOTA-11 | Phase 12: I/O Expansion | Pending |
 | API-06 | Phase 13: API Completion | Pending |
