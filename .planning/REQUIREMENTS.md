@@ -54,7 +54,7 @@
 - [x] **RHYT-03**: Rhythmic diminution (divide all durations by a ratio)
 - [x] **RHYT-04**: Rhythmic rotation (cyclic shift of durations)
 - [x] **RHYT-05**: Metric modulation (reinterpret a duration unit as a new tempo reference)
-- [ ] **RHYT-06**: Euclidean rhythm generation (distribute N beats over M slots)
+- [x] **RHYT-06**: Euclidean rhythm generation (distribute N beats over M slots)
 - [x] **RHYT-07**: Rhythmic pattern extraction from a phrase
 - [x] **RHYT-08**: Quantize a phrase to a given rhythmic grid
 - [x] **RHYT-09**: Compute total duration of a phrase
@@ -161,13 +161,13 @@
 
 ### Pattern & Rhythm Generation (PATT)
 
-- [ ] **PATT-01**: Generate isorhythmic patterns (talea + color)
-- [ ] **PATT-02**: Generate ostinato from a phrase (loop with optional variation)
-- [ ] **PATT-03**: Apply a rhythmic pattern to a pitch sequence (separate rhythm from pitch)
-- [ ] **PATT-04**: Generate binary rhythm patterns (from integer representation)
+- [x] **PATT-01**: Generate isorhythmic patterns (talea + color)
+- [x] **PATT-02**: Generate ostinato from a phrase (loop with optional variation)
+- [x] **PATT-03**: Apply a rhythmic pattern to a pitch sequence (separate rhythm from pitch)
+- [x] **PATT-04**: Generate binary rhythm patterns (from integer representation)
 - [ ] **PATT-05**: Rhythmic canon generation (phrase + offset voices)
 - [ ] **PATT-06**: Hocket generation (distribute notes of a phrase across multiple voices)
-- [ ] **PATT-07**: Generate accent patterns (every Nth note accented)
+- [x] **PATT-07**: Generate accent patterns (every Nth note accented)
 
 ### Batch Operations (BATCH)
 
@@ -398,14 +398,14 @@
 | SERI-04 | Phase 9: Set Theory & Serial | Complete |
 | SERI-05 | Phase 9: Set Theory & Serial | Complete |
 | SERI-06 | Phase 9: Set Theory & Serial | Complete |
-| RHYT-06 | Phase 10: Pattern Generation | Pending |
-| PATT-01 | Phase 10: Pattern Generation | Pending |
-| PATT-02 | Phase 10: Pattern Generation | Pending |
-| PATT-03 | Phase 10: Pattern Generation | Pending |
-| PATT-04 | Phase 10: Pattern Generation | Pending |
+| RHYT-06 | Phase 10: Pattern Generation | Complete |
+| PATT-01 | Phase 10: Pattern Generation | Complete |
+| PATT-02 | Phase 10: Pattern Generation | Complete |
+| PATT-03 | Phase 10: Pattern Generation | Complete |
+| PATT-04 | Phase 10: Pattern Generation | Complete |
 | PATT-05 | Phase 10: Pattern Generation | Pending |
 | PATT-06 | Phase 10: Pattern Generation | Pending |
-| PATT-07 | Phase 10: Pattern Generation | Pending |
+| PATT-07 | Phase 10: Pattern Generation | Complete |
 | ALGO-01 | Phase 11: Algorithmic Composition | Pending |
 | ALGO-02 | Phase 11: Algorithmic Composition | Pending |
 | ALGO-03 | Phase 11: Algorithmic Composition | Pending |
