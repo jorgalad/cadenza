@@ -25,3 +25,7 @@ htmlcov/
 
 # OS
 .DS_Store
+
+# Project planning and local AI config
+.planning/
+.claude/
