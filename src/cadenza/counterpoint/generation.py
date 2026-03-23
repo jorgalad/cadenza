@@ -18,11 +18,31 @@ from cadenza.counterpoint.rules import (
     PERFECT_CONSONANCES,
     classify_interval,
 )
+from cadenza.theory.scales import Scale
 from cadenza.transforms.pitch import from_midi
 
 
 # All consonant intervals (mod 12)
 _CONSONANCES = PERFECT_CONSONANCES | IMPERFECT_CONSONANCES
+
+
+def _build_pc_map(scale: Scale) -> dict[int, tuple[str, str]]:
+    """Map pitch class (0-11) -> (step, accidental) from a Scale for key-aware spelling."""
+    return {p.midi_number % 12: (p.step, p.accidental) for p in scale.pitches}
+
+
+def _pitch_for_midi(
+    midi: int,
+    pc_map: dict[int, tuple[str, str]],
+    prefer_sharps: bool,
+) -> Pitch:
+    """Return a Pitch with key-correct spelling, falling back to from_midi."""
+    pc = midi % 12
+    octave = (midi // 12) - 1
+    if pc in pc_map:
+        step, acc = pc_map[pc]
+        return Pitch(step=step, accidental=acc, octave=octave)
+    return from_midi(midi, prefer_sharps=prefer_sharps)
 
 # Duration base halving maps
 _HALF_BASE: dict[str, str] = {
@@ -67,7 +87,15 @@ def _compute_range(
     elif above:
         return cf_min, cf_max + 16
     else:
-        return cf_min - 16, cf_max
+        # Bass: practical register anchored ~one octave below the median pitch.
+        # E2–E4 (MIDI 40–64) is the standard bass range.
+        # Note-by-note, each candidate is still filtered to sit at or below the
+        # current CF pitch, so no upper-ceiling based on cf_min is needed here.
+        cf_median = sorted(cf_midis)[len(cf_midis) // 2]
+        bass_center = max(40, min(52, cf_median - 12))  # E2–E3 center
+        bass_low    = max(28, bass_center - 12)          # no lower than E1
+        bass_high   = min(64, bass_center + 12)          # no higher than E4
+        return bass_low, bass_high
 
 
 # ---------------------------------------------------------------------------
@@ -79,6 +107,7 @@ def generate_first_species(
     cf: Phrase,
     above: bool = True,
     range: tuple[Pitch, Pitch] | None = None,  # noqa: A002
+    scale: Scale | None = None,
 ) -> Phrase:
     """Generate first species counterpoint against a cantus firmus.
 
@@ -86,6 +115,8 @@ def generate_first_species(
         cf: The cantus firmus phrase (tuple of Note/Rest events).
         above: If True, generate counterpoint above CF; if False, below.
         range: Optional (low_pitch, high_pitch) to constrain output.
+        scale: When provided, candidates are strongly biased toward scale
+               pitches and spelled with key-correct accidentals.
 
     Returns:
         A Phrase of the same length as cf with valid first species counterpoint.
@@ -97,6 +128,12 @@ def generate_first_species(
     low_midi, high_midi = _compute_range(cf_pitches, above, range)
     n_notes = len(cf_pitches)
     prefer_sharps = above
+
+    scale_pcs: frozenset[int] | None = None
+    pc_map: dict[int, tuple[str, str]] = {}
+    if scale is not None:
+        scale_pcs = frozenset(p.midi_number % 12 for p in scale.pitches)
+        pc_map = _build_pc_map(scale)
 
     def _candidates(position: int, partial: list[Pitch], cf_pitch: Pitch) -> list[Pitch]:
         cf_midi = cf_pitch.midi_number
@@ -124,8 +161,11 @@ def generate_first_species(
                     priority -= 3
                 elif step_dist <= 4:
                     priority -= 1
+            # Strongly prefer diatonic pitches when a scale is given
+            if scale_pcs is not None and midi % 12 not in scale_pcs:
+                priority += 8
 
-            pitch = from_midi(midi, prefer_sharps=prefer_sharps)
+            pitch = _pitch_for_midi(midi, pc_map, prefer_sharps)
             results.append((priority, midi, pitch))
 
         random.shuffle(results)

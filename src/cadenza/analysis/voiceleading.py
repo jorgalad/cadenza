@@ -15,6 +15,7 @@ from cadenza.core.note import Note, Rest
 from cadenza.core.phrase import Phrase
 from cadenza.core.pitch import Pitch
 from cadenza.core.score import Score
+from cadenza.theory.scales import Scale
 from cadenza.transforms.pitch import from_midi
 
 
@@ -287,9 +288,12 @@ def smooth_voice_leading(
 # generate_inner_voices
 # ---------------------------------------------------------------------------
 
+# Consonant interval classes (semitones mod 12)
+_CONSONANCES_MOD12 = frozenset({0, 3, 4, 5, 7, 8, 9})
+
 _DEFAULT_RANGES: list[tuple[Pitch, Pitch]] = [
-    (Pitch("c", "n", 3), Pitch("g", "n", 5)),   # Alto
-    (Pitch("c", "n", 2), Pitch("g", "n", 4)),   # Tenor
+    (Pitch("g", "n", 3), Pitch("c", "n", 5)),   # Alto:  G3–C5
+    (Pitch("c", "n", 3), Pitch("g", "n", 4)),   # Tenor: C3–G4
 ]
 
 
@@ -298,69 +302,147 @@ def generate_inner_voices(
     bass: Phrase,
     n: int = 2,
     ranges: list[tuple[Pitch, Pitch]] | None = None,
+    scale: Scale | None = None,
 ) -> list[Phrase]:
     """Generate *n* inner voice Phrases between *soprano* and *bass*.
 
-    Uses a greedy beat-by-beat approach: each inner voice starts at the
-    midpoint of its range and moves as little as possible from beat to beat,
-    clamped to its designated range.
+    Beat-by-beat greedy voice leading:
+    1. For each beat, collect pitches in the voice's range that are consonant
+       with the bass.
+    2. Score each candidate: prefer close motion from the previous note,
+       prefer completing the chord with the 3rd above the bass, and avoid
+       doubling the soprano or crowding other inner voices.
+    3. Pick the lowest-cost candidate.
 
-    Default ranges for n=2 are alto (C3--G5) and tenor (C2--G4).
-    Returns a list of Phrases ordered from highest range to lowest.
+    Default ranges for n=2: alto G3–C5, tenor C3–G4.
+    Returns a list of Phrases ordered highest range first (alto before tenor).
+
+    When *scale* is provided, candidates are penalised for pitches outside
+    the scale and spelled with key-correct accidentals.
 
     Raises ``ValueError`` when custom *ranges* length does not match *n*.
     """
     if ranges is not None:
         if len(ranges) != n:
-            raise ValueError(
-                f"Expected {n} ranges, got {len(ranges)}"
-            )
+            raise ValueError(f"Expected {n} ranges, got {len(ranges)}")
         voice_ranges = list(ranges)
     else:
         if n <= len(_DEFAULT_RANGES):
             voice_ranges = _DEFAULT_RANGES[:n]
         else:
-            # Interpolate additional ranges between tenor low and alto high
             voice_ranges = list(_DEFAULT_RANGES)
-            alto_high = _DEFAULT_RANGES[0][1].midi_number
-            tenor_low = _DEFAULT_RANGES[1][0].midi_number
             for _ in range(n - len(_DEFAULT_RANGES)):
-                voice_ranges.append(
-                    (from_midi(tenor_low), from_midi(alto_high))
-                )
+                voice_ranges.append(_DEFAULT_RANGES[-1])
+
+    voice_midi_ranges = [
+        (lo.midi_number, hi.midi_number) for lo, hi in voice_ranges
+    ]
+
+    # Build key-aware pitch-class map if a scale is provided
+    scale_pcs: frozenset[int] | None = None
+    pc_to_pitch: dict[int, tuple[str, str]] = {}
+    if scale is not None:
+        scale_pcs = frozenset(p.midi_number % 12 for p in scale.pitches)
+        pc_to_pitch = {p.midi_number % 12: (p.step, p.accidental) for p in scale.pitches}
+
+    def _spell(midi: int, prefer_sharps: bool) -> Pitch:
+        """Return a key-correctly spelled Pitch for a MIDI number."""
+        pc = midi % 12
+        octave = (midi // 12) - 1
+        if pc in pc_to_pitch:
+            step, acc = pc_to_pitch[pc]
+            return Pitch(step=step, accidental=acc, octave=octave)
+        return from_midi(midi, prefer_sharps=prefer_sharps)
 
     soprano_pitches = _extract_pitches(soprano)
     bass_pitches = _extract_pitches(bass)
     beat_count = min(len(soprano), len(bass))
 
-    voices: list[list[Note | Rest]] = []
+    # Start each voice near the middle of its range
+    prev_midis = [(lo + hi) // 2 for lo, hi in voice_midi_ranges]
 
-    for v in range(n):
-        low_midi = voice_ranges[v][0].midi_number
-        high_midi = voice_ranges[v][1].midi_number
-        prev_midi = (low_midi + high_midi) // 2
-        notes: list[Note | Rest] = []
+    voices: list[list[Note | Rest]] = [[] for _ in range(n)]
 
-        for i in range(beat_count):
-            sp = soprano_pitches[i] if i < len(soprano_pitches) else None
-            bp = bass_pitches[i] if i < len(bass_pitches) else None
+    for i in range(beat_count):
+        dur = soprano[i].duration if i < len(soprano) else bass[i].duration
+        sp = soprano_pitches[i] if i < len(soprano_pitches) else None
+        bp = bass_pitches[i] if i < len(bass_pitches) else None
 
-            # Clamp to range, minimising movement from prev_midi
-            clamped = max(low_midi, min(high_midi, prev_midi))
-            pitch = from_midi(clamped)
+        # Rest beats: all inner voices rest
+        if sp is None or bp is None:
+            for v in range(n):
+                voices[v].append(Rest(duration=dur))
+            continue
 
-            # Inherit duration from soprano at this beat position
-            dur = soprano[i].duration if i < len(soprano) else bass[i].duration
+        sp_midi = sp.midi_number
+        bp_midi = bp.midi_number
+        sp_pc = sp_midi % 12
+        bp_pc = bp_midi % 12
+        # Chord tones to prefer: minor and major 3rd above bass, perfect 5th
+        third_pcs = {(bp_pc + 3) % 12, (bp_pc + 4) % 12}
+        fifth_pc = (bp_pc + 7) % 12
 
-            notes.append(
+        assigned_midis: list[int] = []  # inner voices already placed this beat
+
+        for v in range(n):
+            lo, hi = voice_midi_ranges[v]
+            prev = prev_midis[v]
+
+            candidates: list[tuple[float, int]] = []
+
+            for midi in range(lo, hi + 1):
+                bp_int = abs(midi - bp_midi) % 12
+                # Must be consonant with bass
+                if bp_int not in _CONSONANCES_MOD12:
+                    continue
+
+                pc = midi % 12
+                # Prefer chord-tone completion: the 3rd is most important
+                score: float = abs(midi - prev)  # smooth voice leading base cost
+
+                if pc in third_pcs:
+                    score -= 4.0   # strongly prefer 3rd of the chord
+                elif pc == fifth_pc and fifth_pc not in (sp_pc, bp_pc):
+                    score -= 1.5   # prefer 5th when it adds a new colour
+                elif pc == sp_pc:
+                    score += 2.0   # mild penalty for doubling soprano
+                elif pc == bp_pc:
+                    score += 1.0   # mild penalty for doubling bass root
+
+                # Penalise out-of-key pitches when scale is given
+                if scale_pcs is not None and pc not in scale_pcs:
+                    score += 8.0
+
+                # Avoid crowding or octave-doubling other inner voices
+                for am in assigned_midis:
+                    dist = abs(midi - am)
+                    if dist == 0 or dist % 12 == 0:
+                        score += 6.0   # octave doubling between inner voices
+                    elif dist < 3:
+                        score += 3.0   # too close together (< minor 3rd)
+
+                candidates.append((score, midi))
+
+            if not candidates:
+                # Fallback: any pitch consonant with soprano instead
+                for midi in range(lo, hi + 1):
+                    sp_int = abs(midi - sp_midi) % 12
+                    if sp_int in _CONSONANCES_MOD12:
+                        candidates.append((abs(midi - prev), midi))
+
+            if candidates:
+                candidates.sort()
+                chosen_midi = candidates[0][1]
+            else:
+                chosen_midi = max(lo, min(hi, prev))
+
+            prev_midis[v] = chosen_midi
+            assigned_midis.append(chosen_midi)
+            pitch = _spell(chosen_midi, prefer_sharps=(v == 0))
+            voices[v].append(
                 Note(pitch=pitch, duration=dur, dynamic=None, articulations=())
             )
-            prev_midi = clamped
 
-        voices.append(notes)
-
-    # Return as Phrases (tuples), ordered highest range first
-    # voice_ranges[0] is already alto (highest), so order is preserved
     return [tuple(v) for v in voices]
 
 

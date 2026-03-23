@@ -63,9 +63,38 @@ def retrograde_inversion(phrase: Phrase, axis: Pitch | None = None) -> Phrase:
 # full_retrograde
 # ---------------------------------------------------------------------------
 
+def _split_padding(phrase: Phrase) -> tuple[Phrase, Phrase, Phrase]:
+    """Return (leading_rests, content, trailing_rests).
+
+    Leading and trailing Rest-only events represent score padding (bars where
+    an instrument is silent before its first entry or after its last note).
+    Separating them allows transforms to reverse only the musical content.
+    """
+    n = len(phrase)
+    # Leading rests
+    lead = 0
+    while lead < n and isinstance(phrase[lead], Rest):
+        lead += 1
+    # Trailing rests (only within the non-leading portion)
+    trail = n
+    while trail > lead and isinstance(phrase[trail - 1], Rest):
+        trail -= 1
+    return phrase[:lead], phrase[lead:trail], phrase[trail:]
+
+
 def full_retrograde(phrase: Phrase) -> Phrase:
-    """Reverse entire event sequence (classical retrograde)."""
-    return phrase[::-1]
+    """Reverse musical content, leaving leading and trailing rests in place.
+
+    Rest-only padding at the start or end of a phrase (e.g. empty bars for
+    instruments that don't enter until mid-piece) is preserved so that
+    retrograde does not turn trailing silence into leading silence or vice
+    versa.  This also maintains the involution property:
+    ``full_retrograde(full_retrograde(p)) == p``.
+    """
+    if not phrase:
+        return ()
+    leading, content, trailing = _split_padding(phrase)
+    return leading + content[::-1] + trailing
 
 
 # ---------------------------------------------------------------------------
@@ -210,10 +239,15 @@ def repeat(
 # ---------------------------------------------------------------------------
 
 def mirror(phrase: Phrase) -> Phrase:
-    """Palindrome: phrase + full_retrograde(phrase)."""
+    """Palindrome: leading_rests + content + reversed(content) + trailing_rests.
+
+    Leading and trailing rest padding is preserved; only the musical content
+    is mirrored, so empty bars never appear in the centre of the palindrome.
+    """
     if not phrase:
         return ()
-    return phrase + full_retrograde(phrase)
+    leading, content, trailing = _split_padding(phrase)
+    return leading + content + content[::-1] + trailing
 
 
 # ---------------------------------------------------------------------------
